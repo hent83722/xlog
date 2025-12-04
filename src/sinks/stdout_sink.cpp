@@ -1,13 +1,21 @@
 #include "xlog/sinks/stdout_sink.hpp"
-#include "xlog/log_sink.hpp"
+#include "xlog/formatter.hpp"
+#include "xlog/color.hpp"
+#include "xlog/log_level.hpp"
 #include <iostream>
-#include <mutex>
 
 namespace xlog {
 
-void StdoutSink::log(const std::string& logger_name, LogLevel level, const std::string& message) {
-    if (level < get_level()) return;
-    std::cout << formatter.format(logger_name, level, message) << std::endl;
+StdoutSink::StdoutSink() : formatter(std::make_shared<Formatter>()) {}
+
+void StdoutSink::log(const std::string& name, LogLevel level, const std::string& msg) {
+    std::string out = formatter->format(name, level, msg);
+    if (level == LogLevel::Error || level == LogLevel::Critical)
+        out = apply_color(out, Color::Red);
+    else if (level == LogLevel::Warn)
+        out = apply_color(out, Color::Yellow);
+
+    std::cout << out << std::endl;
 }
 
 }

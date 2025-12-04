@@ -1,13 +1,10 @@
 #include "xlog/logger.hpp"
 #include "xlog/log_sink.hpp"
-#include "xlog/config.hpp"
-#include "xlog/formatter.hpp"
-#include "xlog/log_level.hpp"
-#include "xlog/color.hpp"
+#include <mutex>
 
 namespace xlog {
 
-Logger::Logger(std::string logger_name) : name(std::move(logger_name)) {}
+Logger::Logger(std::string n) : name(std::move(n)) {}
 
 void Logger::add_sink(LogSinkPtr sink) {
     std::lock_guard<std::mutex> lock(mtx);
@@ -16,16 +13,14 @@ void Logger::add_sink(LogSinkPtr sink) {
 
 void Logger::log(LogLevel level, const std::string& message) {
     std::lock_guard<std::mutex> lock(mtx);
-    for (auto& sink : sinks) {
-        sink->log(name, level, message);
-    }
+    for (auto& s : sinks) s->log(name, level, message);
 }
 
-void Logger::trace(const std::string& message) { log(LogLevel::Trace, message); }
-void Logger::debug(const std::string& message) { log(LogLevel::Debug, message); }
-void Logger::info(const std::string& message) { log(LogLevel::Info, message); }
-void Logger::warn(const std::string& message) { log(LogLevel::Warn, message); }
-void Logger::error(const std::string& message) { log(LogLevel::Error, message); }
-void Logger::critical(const std::string& message) { log(LogLevel::Critical, message); }
+void Logger::trace(const std::string& msg) { log(LogLevel::Trace, msg); }
+void Logger::debug(const std::string& msg) { log(LogLevel::Debug, msg); }
+void Logger::info(const std::string& msg) { log(LogLevel::Info, msg); }
+void Logger::warn(const std::string& msg) { log(LogLevel::Warn, msg); }
+void Logger::error(const std::string& msg) { log(LogLevel::Error, msg); }
+void Logger::critical(const std::string& msg) { log(LogLevel::Critical, msg); }
 
 }

@@ -1,17 +1,16 @@
 #pragma once
-
+#include <string>
 #include "logger.hpp"
-#include "log_sink.hpp"
-#include "sinks/stdout_sink.hpp"
-#include "sinks/file_sink.hpp"
-#include "sinks/rotating_file_sink.hpp"
-#include "sinks/daily_file_sink.hpp"
-#include "sinks/null_sink.hpp"
-#include "async/async_logger.hpp"
-#include "formatter.hpp"
-#include "log_level.hpp"
-#include "color.hpp"
 #include "config.hpp"
-#include "fmt_compat/fmt_shim.hpp"
 
-// Experimental sinks removed for now
+namespace xlog {
+
+LoggerPtr create_logger(const std::string& name, const Config& cfg = Config());
+
+}
+#define LOG_TRACE(logger, msg) logger->trace(msg)
+#define LOG_DEBUG(logger, msg) logger->debug(msg)
+#define LOG_INFO(logger, msg) logger->info(msg)
+#define LOG_WARN(logger, msg) logger->warn(msg)
+#define LOG_ERROR(logger, msg) logger->error(msg)
+#define LOG_CRITICAL(logger, msg) logger->critical(msg)

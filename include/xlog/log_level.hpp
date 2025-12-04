@@ -3,25 +3,23 @@
 
 namespace xlog {
 
-enum class LogLevel : int {
-    Trace = 0,
+enum class LogLevel {
+    Trace,
     Debug,
     Info,
     Warn,
     Error,
-    Critical,
-    Off
+    Critical
 };
 
-inline std::string to_string(LogLevel level) {
-    switch(level) {
+inline std::string to_string(LogLevel lvl) {
+    switch (lvl) {
         case LogLevel::Trace: return "TRACE";
         case LogLevel::Debug: return "DEBUG";
         case LogLevel::Info: return "INFO";
         case LogLevel::Warn: return "WARN";
         case LogLevel::Error: return "ERROR";
         case LogLevel::Critical: return "CRITICAL";
-        case LogLevel::Off: return "OFF";
         default: return "UNKNOWN";
     }
 }

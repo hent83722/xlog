@@ -1,9 +1,6 @@
 #pragma once
-#include "log_level.hpp"
 #include <string>
-#include <chrono>
-#include <sstream>
-#include <iomanip>
+#include "log_level.hpp"
 
 namespace xlog {
 
