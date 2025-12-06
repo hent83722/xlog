@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <memory>
 #include "xlog/log_level.hpp"
 
 namespace xlog {

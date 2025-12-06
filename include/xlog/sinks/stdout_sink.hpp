@@ -1,7 +1,6 @@
 #pragma once
-#include "xlog/log_sink.hpp"
-#include <memory>
-#include <string>
+#include "../log_sink.hpp"
+#include "../formatter.hpp"
 
 namespace xlog {
 
@@ -9,6 +8,9 @@ class StdoutSink : public LogSink {
 public:
     StdoutSink();
     void log(const std::string& name, LogLevel level, const std::string& message) override;
+
+private:
+    std::shared_ptr<Formatter> formatter;
 };
 
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <memory>
 #include <vector>
 #include <mutex>
 #include "log_sink.hpp"

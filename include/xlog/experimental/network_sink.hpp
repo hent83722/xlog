@@ -1,28 +1,29 @@
 #pragma once
-#include "../log_sink.hpp"
+#include "log_sink.hpp"
 #include <string>
 #include <mutex>
-#include <thread>
 #include <queue>
-#include <condition_variable>
+#include <thread>
 #include <atomic>
-#include <iostream>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include <asio.hpp>
 
 namespace xlog {
 
 class NetworkSink : public LogSink {
 public:
-    NetworkSink(const std::string& host_port);
+    NetworkSink(const std::string& host, unsigned short port);
     ~NetworkSink();
-
     void log(const std::string& logger_name, LogLevel level, const std::string& message) override;
 
 private:
-    int sockfd;
+    void worker();
+    std::string host;
+    unsigned short port;
+    std::queue<std::string> queue;
     std::mutex mtx;
+    std::condition_variable cv;
+    std::thread thread;
+    std::atomic<bool> running;
 };
 
 }

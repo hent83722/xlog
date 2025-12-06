@@ -1,7 +1,6 @@
 #pragma once
-#include "xlog/log_sink.hpp"
+#include "file_sink.hpp"
 #include <string>
-#include <memory>
 #include <chrono>
 #include <ctime>
 
