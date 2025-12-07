@@ -156,6 +156,42 @@ See the examples folder for detailed use cases:
 - async_logging.cpp – Asynchronous logging in multi-threaded environments.
 - file_vs_stdout.cpp – Logging to multiple sinks.
 - rotating_logs.cpp – Rotating file logging for large projects.
+- structured_json_example.cpp – Structured JSON logging for cloud platforms and log aggregators.
+
+## Structured JSON Logging (for Cloud & Enterprise)
+
+For cloud-native applications and integration with log aggregators (ELK, Datadog, Splunk, Cloudwatch), use `StructuredLogger`:
+
+```cpp
+#include <xlog/structured_logger.hpp>
+
+// Create a structured logger that outputs JSON to a file
+auto slog = xlog::StructuredLogger::create("api_server", "app.jsonl");
+
+// Set global context (request ID, user ID, environment, etc.)
+slog->set_context("request_id", "req-12345");
+slog->set_context("service", "user-api");
+
+// Log with additional structured fields
+slog->info("User login successful", {
+    {"user_id", "user-456"},
+    {"duration_ms", "145"},
+    {"ip_address", "192.168.1.100"}
+});
+```
+
+Output (JSON Lines format, one JSON object per line):
+```json
+{"timestamp":"2025-12-07T14:54:55.714Z","level":"INFO","logger":"api_server","message":"User login successful","request_id":"req-12345","service":"user-api","user_id":"user-456","duration_ms":"145","ip_address":"192.168.1.100"}
+```
+
+**Benefits:**
+- **Cloud-ready**: outputs JSON Lines format, ingestible by all major log platforms
+- **Context preservation**: global context fields are automatically included in every log
+- **Queryable fields**: structured data makes logs searchable and analyzable
+- **Distributed tracing**: request IDs and correlation IDs flow through your logs
+- **Performance metrics**: easily extract timing, error codes, and other numeric data
+
  
 ## Integrating Sinks Into Your Server or Service
 

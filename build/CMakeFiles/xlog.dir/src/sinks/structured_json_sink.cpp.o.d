@@ -1,7 +1,8 @@
-CMakeFiles/xlog.dir/src/sinks/file_sink.cpp.o: \
- /home/henri/xlog/src/sinks/file_sink.cpp /usr/include/stdc-predef.h \
- /home/henri/xlog/include/xlog/sinks/file_sink.hpp \
- /home/henri/xlog/include/xlog/log_sink.hpp \
+CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o: \
+ /home/henri/xlog/src/sinks/structured_json_sink.cpp \
+ /usr/include/stdc-predef.h \
+ /home/henri/xlog/include/xlog/sinks/structured_json_sink.hpp \
+ /home/henri/xlog/include/xlog/sinks/../log_sink.hpp \
  /usr/include/c++/15.2.1/memory /usr/include/c++/15.2.1/bits/memoryfwd.h \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/os_defines.h \
@@ -186,10 +187,15 @@ CMakeFiles/xlog.dir/src/sinks/file_sink.cpp.o: \
  /usr/include/c++/15.2.1/bits/ranges_algobase.h \
  /usr/include/c++/15.2.1/pstl/glue_memory_defs.h \
  /usr/include/c++/15.2.1/pstl/execution_defs.h \
- /home/henri/xlog/include/xlog/log_level.hpp \
- /home/henri/xlog/include/xlog/formatter.hpp \
- /usr/include/c++/15.2.1/fstream /usr/include/c++/15.2.1/istream \
- /usr/include/c++/15.2.1/ostream /usr/include/c++/15.2.1/bits/ostream.tcc \
+ /home/henri/xlog/include/xlog/sinks/../log_level.hpp \
+ /home/henri/xlog/include/xlog/sinks/../formatter.hpp \
+ /usr/include/c++/15.2.1/map /usr/include/c++/15.2.1/bits/stl_tree.h \
+ /usr/include/c++/15.2.1/bits/node_handle.h \
+ /usr/include/c++/15.2.1/bits/stl_map.h \
+ /usr/include/c++/15.2.1/bits/stl_multimap.h \
+ /usr/include/c++/15.2.1/bits/erase_if.h /usr/include/c++/15.2.1/fstream \
+ /usr/include/c++/15.2.1/istream /usr/include/c++/15.2.1/ostream \
+ /usr/include/c++/15.2.1/bits/ostream.tcc \
  /usr/include/c++/15.2.1/bits/istream.tcc \
  /usr/include/c++/15.2.1/bits/codecvt.h \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/basic_file.h \
@@ -198,4 +204,29 @@ CMakeFiles/xlog.dir/src/sinks/file_sink.cpp.o: \
  /usr/include/c++/15.2.1/bits/chrono.h /usr/include/c++/15.2.1/ratio \
  /usr/include/c++/15.2.1/limits /usr/include/c++/15.2.1/ctime \
  /usr/include/c++/15.2.1/bits/parse_numbers.h \
- /usr/include/c++/15.2.1/bits/unique_lock.h
+ /usr/include/c++/15.2.1/bits/unique_lock.h \
+ /usr/include/c++/15.2.1/chrono /usr/include/c++/15.2.1/sstream \
+ /usr/include/c++/15.2.1/bits/sstream.tcc /usr/include/c++/15.2.1/vector \
+ /usr/include/c++/15.2.1/bits/stl_vector.h \
+ /usr/include/c++/15.2.1/bits/stl_bvector.h \
+ /usr/include/c++/15.2.1/bits/vector.tcc \
+ /usr/include/c++/15.2.1/bits/stl_algo.h \
+ /usr/include/c++/15.2.1/bits/algorithmfwd.h \
+ /usr/include/c++/15.2.1/bits/stl_heap.h \
+ /usr/include/c++/15.2.1/bits/uniform_int_dist.h \
+ /usr/include/c++/15.2.1/bits/chrono_io.h /usr/include/c++/15.2.1/iomanip \
+ /usr/include/c++/15.2.1/locale \
+ /usr/include/c++/15.2.1/bits/locale_facets_nonio.h \
+ /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/time_members.h \
+ /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/messages_members.h \
+ /usr/include/libintl.h \
+ /usr/include/c++/15.2.1/bits/locale_facets_nonio.tcc \
+ /usr/include/c++/15.2.1/bits/locale_conv.h \
+ /usr/include/c++/15.2.1/bits/quoted_string.h \
+ /usr/include/c++/15.2.1/format /usr/include/c++/15.2.1/array \
+ /usr/include/c++/15.2.1/charconv /usr/include/c++/15.2.1/optional \
+ /usr/include/c++/15.2.1/bits/enable_special_members.h \
+ /usr/include/c++/15.2.1/span /usr/include/c++/15.2.1/bits/monostate.h \
+ /usr/include/c++/15.2.1/bits/formatfwd.h \
+ /usr/include/c++/15.2.1/bits/unicode.h \
+ /usr/include/c++/15.2.1/bits/unicode-data.h

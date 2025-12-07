@@ -1,6 +1,7 @@
-CMakeFiles/xlog.dir/src/xlog.cpp.o: /home/henri/xlog/src/xlog.cpp \
- /usr/include/stdc-predef.h /home/henri/xlog/include/xlog/xlog.hpp \
- /usr/include/c++/15.2.1/string \
+CMakeFiles/xlog.dir/src/structured_logger.cpp.o: \
+ /home/henri/xlog/src/structured_logger.cpp /usr/include/stdc-predef.h \
+ /home/henri/xlog/include/xlog/structured_logger.hpp \
+ /home/henri/xlog/include/xlog/logger.hpp /usr/include/c++/15.2.1/string \
  /usr/include/c++/15.2.1/bits/requires_hosted.h \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/os_defines.h \
@@ -109,7 +110,7 @@ CMakeFiles/xlog.dir/src/xlog.cpp.o: /home/henri/xlog/src/xlog.cpp \
  /usr/include/c++/15.2.1/bits/uses_allocator.h \
  /usr/include/c++/15.2.1/bits/uses_allocator_args.h \
  /usr/include/c++/15.2.1/tuple /usr/include/c++/15.2.1/bits/ranges_util.h \
- /home/henri/xlog/include/xlog/logger.hpp /usr/include/c++/15.2.1/vector \
+ /usr/include/c++/15.2.1/vector \
  /usr/include/c++/15.2.1/bits/stl_uninitialized.h \
  /usr/include/c++/15.2.1/bits/stl_vector.h \
  /usr/include/c++/15.2.1/bits/stl_bvector.h \
@@ -199,5 +200,16 @@ CMakeFiles/xlog.dir/src/xlog.cpp.o: /home/henri/xlog/src/xlog.cpp \
  /usr/include/c++/15.2.1/pstl/execution_defs.h \
  /home/henri/xlog/include/xlog/log_level.hpp \
  /home/henri/xlog/include/xlog/formatter.hpp \
- /home/henri/xlog/include/xlog/config.hpp \
- /home/henri/xlog/include/xlog/async/async_logger.hpp
+ /home/henri/xlog/include/xlog/sinks/structured_json_sink.hpp \
+ /usr/include/c++/15.2.1/map /usr/include/c++/15.2.1/bits/stl_tree.h \
+ /usr/include/c++/15.2.1/bits/node_handle.h \
+ /usr/include/c++/15.2.1/bits/stl_map.h \
+ /usr/include/c++/15.2.1/bits/stl_multimap.h \
+ /usr/include/c++/15.2.1/bits/erase_if.h /usr/include/c++/15.2.1/fstream \
+ /usr/include/c++/15.2.1/istream /usr/include/c++/15.2.1/ostream \
+ /usr/include/c++/15.2.1/bits/ostream.tcc \
+ /usr/include/c++/15.2.1/bits/istream.tcc \
+ /usr/include/c++/15.2.1/bits/codecvt.h \
+ /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/basic_file.h \
+ /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++io.h \
+ /usr/include/c++/15.2.1/bits/fstream.tcc

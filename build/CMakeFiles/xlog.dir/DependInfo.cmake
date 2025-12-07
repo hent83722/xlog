@@ -20,8 +20,10 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/henri/xlog/src/sinks/null_sink.cpp" "CMakeFiles/xlog.dir/src/sinks/null_sink.cpp.o" "gcc" "CMakeFiles/xlog.dir/src/sinks/null_sink.cpp.o.d"
   "/home/henri/xlog/src/sinks/rotating_file_sink.cpp" "CMakeFiles/xlog.dir/src/sinks/rotating_file_sink.cpp.o" "gcc" "CMakeFiles/xlog.dir/src/sinks/rotating_file_sink.cpp.o.d"
   "/home/henri/xlog/src/sinks/stdout_sink.cpp" "CMakeFiles/xlog.dir/src/sinks/stdout_sink.cpp.o" "gcc" "CMakeFiles/xlog.dir/src/sinks/stdout_sink.cpp.o.d"
+  "/home/henri/xlog/src/sinks/structured_json_sink.cpp" "CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o" "gcc" "CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o.d"
   "/home/henri/xlog/src/sinks/syslog_sink.cpp" "CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o" "gcc" "CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o.d"
   "/home/henri/xlog/src/sinks/udp_sink.cpp" "CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o" "gcc" "CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o.d"
+  "/home/henri/xlog/src/structured_logger.cpp" "CMakeFiles/xlog.dir/src/structured_logger.cpp.o" "gcc" "CMakeFiles/xlog.dir/src/structured_logger.cpp.o.d"
   "/home/henri/xlog/src/util.cpp" "CMakeFiles/xlog.dir/src/util.cpp.o" "gcc" "CMakeFiles/xlog.dir/src/util.cpp.o.d"
   "/home/henri/xlog/src/xlog.cpp" "CMakeFiles/xlog.dir/src/xlog.cpp.o" "gcc" "CMakeFiles/xlog.dir/src/xlog.cpp.o.d"
   )

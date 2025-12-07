@@ -85,12 +85,12 @@ clean: CMakeFiles/xlog.dir/clean
 CMakeFiles/xlog.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 "Built target xlog"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 "Built target xlog"
 .PHONY : CMakeFiles/xlog.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/xlog.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/henri/xlog/build/CMakeFiles 17
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/henri/xlog/build/CMakeFiles 19
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/xlog.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/henri/xlog/build/CMakeFiles 0
 .PHONY : CMakeFiles/xlog.dir/rule
@@ -102,7 +102,7 @@ xlog: CMakeFiles/xlog.dir/rule
 # codegen rule for target.
 CMakeFiles/xlog.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 "Finished codegen for target xlog"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 "Finished codegen for target xlog"
 .PHONY : CMakeFiles/xlog.dir/codegen
 
 # clean rule for target.

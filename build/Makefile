@@ -462,6 +462,30 @@ src/sinks/stdout_sink.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/src/sinks/stdout_sink.cpp.s
 .PHONY : src/sinks/stdout_sink.cpp.s
 
+src/sinks/structured_json_sink.o: src/sinks/structured_json_sink.cpp.o
+.PHONY : src/sinks/structured_json_sink.o
+
+# target to build an object file
+src/sinks/structured_json_sink.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o
+.PHONY : src/sinks/structured_json_sink.cpp.o
+
+src/sinks/structured_json_sink.i: src/sinks/structured_json_sink.cpp.i
+.PHONY : src/sinks/structured_json_sink.i
+
+# target to preprocess a source file
+src/sinks/structured_json_sink.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.i
+.PHONY : src/sinks/structured_json_sink.cpp.i
+
+src/sinks/structured_json_sink.s: src/sinks/structured_json_sink.cpp.s
+.PHONY : src/sinks/structured_json_sink.s
+
+# target to generate assembly for a file
+src/sinks/structured_json_sink.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.s
+.PHONY : src/sinks/structured_json_sink.cpp.s
+
 src/sinks/syslog_sink.o: src/sinks/syslog_sink.cpp.o
 .PHONY : src/sinks/syslog_sink.o
 
@@ -509,6 +533,30 @@ src/sinks/udp_sink.s: src/sinks/udp_sink.cpp.s
 src/sinks/udp_sink.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.s
 .PHONY : src/sinks/udp_sink.cpp.s
+
+src/structured_logger.o: src/structured_logger.cpp.o
+.PHONY : src/structured_logger.o
+
+# target to build an object file
+src/structured_logger.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/src/structured_logger.cpp.o
+.PHONY : src/structured_logger.cpp.o
+
+src/structured_logger.i: src/structured_logger.cpp.i
+.PHONY : src/structured_logger.i
+
+# target to preprocess a source file
+src/structured_logger.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/src/structured_logger.cpp.i
+.PHONY : src/structured_logger.cpp.i
+
+src/structured_logger.s: src/structured_logger.cpp.s
+.PHONY : src/structured_logger.s
+
+# target to generate assembly for a file
+src/structured_logger.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xlog.dir/build.make CMakeFiles/xlog.dir/src/structured_logger.cpp.s
+.PHONY : src/structured_logger.cpp.s
 
 src/util.o: src/util.cpp.o
 .PHONY : src/util.o
@@ -607,12 +655,18 @@ help:
 	@echo "... src/sinks/stdout_sink.o"
 	@echo "... src/sinks/stdout_sink.i"
 	@echo "... src/sinks/stdout_sink.s"
+	@echo "... src/sinks/structured_json_sink.o"
+	@echo "... src/sinks/structured_json_sink.i"
+	@echo "... src/sinks/structured_json_sink.s"
 	@echo "... src/sinks/syslog_sink.o"
 	@echo "... src/sinks/syslog_sink.i"
 	@echo "... src/sinks/syslog_sink.s"
 	@echo "... src/sinks/udp_sink.o"
 	@echo "... src/sinks/udp_sink.i"
 	@echo "... src/sinks/udp_sink.s"
+	@echo "... src/structured_logger.o"
+	@echo "... src/structured_logger.i"
+	@echo "... src/structured_logger.s"
 	@echo "... src/util.o"
 	@echo "... src/util.i"
 	@echo "... src/util.s"

@@ -240,10 +240,24 @@ CMakeFiles/xlog.dir/src/sinks/stdout_sink.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/xlog.dir/src/sinks/stdout_sink.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/henri/xlog/src/sinks/stdout_sink.cpp -o CMakeFiles/xlog.dir/src/sinks/stdout_sink.cpp.s
 
+CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o: CMakeFiles/xlog.dir/flags.make
+CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o: /home/henri/xlog/src/sinks/structured_json_sink.cpp
+CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o: CMakeFiles/xlog.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o -MF CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o.d -o CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o -c /home/henri/xlog/src/sinks/structured_json_sink.cpp
+
+CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/henri/xlog/src/sinks/structured_json_sink.cpp > CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.i
+
+CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/henri/xlog/src/sinks/structured_json_sink.cpp -o CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.s
+
 CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o: CMakeFiles/xlog.dir/flags.make
 CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o: /home/henri/xlog/src/sinks/syslog_sink.cpp
 CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o: CMakeFiles/xlog.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o -MF CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o.d -o CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o -c /home/henri/xlog/src/sinks/syslog_sink.cpp
 
 CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.i: cmake_force
@@ -257,7 +271,7 @@ CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.s: cmake_force
 CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o: CMakeFiles/xlog.dir/flags.make
 CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o: /home/henri/xlog/src/sinks/udp_sink.cpp
 CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o: CMakeFiles/xlog.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o -MF CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o.d -o CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o -c /home/henri/xlog/src/sinks/udp_sink.cpp
 
 CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.i: cmake_force
@@ -268,10 +282,24 @@ CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/henri/xlog/src/sinks/udp_sink.cpp -o CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.s
 
+CMakeFiles/xlog.dir/src/structured_logger.cpp.o: CMakeFiles/xlog.dir/flags.make
+CMakeFiles/xlog.dir/src/structured_logger.cpp.o: /home/henri/xlog/src/structured_logger.cpp
+CMakeFiles/xlog.dir/src/structured_logger.cpp.o: CMakeFiles/xlog.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/xlog.dir/src/structured_logger.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/xlog.dir/src/structured_logger.cpp.o -MF CMakeFiles/xlog.dir/src/structured_logger.cpp.o.d -o CMakeFiles/xlog.dir/src/structured_logger.cpp.o -c /home/henri/xlog/src/structured_logger.cpp
+
+CMakeFiles/xlog.dir/src/structured_logger.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/xlog.dir/src/structured_logger.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/henri/xlog/src/structured_logger.cpp > CMakeFiles/xlog.dir/src/structured_logger.cpp.i
+
+CMakeFiles/xlog.dir/src/structured_logger.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/xlog.dir/src/structured_logger.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/henri/xlog/src/structured_logger.cpp -o CMakeFiles/xlog.dir/src/structured_logger.cpp.s
+
 CMakeFiles/xlog.dir/src/util.cpp.o: CMakeFiles/xlog.dir/flags.make
 CMakeFiles/xlog.dir/src/util.cpp.o: /home/henri/xlog/src/util.cpp
 CMakeFiles/xlog.dir/src/util.cpp.o: CMakeFiles/xlog.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/xlog.dir/src/util.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/xlog.dir/src/util.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/xlog.dir/src/util.cpp.o -MF CMakeFiles/xlog.dir/src/util.cpp.o.d -o CMakeFiles/xlog.dir/src/util.cpp.o -c /home/henri/xlog/src/util.cpp
 
 CMakeFiles/xlog.dir/src/util.cpp.i: cmake_force
@@ -285,7 +313,7 @@ CMakeFiles/xlog.dir/src/util.cpp.s: cmake_force
 CMakeFiles/xlog.dir/src/xlog.cpp.o: CMakeFiles/xlog.dir/flags.make
 CMakeFiles/xlog.dir/src/xlog.cpp.o: /home/henri/xlog/src/xlog.cpp
 CMakeFiles/xlog.dir/src/xlog.cpp.o: CMakeFiles/xlog.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/xlog.dir/src/xlog.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/xlog.dir/src/xlog.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/xlog.dir/src/xlog.cpp.o -MF CMakeFiles/xlog.dir/src/xlog.cpp.o.d -o CMakeFiles/xlog.dir/src/xlog.cpp.o -c /home/henri/xlog/src/xlog.cpp
 
 CMakeFiles/xlog.dir/src/xlog.cpp.i: cmake_force
@@ -310,8 +338,10 @@ xlog_OBJECTS = \
 "CMakeFiles/xlog.dir/src/sinks/null_sink.cpp.o" \
 "CMakeFiles/xlog.dir/src/sinks/rotating_file_sink.cpp.o" \
 "CMakeFiles/xlog.dir/src/sinks/stdout_sink.cpp.o" \
+"CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o" \
 "CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o" \
 "CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o" \
+"CMakeFiles/xlog.dir/src/structured_logger.cpp.o" \
 "CMakeFiles/xlog.dir/src/util.cpp.o" \
 "CMakeFiles/xlog.dir/src/xlog.cpp.o"
 
@@ -330,13 +360,15 @@ libxlog.a: CMakeFiles/xlog.dir/src/sinks/multi_sink.cpp.o
 libxlog.a: CMakeFiles/xlog.dir/src/sinks/null_sink.cpp.o
 libxlog.a: CMakeFiles/xlog.dir/src/sinks/rotating_file_sink.cpp.o
 libxlog.a: CMakeFiles/xlog.dir/src/sinks/stdout_sink.cpp.o
+libxlog.a: CMakeFiles/xlog.dir/src/sinks/structured_json_sink.cpp.o
 libxlog.a: CMakeFiles/xlog.dir/src/sinks/syslog_sink.cpp.o
 libxlog.a: CMakeFiles/xlog.dir/src/sinks/udp_sink.cpp.o
+libxlog.a: CMakeFiles/xlog.dir/src/structured_logger.cpp.o
 libxlog.a: CMakeFiles/xlog.dir/src/util.cpp.o
 libxlog.a: CMakeFiles/xlog.dir/src/xlog.cpp.o
 libxlog.a: CMakeFiles/xlog.dir/build.make
 libxlog.a: CMakeFiles/xlog.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX static library libxlog.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/henri/xlog/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking CXX static library libxlog.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/xlog.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/xlog.dir/link.txt --verbose=$(VERBOSE)
 

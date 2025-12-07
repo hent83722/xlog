@@ -19,9 +19,10 @@ public:
     void warn(const std::string& msg);
     void error(const std::string& msg);
     void critical(const std::string& msg);
+    
+    std::string name;
 
 private:
-    std::string name;
     std::vector<LogSinkPtr> sinks;
     std::mutex mtx;
 };
