@@ -1,7 +1,0 @@
-/home/henri/xlog/build/CMakeFiles/xlog.dir
-/home/henri/xlog/build/CMakeFiles/edit_cache.dir
-/home/henri/xlog/build/CMakeFiles/rebuild_cache.dir
-/home/henri/xlog/build/CMakeFiles/list_install_components.dir
-/home/henri/xlog/build/CMakeFiles/install.dir
-/home/henri/xlog/build/CMakeFiles/install/local.dir
-/home/henri/xlog/build/CMakeFiles/install/strip.dir
