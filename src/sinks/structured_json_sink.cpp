@@ -59,24 +59,24 @@ std::string StructuredJsonSink::build_json(const std::string& logger_name, LogLe
     std::ostringstream json;
     json << "{";
     
-    // Timestamp
+ 
     json << "\"timestamp\":\"" << get_iso8601_timestamp() << "\",";
     
-    // Level
+ 
     json << "\"level\":\"" << to_string(level) << "\",";
     
-    // Logger name
+ 
     json << "\"logger\":\"" << escape_json_string(logger_name) << "\",";
     
-    // Message
+
     json << "\"message\":\"" << escape_json_string(message) << "\"";
     
-    // Global context fields
+
     for (const auto& [key, value] : global_context) {
         json << ",\"" << escape_json_string(key) << "\":\"" << escape_json_string(value) << "\"";
     }
     
-    // Log-specific fields
+
     for (const auto& [key, value] : fields) {
         json << ",\"" << escape_json_string(key) << "\":\"" << escape_json_string(value) << "\"";
     }

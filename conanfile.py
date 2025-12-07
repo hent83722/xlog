@@ -6,7 +6,7 @@ import os
 
 class XlogConan(ConanFile):
     name = "xlog"
-    version = "1.0.0"
+    version = "1.0.1"
     license = "MIT"
     author = "hent83722"
     url = "https://github.com/hent83722/xlog"
@@ -14,7 +14,7 @@ class XlogConan(ConanFile):
     description = "Lightweight C++17 logging library with multiple sinks (console, file, rotating, syslog, UDP network)"
     topics = ("logging", "c++17", "cross-platform", "header-only", "sinks")
     
-    # Binary configuration
+
     settings = "os", "compiler", "build_type", "arch"
     options = {
         "shared": [True, False],
