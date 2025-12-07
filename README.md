@@ -1,6 +1,7 @@
 # XLog - Lightweight C++ Logging Library
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://img.shields.io/badge/CI-sanitizers-brightgreen.svg)](https://github.com/hent83722/xlog/actions)
  
 Latest Xlog version: v1.0.2
 
@@ -19,6 +20,8 @@ Latest Xlog version: v1.0.2
 - **Stream-style logging syntax** (`*logger << xlog::Info << "Message" << xlog::endl;`)
 - **Flexible formatting:** timestamps, colors, structured messages, and experimental JSON support
 - **Minimal dependencies:** uses standard C++17 and optional fmt library for formatting
+- **Production-ready quality:** AddressSanitizer, ThreadSanitizer, UndefinedBehaviorSanitizer, and fuzz testing
+- **CI/CD integration:** Automated sanitizer checks and fuzzing on every commit
 
 ---
 
@@ -234,6 +237,87 @@ endif()
     - Attach sinks at startup and reuse logger instances.
     - Keep network sinks asynchronous or non-blocking to avoid impacting request latency.
     - Rate-limit or sample high-volume logs before sending across the network.
+
+---
+
+## Testing & Quality Assurance (v1.2.0+)
+
+XLog v1.2.0 introduces comprehensive quality assurance tooling to ensure production-grade reliability:
+
+### Memory Safety & Data Race Detection
+
+Run tests with sanitizers to catch memory leaks, data races, and undefined behavior:
+
+```bash
+# AddressSanitizer (memory leaks, buffer overflows)
+chmod +x local_test/*.sh
+./local_test/run_asan.sh
+
+# ThreadSanitizer (data races, deadlocks)
+./local_test/run_tsan.sh
+
+# Both sanitizers run automatically in CI on every push
+```
+
+### Fuzz Testing
+
+Fuzz testing exercises the formatter and JSON sink with randomized inputs to find corner-case crashes:
+
+```bash
+# Run a 30-second fuzz smoke test
+./local_test/run_fuzz.sh
+
+# For longer fuzzing sessions (1 hour, 4 parallel jobs)
+./fuzz_formatter -max_total_time=3600 \
+  -artifact_prefix=./fuzz_artifacts/ \
+  -jobs=4 -workers=4
+
+# Reproduce a crash found by fuzzer
+ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 \
+  ./fuzz_formatter ./fuzz_artifacts/crash-000001
+```
+
+### CMake Testing Options
+
+Control test and fuzz target compilation:
+
+```bash
+# Build with tests enabled (default)
+cmake .. -DBUILD_TESTS=ON
+
+# Build with fuzzing support
+cmake .. -DBUILD_TESTS=ON -DENABLE_FUZZ=ON
+
+# Disable tests for production builds
+cmake .. -DBUILD_TESTS=OFF
+```
+
+### Prerequisites for Local Testing
+
+On Ubuntu/Debian:
+
+```bash
+sudo apt update
+sudo apt install -y build-essential clang cmake libfmt-dev
+```
+
+On macOS:
+
+```bash
+brew install cmake fmt llvm
+```
+
+### CI Integration
+
+XLog's GitHub Actions workflow automatically runs:
+- **AddressSanitizer**: Detects memory corruption and leaks
+- **ThreadSanitizer**: Finds data races in multi-threaded code
+- **UndefinedBehaviorSanitizer**: Catches undefined C++ behavior
+- **Fuzz testing**: 20-second smoke test on every PR
+
+This ensures every commit meets production-grade quality standards.
+
+---
 
 ## Contributing
 1. Fork the repository
