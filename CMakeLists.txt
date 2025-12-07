@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(ENABLE_SYSLOG "Enable Syslog sink (Unix/Linux only)" ON)
 
+option(BUILD_TESTS "Build unit tests and fuzz targets" ON)
+
 # On Windows, disable syslog by default
 if(WIN32)
     set(ENABLE_SYSLOG OFF CACHE BOOL "Enable Syslog sink (Unix/Linux only)" FORCE)
@@ -55,3 +57,7 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/xlogConfigVersion.cmake"
     DESTINATION lib/cmake/xlog
 )
+
+if(BUILD_TESTS)
+    add_subdirectory(tests)
+endif()

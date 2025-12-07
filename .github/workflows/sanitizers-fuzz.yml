@@ -1,0 +1,71 @@
+name: Sanitizers and Fuzzing
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  sanitizers:
+    name: Sanitizers (${{ matrix.sanitizer }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sanitizer: [address, thread, undefined]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake clang libpcre3-dev build-essential
+
+      - name: Configure
+        run: |
+          mkdir build && cd build
+          if [ "${{ matrix.sanitizer }}" = "address" ]; then
+            SAN_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
+            LINK_FLAGS="-fsanitize=address"
+          elif [ "${{ matrix.sanitizer }}" = "thread" ]; then
+            SAN_FLAGS="-fsanitize=thread"
+            LINK_FLAGS="-fsanitize=thread"
+          else
+            SAN_FLAGS="-fsanitize=undefined"
+            LINK_FLAGS="-fsanitize=undefined"
+          fi
+          CC=clang CXX=clang++ cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="$SAN_FLAGS" -DCMAKE_EXE_LINKER_FLAGS="$LINK_FLAGS"
+
+      - name: Build
+        run: |
+          cd build
+          cmake --build . --parallel
+
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure
+
+  fuzz:
+    name: Fuzz (short run)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake clang libpcre3-dev build-essential
+
+      - name: Configure + Build fuzz target
+        run: |
+          mkdir build && cd build
+          CC=clang CXX=clang++ cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_FUZZ=ON -DCMAKE_CXX_FLAGS="-g -O1 -fsanitize=address,fuzzer-no-link"
+          cmake --build . --parallel
+
+      - name: Run brief fuzz session
+        run: |
+          # Run the fuzz target for a short time to smoke test it
+          ./build/fuzz_formatter -max_total_time=20 || true

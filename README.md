@@ -2,9 +2,13 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
  
+Latest Xlog version: v1.0.2
+
 **XLog** is a modern, lightweight, and high-performance logging library for C++17, inspired by popular logging libraries like `spdlog`. It provides thread-safe logging, multiple sinks, log levels, and flexible formatting, making it ideal for both small projects and large-scale applications.
 
 ---
+
+
 
 ## Features
 
