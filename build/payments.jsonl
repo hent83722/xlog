@@ -1,4 +1,4 @@
-{"timestamp":"2025-12-07T20:28:37.731Z","level":"INFO","logger":"payment_service","message":"Starting payment processing","service":"payment-processor","payment_id":"pay-12345"}
-{"timestamp":"2025-12-07T20:28:37.831Z","level":"INFO","logger":"payment_service","message":"Validating payment method","currency":"USD","service":"payment-processor","amount":"99.99","payment_id":"pay-12345","step":"validation"}
-{"timestamp":"2025-12-07T20:28:37.831Z","level":"INFO","logger":"payment_service","message":"Checking fraud rules","currency":"USD","service":"payment-processor","amount":"99.99","payment_id":"pay-12345","check_type":"fraud_detection"}
-{"timestamp":"2025-12-07T20:28:37.831Z","level":"INFO","logger":"payment_service","message":"Payment completed successfully","currency":"USD","service":"payment-processor","amount":"99.99","payment_id":"pay-12345","status":"success"}
+{"timestamp":"2025-12-07T20:41:39.712Z","level":"INFO","logger":"payment_service","message":"Starting payment processing","service":"payment-processor","payment_id":"pay-12345"}
+{"timestamp":"2025-12-07T20:41:39.812Z","level":"INFO","logger":"payment_service","message":"Validating payment method","currency":"USD","service":"payment-processor","amount":"99.99","payment_id":"pay-12345","step":"validation"}
+{"timestamp":"2025-12-07T20:41:39.812Z","level":"INFO","logger":"payment_service","message":"Checking fraud rules","currency":"USD","service":"payment-processor","amount":"99.99","payment_id":"pay-12345","check_type":"fraud_detection"}
+{"timestamp":"2025-12-07T20:41:39.812Z","level":"INFO","logger":"payment_service","message":"Payment completed successfully","currency":"USD","service":"payment-processor","amount":"99.99","payment_id":"pay-12345","status":"success"}
