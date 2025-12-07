@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="240" viewBox="0 0 900 240">
+	<style>
+		.box { fill:#ffffff; stroke:#2b2f33; stroke-width:2; rx:6; }
+		.label { font: 13px sans-serif; fill:#111; }
+		.title { font: 16px sans-serif; font-weight:700; }
+		.arrow { stroke:#2b2f33; stroke-width:2; fill:none; marker-end:url(#a); }
+	</style>
+	<defs>
+		<marker id="a" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+			<polygon points="0 0, 10 3.5, 0 7" fill="#2b2f33" />
+		</marker>
+	</defs>
+	<text x="20" y="28" class="title">Async Logging Flow</text>
+
+	<rect class="box" x="40" y="60" width="180" height="60" />
+	<text x="130" y="95" class="label" text-anchor="middle">Producer / Thread</text>
+
+	<rect class="box" x="260" y="40" width="220" height="100" />
+	<text x="370" y="75" class="label" text-anchor="middle">Async Queue</text>
+	<text x="370" y="95" class="label" text-anchor="middle">(lock-free / mutexed buffer)</text>
+
+	<rect class="box" x="520" y="60" width="220" height="60" />
+	<text x="630" y="95" class="label" text-anchor="middle">Worker Thread</text>
+	<text x="630" y="115" class="label" text-anchor="middle">(drains queue, formats, sends to sinks)</text>
+
+	<path class="arrow" d="M220 90 L260 90" />
+	<path class="arrow" d="M480 90 L520 90" />
+
+	<text x="260" y="160" class="label">Note: minimize work on producer path; heavy I/O is performed by worker</text>
+</svg>

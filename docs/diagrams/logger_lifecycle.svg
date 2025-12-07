@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="260" viewBox="0 0 820 260">
+	<style>
+		.box { fill:#ffffff; stroke:#2b2f33; stroke-width:2; rx:6; }
+		.label { font: 13px sans-serif; fill:#111; }
+		.title { font: 16px sans-serif; font-weight:700; }
+		.arrow { stroke:#2b2f33; stroke-width:2; fill:none; marker-end:url(#m); }
+	</style>
+	<defs>
+		<marker id="m" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+			<polygon points="0 0, 10 3.5, 0 7" fill="#2b2f33" />
+		</marker>
+	</defs>
+
+	<text x="16" y="28" class="title">Logger Lifecycle</text>
+
+	<rect class="box" x="30" y="60" width="160" height="50" />
+	<text x="110" y="92" class="label" text-anchor="middle">Create Logger</text>
+
+	<rect class="box" x="220" y="60" width="160" height="50" />
+	<text x="300" y="92" class="label" text-anchor="middle">Configure/Set Level</text>
+
+	<rect class="box" x="410" y="60" width="160" height="50" />
+	<text x="490" y="92" class="label" text-anchor="middle">Add Sinks</text>
+
+	<rect class="box" x="600" y="60" width="160" height="50" />
+	<text x="680" y="92" class="label" text-anchor="middle">Logging (emit records)</text>
+
+	<path class="arrow" d="M190 85 L220 85" />
+	<path class="arrow" d="M380 85 L410 85" />
+	<path class="arrow" d="M570 85 L600 85" />
+
+	<rect class="box" x="220" y="140" width="540" height="60" />
+	<text x="490" y="173" class="label" text-anchor="middle">Shutdown / Flush: ensure all queued records are delivered and sinks are closed</text>
+
+</svg>

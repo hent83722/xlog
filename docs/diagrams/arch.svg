@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360">
+	<style>
+		.box { fill:#f7f9fb; stroke:#2b2f33; stroke-width:2; rx:6; }
+		.label { font: 14px sans-serif; fill:#111; }
+		.title { font: 18px sans-serif; font-weight:700; }
+		.arrow { stroke:#2b2f33; stroke-width:2; fill:none; marker-end:url(#arrowhead); }
+	</style>
+	<defs>
+		<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+			<polygon points="0 0, 10 3.5, 0 7" fill="#2b2f33" />
+		</marker>
+	</defs>
+
+	<text x="20" y="28" class="title">XLog Architecture</text>
+
+	<!-- Application -->
+	<rect class="box" x="40" y="60" width="220" height="80" />
+	<text x="150" y="100" class="label" text-anchor="middle">Application</text>
+	<text x="150" y="120" class="label" text-anchor="middle">(calls Logger)</text>
+
+	<!-- Logger -->
+	<rect class="box" x="340" y="40" width="240" height="120" />
+	<text x="460" y="80" class="label" text-anchor="middle">Logger</text>
+	<text x="460" y="100" class="label" text-anchor="middle">Formatting, Levels</text>
+
+	<!-- Sinks group -->
+	<rect x="640" y="20" width="300" height="160" fill="#ffffff" stroke="none" />
+	<text x="790" y="44" class="label" text-anchor="middle">Sinks (Stdout, File, Rotating, Syslog, UDP, JSON)</text>
+
+	<!-- Individual sinks -->
+	<rect class="box" x="660" y="70" width="120" height="50" />
+	<text x="720" y="100" class="label" text-anchor="middle">Stdout/File</text>
+
+	<rect class="box" x="800" y="70" width="120" height="50" />
+	<text x="860" y="100" class="label" text-anchor="middle">Syslog/UDP</text>
+
+	<rect class="box" x="730" y="140" width="140" height="50" />
+	<text x="800" y="170" class="label" text-anchor="middle">Structured JSON</text>
+
+	<!-- Arrows -->
+	<path class="arrow" d="M260 100 L340 100" />
+	<path class="arrow" d="M580 100 L660 100" />
+
+	<!-- small notes -->
+	<text x="340" y="18" class="label">central logging API</text>
+
+</svg>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320">
+	<style>
+		.box { fill:#ffffff; stroke:#2b2f33; stroke-width:2; rx:6; }
+		.label { font: 13px sans-serif; fill:#111; }
+		.title { font: 16px sans-serif; font-weight:700; }
+		.arrow { stroke:#2b2f33; stroke-width:2; fill:none; marker-end:url(#h); }
+	</style>
+	<defs>
+		<marker id="h" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+			<polygon points="0 0, 10 3.5, 0 7" fill="#2b2f33" />
+		</marker>
+	</defs>
+
+	<text x="18" y="28" class="title">Sink Pipeline</text>
+
+	<rect class="box" x="20" y="60" width="220" height="80" />
+	<text x="130" y="100" class="label" text-anchor="middle">LogRecord</text>
+	<text x="130" y="120" class="label" text-anchor="middle">(timestamp, level, message, context)</text>
+
+	<path class="arrow" d="M240 100 L320 100" />
+
+	<rect class="box" x="320" y="60" width="200" height="80" />
+	<text x="420" y="100" class="label" text-anchor="middle">Formatter</text>
+	<text x="420" y="120" class="label" text-anchor="middle">(text / JSON formatting)</text>
+
+	<path class="arrow" d="M520 100 L600 100" />
+
+	<rect x="600" y="40" width="340" height="120" fill="#ffffff" stroke="none" />
+	<text x="770" y="62" class="label" text-anchor="middle">Sinks</text>
+
+	<rect class="box" x="620" y="80" width="140" height="50" />
+	<text x="690" y="110" class="label" text-anchor="middle">File / Rotating</text>
+
+	<rect class="box" x="780" y="80" width="140" height="50" />
+	<text x="850" y="110" class="label" text-anchor="middle">Syslog / UDP</text>
+
+	<rect class="box" x="700" y="150" width="140" height="50" />
+	<text x="770" y="180" class="label" text-anchor="middle">Structured JSON</text>
+
+</svg>
