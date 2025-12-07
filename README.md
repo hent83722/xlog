@@ -156,6 +156,45 @@ See the examples folder for detailed use cases:
 - async_logging.cpp – Asynchronous logging in multi-threaded environments.
 - file_vs_stdout.cpp – Logging to multiple sinks.
 - rotating_logs.cpp – Rotating file logging for large projects.
+ 
+## Integrating Sinks Into Your Server or Service
+
+XLog's sinks are small, composable objects you can attach to any `xlog::Logger`. Typical server integration patterns:
+
+- **Create one logger per subsystem**: create a single logger for each subsystem (HTTP, DB, auth) and attach the sinks you need.
+
+- **Attach multiple sinks**: mix console, file, and network sinks easily:
+
+```cpp
+#include <xlog/logger.hpp>
+#include <xlog/sinks/file_sink.hpp>
+#include <xlog/sinks/syslog_sink.hpp>
+#include <xlog/sinks/udp_sink.hpp>
+
+auto logger = std::make_shared<xlog::Logger>("http_server");
+logger->add_sink(std::make_shared<xlog::FileSink>("/var/log/myserver.log"));
+logger->add_sink(std::make_shared<xlog::SyslogSink>("myserver", LOG_PID, LOG_USER));
+logger->add_sink(std::make_shared<xlog::UdpSink>("log-collector.example.local", 5140));
+```
+
+- **Per-environment configuration**: enable verbose sinks (console) only in development; enable syslog/remote sinks in production. Use your configuration system to create and attach sinks during startup.
+
+- **Structured logs and aggregation**: for integration with aggregators or SIEMs, prefer structured outputs (JSON) or a TCP/HTTP sink. XLog includes experimental JSON sink and an ASIO-based `NetworkSink` for TCP; you can adapt or extend these to match your aggregator's ingest format.
+
+- **CMake gating for platform-specific sinks**: the `SyslogSink` uses POSIX `syslog(3)` and is not portable to Windows. Consider adding a CMake option in your builds to enable/disable platform-specific sinks. For example:
+
+```cmake
+option(ENABLE_SYSLOG "Enable Syslog sink" ON)
+if(ENABLE_SYSLOG)
+    target_sources(xlog PRIVATE src/sinks/syslog_sink.cpp)
+endif()
+```
+
+- **Best practices**:
+    - Attach sinks at startup and reuse logger instances.
+    - Keep network sinks asynchronous or non-blocking to avoid impacting request latency.
+    - Rate-limit or sample high-volume logs before sending across the network.
+
 ## Contributing
 1. Fork the repository
 2. Create a branch for your feature/fix

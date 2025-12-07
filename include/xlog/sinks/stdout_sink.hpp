@@ -10,7 +10,6 @@ public:
     void log(const std::string& name, LogLevel level, const std::string& message) override;
 
 private:
-    std::shared_ptr<Formatter> formatter;
 };
 
 }

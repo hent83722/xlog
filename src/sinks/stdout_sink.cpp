@@ -6,10 +6,10 @@
 
 namespace xlog {
 
-StdoutSink::StdoutSink() : formatter(std::make_shared<Formatter>()) {}
+StdoutSink::StdoutSink() {}
 
 void StdoutSink::log(const std::string& name, LogLevel level, const std::string& msg) {
-    std::string out = formatter->format(name, level, msg);
+    std::string out = formatter.format(name, level, msg);
     if (level == LogLevel::Error || level == LogLevel::Critical)
         out = apply_color(out, Color::Red);
     else if (level == LogLevel::Warn)

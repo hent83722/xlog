@@ -4,18 +4,17 @@ project(xlog VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(xlog STATIC
-    src/logger.cpp
-    src/formatter.cpp
-    src/color.cpp
-    src/util.cpp
-    src/config.cpp
-    src/xlog.cpp
-    src/sinks/stdout_sink.cpp
+file(GLOB XLOG_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/sinks/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/experimental/*.cpp"
 )
+
+add_library(xlog STATIC ${XLOG_SOURCES})
 
 target_include_directories(xlog PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/xlog>
     $<INSTALL_INTERFACE:include>
 )
 
