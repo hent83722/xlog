@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/henri/xlog/build/cmake_install.cmake",
+		"/home/henri/xlog/build/tests/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
