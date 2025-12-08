@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/henri/xlog-demo-app/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

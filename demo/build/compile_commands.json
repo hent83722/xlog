@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/henri/xlog-demo-app/build",
+  "command": "/usr/bin/c++  -I/home/henri/xlog-demo-app/../xlog/include -I/home/henri/xlog-demo-app/../xlog/include/xlog -g -std=gnu++17 -g -O0 -o CMakeFiles/xlog_demo.dir/src/simple_demo.cpp.o -c /home/henri/xlog-demo-app/src/simple_demo.cpp",
+  "file": "/home/henri/xlog-demo-app/src/simple_demo.cpp",
+  "output": "CMakeFiles/xlog_demo.dir/src/simple_demo.cpp.o"
+}
+]

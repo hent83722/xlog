@@ -1,0 +1,3 @@
+/home/henri/xlog-demo-app/build/CMakeFiles/xlog_demo.dir
+/home/henri/xlog-demo-app/build/CMakeFiles/edit_cache.dir
+/home/henri/xlog-demo-app/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/xlog_demo.dir/link.d CMakeFiles/xlog_demo.dir/src/simple_demo.cpp.o -o xlog_demo  /home/henri/xlog-demo-app/../xlog/build/libxlog.a
