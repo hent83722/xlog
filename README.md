@@ -1,5 +1,7 @@
 <div align="center">
 
+I appreciate you giving this project a ⭐ :)
+
 # 🚀 XLog
 
 ### Modern High-Performance C++ Logging Library
