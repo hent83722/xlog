@@ -107,7 +107,7 @@ void CloudWatchSink::send_batch(const std::vector<LogEvent>& events) {
         
         if (!success && retry_count < config_.max_retries) {
             std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-            delay *= 2; // Exponential backoff
+            delay *= 2;
             retry_count++;
             
             std::lock_guard<std::mutex> lock(stats_mutex_);

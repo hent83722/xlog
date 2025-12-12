@@ -14,7 +14,7 @@ RateLimiter::RateLimiter(size_t messages_per_second, size_t burst_capacity)
 
 bool RateLimiter::try_log() {
     if (!is_enabled()) {
-        return true; // Rate limiting disabled
+        return true;
     }
 
     std::lock_guard<std::mutex> lock(mutex_);
