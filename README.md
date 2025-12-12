@@ -101,24 +101,70 @@ I appreciate you giving this project a ⭐ :)
 
 ### Installation
 
-**Option 1: Quick Install (Linux/macOS)**
+XLog can be installed using the provided installation scripts (recommended) or manually via CMake.
 
+<details>
+<summary><b>🔧 Option 1: Installation Scripts (Recommended)</b></summary>
+
+We provide platform-specific scripts that handle the entire build and install process.
+
+**Linux:**
 ```bash
 git clone https://github.com/hent83722/xlog.git
 cd xlog
-bash scripts/build.sh && sudo bash scripts/install.sh
+./scripts/install.sh
 ```
 
-**Option 2: CMake Integration**
-
+**macOS:**
 ```bash
-# Clone and build
+git clone https://github.com/hent83722/xlog.git
+cd xlog
+./scripts/install_mac.sh
+```
+
+**Windows (PowerShell - Run as Administrator):**
+```powershell
+git clone https://github.com/hent83722/xlog.git
+cd xlog
+.\scripts\install_windows.ps1
+```
+
+**Windows (Command Prompt - Run as Administrator):**
+```cmd
+git clone https://github.com/hent83722/xlog.git
+cd xlog
+scripts\install_windows.bat
+```
+
+> 💡 **Script Options:** All scripts support `--help` for available options like `--debug`, `--prefix=PATH`, and `--jobs=N`.
+
+</details>
+
+<details>
+<summary><b>⚙️ Option 2: Manual CMake Installation</b></summary>
+
+**Linux/macOS:**
+```bash
 git clone https://github.com/hent83722/xlog.git
 cd xlog && mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build . --parallel
 sudo cmake --install .
 ```
+
+**Windows (from Developer PowerShell/Command Prompt):**
+```powershell
+git clone https://github.com/hent83722/xlog.git
+cd xlog
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release --parallel
+cmake --install . --config Release
+```
+
+> 📝 **Note:** On Windows, run as Administrator for system-wide installation, or specify a custom prefix: `cmake .. -DCMAKE_INSTALL_PREFIX="C:\Users\you\xlog"`
+
+</details>
 
 ### Your First Logger
 
@@ -150,59 +196,163 @@ g++ -std=c++17 main.cpp -lxlog -o myapp
 
 ### Installation Methods
 
-#### Option 1: Using Helper Scripts (Recommended for Linux/macOS)
+#### 🔧 Using Installation Scripts (Recommended)
 
-**Build the library:**
+Installation scripts automate the build and system installation process. They check for dependencies, build in Release mode, and install to standard system locations.
+
+<table>
+<tr>
+<th>Platform</th>
+<th>Script</th>
+<th>Command</th>
+</tr>
+<tr>
+<td>🐧 Linux</td>
+<td><code>install.sh</code></td>
+<td>
+
 ```bash
-bash scripts/build.sh
+./scripts/install.sh
 ```
-- Builds XLog in Release mode
-- Generates `libxlog.a` static library
+</td>
+</tr>
+<tr>
+<td>🍎 macOS</td>
+<td><code>install_mac.sh</code></td>
+<td>
 
-**Install system-wide:**
-```bash 
-sudo bash scripts/install.sh
-```
-- Installs to `/usr/local/lib` and `/usr/local/include/xlog`
-
-**Run tests:**
 ```bash
-bash scripts/debug_run.sh      # Run tests in debug mode
-bash scripts/memcheck.sh       # Valgrind memory check
+./scripts/install_mac.sh
+```
+</td>
+</tr>
+<tr>
+<td>🪟 Windows</td>
+<td><code>install_windows.ps1</code></td>
+<td>
+
+```powershell
+.\scripts\install_windows.ps1
+```
+</td>
+</tr>
+<tr>
+<td>🪟 Windows (CMD)</td>
+<td><code>install_windows.bat</code></td>
+<td>
+
+```cmd
+scripts\install_windows.bat
+```
+</td>
+</tr>
+</table>
+
+**Script Options:**
+
+| Option | Description | Default |
+|--------|-------------|--------|
+| `--debug` | Build in Debug mode | Release |
+| `--prefix=PATH` | Custom installation directory | `/usr/local` (Linux/macOS), `C:\Program Files\xlog` (Windows) |
+| `--jobs=N` | Parallel build jobs | Auto-detected |
+| `--help` | Show all available options | - |
+
+**Example with options:**
+```bash
+# Linux/macOS - Install to custom location
+./scripts/install.sh --prefix=/opt/xlog --jobs=8
+
+# Windows PowerShell - Debug build to custom location
+.\scripts\install_windows.ps1 -BuildType Debug -InstallPrefix "C:\dev\xlog"
 ```
 
-**Code quality:**
-```bash 
-bash scripts/format.sh         # Format code with clang-format
-bash scripts/tidy.sh          # Static analysis with clang-tidy
-```
+---
 
-#### Option 2: Manual CMake (Cross-platform)
+#### ⚙️ Manual CMake Installation (Cross-platform)
 
-**Clone and build:**
-```bash 
+For full control over the build process, you can build and install manually using CMake.
+
+**Linux/macOS:**
+```bash
+# Clone the repository
 git clone https://github.com/hent83722/xlog.git
-cd xlog && mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --parallel
-```
+cd xlog
 
-**Install:**
-```bash
+# Create build directory
+mkdir build && cd build
+
+# Configure
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
+# Build
+cmake --build . --parallel
+
+# Install (requires sudo)
 sudo cmake --install .
 ```
 
-**Integrate with your CMake project:**
-```cmake
-find_package(xlog REQUIRED)
-target_link_libraries(your_project PRIVATE xlog)
+**Windows (Visual Studio):**
+```powershell
+# Clone the repository
+git clone https://github.com/hent83722/xlog.git
+cd xlog
+
+# Create build directory
+mkdir build && cd build
+
+# Configure (uses default Visual Studio generator)
+cmake ..
+
+# Build
+cmake --build . --config Release --parallel
+
+# Install (run as Administrator)
+cmake --install . --config Release
 ```
 
-Or as a subdirectory:
+**Custom Install Location:**
+```bash
+# Linux/macOS
+cmake .. -DCMAKE_INSTALL_PREFIX=/opt/xlog
+
+# Windows
+cmake .. -DCMAKE_INSTALL_PREFIX="C:\Libraries\xlog"
+```
+
+---
+
+#### 📦 Integrating with Your CMake Project
+
+**After system installation:**
+```cmake
+find_package(xlog REQUIRED)
+target_link_libraries(your_project PRIVATE xlog::xlog)
+```
+
+**As a subdirectory (no installation needed):**
 ```cmake
 add_subdirectory(external/xlog)
 target_link_libraries(your_project PRIVATE xlog)
 ```
+
+**Windows - specify install location if needed:**
+```cmake
+set(CMAKE_PREFIX_PATH "C:/Program Files/xlog")
+find_package(xlog REQUIRED)
+target_link_libraries(your_project PRIVATE xlog::xlog)
+```
+
+---
+
+#### 🛠️ Development Scripts
+
+| Script | Description |
+|--------|-------------|
+| `scripts/build.sh` | Build the library (Release mode) |
+| `scripts/debug_run.sh` | Run tests in debug mode |
+| `scripts/memcheck.sh` | Valgrind memory check |
+| `scripts/format.sh` | Format code with clang-format |
+| `scripts/tidy.sh` | Static analysis with clang-tidy |
 
 ---
 
