@@ -5,10 +5,12 @@
 #include "xlog/async/async_logger.hpp"
 #include "xlog/log_health.hpp"
 #include <mutex>
+#include <shared_mutex>
 #include <chrono>
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+#include <thread>
 
 namespace xlog {
 
@@ -17,16 +19,130 @@ Logger::Logger(std::string n)
     temp_level_.active = false;
 }
 
+Logger::~Logger() {
+    clear_sinks();
+}
+
 void Logger::add_sink(LogSinkPtr sink) {
-    std::lock_guard<std::mutex> lock(mtx);
-    sinks.push_back(std::move(sink));
+    add_sink(std::move(sink), "");
+}
+
+void Logger::add_sink(LogSinkPtr sink, const std::string& sink_name) {
+    std::unique_lock<std::shared_mutex> lock(sinks_mtx_);
+    sink_entries_.push_back(std::make_shared<SinkEntry>(std::move(sink), sink_name));
 }
 
 void Logger::clear_sinks() {
-    std::lock_guard<std::mutex> lock(mtx);
-    sinks.clear();
+    std::unique_lock<std::shared_mutex> lock(sinks_mtx_);
+    
+    for (auto& entry : sink_entries_) {
+        entry->marked_for_removal.store(true, std::memory_order_release);
+    }
+    
+    for (auto& entry : sink_entries_) {
+        wait_for_sink_drain(entry);
+    }
+    
+    sink_entries_.clear();
+    
+    std::lock_guard<std::mutex> mtx_lock(mtx_);
     sink_level_overrides_.clear();
     sink_level_overrides_by_name_.clear();
+}
+
+bool Logger::remove_sink(const std::string& sink_name, bool wait_for_completion) {
+    SinkEntryPtr entry_to_remove;
+    
+    {
+        std::unique_lock<std::shared_mutex> lock(sinks_mtx_);
+        
+        auto it = std::find_if(sink_entries_.begin(), sink_entries_.end(),
+            [&sink_name](const SinkEntryPtr& entry) {
+                return entry->name == sink_name && !entry->marked_for_removal;
+            });
+        
+        if (it == sink_entries_.end()) {
+            return false;
+        }
+        
+        entry_to_remove = *it;
+        entry_to_remove->marked_for_removal.store(true, std::memory_order_release);
+    }
+    
+    if (wait_for_completion) {
+        wait_for_sink_drain(entry_to_remove);
+    }
+    
+    {
+        std::unique_lock<std::shared_mutex> lock(sinks_mtx_);
+        sink_entries_.erase(
+            std::remove_if(sink_entries_.begin(), sink_entries_.end(),
+                [&sink_name](const SinkEntryPtr& entry) {
+                    return entry->name == sink_name && entry->marked_for_removal;
+                }),
+            sink_entries_.end()
+        );
+    }
+    
+    return true;
+}
+
+bool Logger::remove_sink(size_t index, bool wait_for_completion) {
+    SinkEntryPtr entry_to_remove;
+    
+    {
+        std::unique_lock<std::shared_mutex> lock(sinks_mtx_);
+        
+        if (index >= sink_entries_.size()) {
+            return false;
+        }
+        
+        entry_to_remove = sink_entries_[index];
+        entry_to_remove->marked_for_removal.store(true, std::memory_order_release);
+    }
+    
+    if (wait_for_completion) {
+        wait_for_sink_drain(entry_to_remove);
+    }
+    
+ 
+    {
+        std::unique_lock<std::shared_mutex> lock(sinks_mtx_);
+        cleanup_removed_sinks();
+    }
+    
+    return true;
+}
+
+size_t Logger::sink_count() const {
+    std::shared_lock<std::shared_mutex> lock(sinks_mtx_);
+    return std::count_if(sink_entries_.begin(), sink_entries_.end(),
+        [](const SinkEntryPtr& entry) {
+            return !entry->marked_for_removal;
+        });
+}
+
+void Logger::wait_for_sink_drain(SinkEntryPtr& entry) {
+
+    constexpr int max_wait_ms = 5000;
+    constexpr int sleep_interval_ms = 1;
+    int waited_ms = 0;
+    
+    while (entry->ref_count.load(std::memory_order_acquire) > 0 && waited_ms < max_wait_ms) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleep_interval_ms));
+        waited_ms += sleep_interval_ms;
+    }
+}
+
+void Logger::cleanup_removed_sinks() {
+    sink_entries_.erase(
+        std::remove_if(sink_entries_.begin(), sink_entries_.end(),
+            [](const SinkEntryPtr& entry) {
+                return entry->marked_for_removal && 
+                       entry->ref_count.load(std::memory_order_acquire) == 0;
+            }),
+        sink_entries_.end()
+    );
 }
 
 void Logger::set_level(LogLevel level) {
@@ -47,7 +163,7 @@ void Logger::set_level_dynamic(LogLevel level, const std::string& reason) {
     LogLevel old_level = min_level_.exchange(level, std::memory_order_release);
     
     if (old_level != level) {
-        std::lock_guard<std::mutex> lock(mtx);
+        std::lock_guard<std::mutex> lock(mtx_);
         record_level_change(old_level, level, reason);
         
         for (const auto& callback : level_change_callbacks_) {
@@ -57,29 +173,30 @@ void Logger::set_level_dynamic(LogLevel level, const std::string& reason) {
 }
 
 void Logger::register_level_change_callback(LogLevelChangeCallback callback) {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     level_change_callbacks_.push_back(std::move(callback));
 }
 
 void Logger::clear_level_change_callbacks() {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     level_change_callbacks_.clear();
 }
 
 void Logger::set_sink_level(size_t sink_index, LogLevel level) {
-    std::lock_guard<std::mutex> lock(mtx);
-    if (sink_index < sinks.size()) {
+    std::lock_guard<std::mutex> lock(mtx_);
+    std::shared_lock<std::shared_mutex> sinks_lock(sinks_mtx_);
+    if (sink_index < sink_entries_.size()) {
         sink_level_overrides_[sink_index] = level;
     }
 }
 
 void Logger::set_sink_level(const std::string& sink_name, LogLevel level) {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     sink_level_overrides_by_name_[sink_name] = level;
 }
 
 void Logger::clear_sink_level_overrides() {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     sink_level_overrides_.clear();
     sink_level_overrides_by_name_.clear();
 }
@@ -100,7 +217,7 @@ void Logger::record_level_change(LogLevel old_level, LogLevel new_level, const s
 }
 
 std::vector<LevelChangeEntry> Logger::get_level_history(size_t max_entries) const {
-    std::lock_guard<std::mutex> lock(const_cast<std::mutex&>(mtx));
+    std::lock_guard<std::mutex> lock(const_cast<std::mutex&>(mtx_));
     
     std::vector<LevelChangeEntry> result;
     size_t count = std::min(max_entries, level_history_.size());
@@ -113,12 +230,12 @@ std::vector<LevelChangeEntry> Logger::get_level_history(size_t max_entries) cons
 }
 
 void Logger::clear_level_history() {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     level_history_.clear();
 }
 
 void Logger::set_max_history_entries(size_t max_entries) {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     max_history_entries_ = max_entries;
 
     while (level_history_.size() > max_history_entries_) {
@@ -128,7 +245,7 @@ void Logger::set_max_history_entries(size_t max_entries) {
 
 void Logger::set_level_temporary(LogLevel level, std::chrono::seconds duration, 
                                  const std::string& reason) {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     
     if (!temp_level_.active) {
         temp_level_.original_level = min_level_.load(std::memory_order_acquire);
@@ -151,7 +268,7 @@ void Logger::set_level_temporary(LogLevel level, std::chrono::seconds duration,
 }
 
 void Logger::cancel_temporary_level() {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     
     if (temp_level_.active) {
         LogLevel current = min_level_.load(std::memory_order_acquire);
@@ -169,12 +286,12 @@ void Logger::cancel_temporary_level() {
 }
 
 bool Logger::has_temporary_level() const {
-    std::lock_guard<std::mutex> lock(const_cast<std::mutex&>(mtx));
+    std::lock_guard<std::mutex> lock(const_cast<std::mutex&>(mtx_));
     return temp_level_.active;
 }
 
 std::chrono::seconds Logger::remaining_temporary_duration() const {
-    std::lock_guard<std::mutex> lock(const_cast<std::mutex&>(mtx));
+    std::lock_guard<std::mutex> lock(const_cast<std::mutex&>(mtx_));
     
     if (!temp_level_.active) {
         return std::chrono::seconds(0);
@@ -189,7 +306,7 @@ std::chrono::seconds Logger::remaining_temporary_duration() const {
 }
 
 void Logger::check_temporary_level_expiry() {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     
     if (temp_level_.active) {
         auto now = std::chrono::system_clock::now();
@@ -210,18 +327,18 @@ void Logger::check_temporary_level_expiry() {
 }
 
 void Logger::add_filter(std::shared_ptr<LogFilter> filter) {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     filters_.push_back(std::move(filter));
 }
 
 void Logger::clear_filters() {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     filters_.clear();
     filter_func_ = nullptr;
 }
 
 void Logger::set_filter_func(std::function<bool(const LogRecord&)> func) {
-    std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx_);
     filter_func_ = std::move(func);
 }
 
@@ -252,13 +369,25 @@ void Logger::log(LogLevel level, const std::string& message) {
     record.message = message;
     record.timestamp = std::chrono::system_clock::now();
     
-    std::lock_guard<std::mutex> lock(mtx);
-    
-    if (!should_log(record)) {
-        return;
+
+    {
+        std::lock_guard<std::mutex> lock(mtx_);
+        if (!should_log(record)) {
+            return;
+        }
     }
     
-    for (size_t i = 0; i < sinks.size(); ++i) {
+
+    std::shared_lock<std::shared_mutex> sinks_lock(sinks_mtx_);
+    
+    for (size_t i = 0; i < sink_entries_.size(); ++i) {
+        auto& entry = sink_entries_[i];
+
+        if (entry->marked_for_removal.load(std::memory_order_acquire)) {
+            continue;
+        }
+        
+
         auto override_it = sink_level_overrides_.find(i);
         if (override_it != sink_level_overrides_.end()) {
             if (level < override_it->second) {
@@ -266,7 +395,10 @@ void Logger::log(LogLevel level, const std::string& message) {
             }
         }
         
-        sinks[i]->log(name, level, message);
+        SinkGuard guard(entry);
+        if (guard) {
+            guard->log(name, level, message);
+        }
     }
 }
 

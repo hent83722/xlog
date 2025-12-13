@@ -1,12 +1,18 @@
 #include "xlog/sinks/file_sink.hpp"
 #include "xlog/log_sink.hpp"
+#include "xlog/util.hpp"
 #include <fstream>
 #include <mutex>
 
 namespace xlog {
 
 FileSink::FileSink(const std::string& filename) {
+#ifdef _WIN32
+    std::wstring wpath = path::to_native(filename);
+    file.open(wpath, std::ios::app);
+#else
     file.open(filename, std::ios::app);
+#endif
 }
 
 void FileSink::log(const std::string& logger_name, LogLevel level, const std::string& message) {

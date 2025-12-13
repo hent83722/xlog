@@ -10,7 +10,7 @@
 
 namespace xlog {
 
-// Static member initialization
+
 std::vector<LoggerConfig> ConfigLoader::configs_;
 
 bool ConfigLoader::load_from_json(const std::string& path) {
@@ -46,7 +46,6 @@ std::map<std::string, std::shared_ptr<Logger>> ConfigLoader::create_loggers() {
         
         logger->set_level(config.level);
         
-        // Create sinks based on configuration
         for (const auto& sink_type : config.sinks) {
             if (sink_type == "stdout") {
                 logger->add_sink(std::make_shared<StdoutSink>());
@@ -88,37 +87,35 @@ LogLevel ConfigLoader::parse_log_level(const std::string& level) {
     if (lower == "error") return LogLevel::Error;
     if (lower == "critical") return LogLevel::Critical;
     
-    return LogLevel::Info; // default
+    return LogLevel::Info; 
 }
 
 bool ConfigLoader::parse_json_internal(const std::string& content) {
-    // Simple JSON parser for basic configuration
-    // This is a minimal implementation - for production use, consider using nlohmann/json or similar
+ 
     
     configs_.clear();
     
-    // Find "loggers" array
+    
     size_t loggers_pos = content.find("\"loggers\"");
     if (loggers_pos == std::string::npos) {
         return false;
     }
-    
-    // Find opening bracket of loggers array
+
     size_t array_start = content.find('[', loggers_pos);
     if (array_start == std::string::npos) {
         return false;
     }
     
-    // Simple state machine to parse logger objects
+   
     size_t pos = array_start + 1;
     while (pos < content.length()) {
-        // Skip whitespace
+ 
         while (pos < content.length() && (content[pos] == ' ' || content[pos] == '\n' || content[pos] == '\r' || content[pos] == '\t')) {
             pos++;
         }
         
         if (pos >= content.length() || content[pos] == ']') {
-            break; // End of array
+            break; 
         }
         
         if (content[pos] != '{') {
@@ -126,7 +123,7 @@ bool ConfigLoader::parse_json_internal(const std::string& content) {
             continue;
         }
         
-        // Parse logger object
+  
         size_t obj_start = pos;
         size_t obj_end = content.find('}', obj_start);
         if (obj_end == std::string::npos) {
@@ -137,7 +134,7 @@ bool ConfigLoader::parse_json_internal(const std::string& content) {
         
         LoggerConfig config;
         
-        // Parse name
+
         size_t name_pos = obj.find("\"name\"");
         if (name_pos != std::string::npos) {
             size_t colon = obj.find(':', name_pos);
@@ -148,7 +145,7 @@ bool ConfigLoader::parse_json_internal(const std::string& content) {
             }
         }
         
-        // Parse level
+
         size_t level_pos = obj.find("\"level\"");
         if (level_pos != std::string::npos) {
             size_t colon = obj.find(':', level_pos);
@@ -160,7 +157,7 @@ bool ConfigLoader::parse_json_internal(const std::string& content) {
             }
         }
         
-        // Parse async
+
         size_t async_pos = obj.find("\"async\"");
         if (async_pos != std::string::npos) {
             size_t colon = obj.find(':', async_pos);
@@ -168,7 +165,7 @@ bool ConfigLoader::parse_json_internal(const std::string& content) {
             config.async = (true_pos != std::string::npos && true_pos < obj_end);
         }
         
-        // Parse sinks array
+
         size_t sinks_pos = obj.find("\"sinks\"");
         if (sinks_pos != std::string::npos) {
             size_t sinks_array_start = obj.find('[', sinks_pos);
@@ -176,7 +173,7 @@ bool ConfigLoader::parse_json_internal(const std::string& content) {
             if (sinks_array_start != std::string::npos && sinks_array_end != std::string::npos) {
                 std::string sinks_content = obj.substr(sinks_array_start + 1, sinks_array_end - sinks_array_start - 1);
                 
-                // Parse each sink object
+
                 size_t sink_pos = 0;
                 while (sink_pos < sinks_content.length()) {
                     size_t sink_obj_start = sinks_content.find('{', sink_pos);
@@ -187,7 +184,7 @@ bool ConfigLoader::parse_json_internal(const std::string& content) {
                     
                     std::string sink_obj = sinks_content.substr(sink_obj_start, sink_obj_end - sink_obj_start + 1);
                     
-                    // Parse sink type
+            
                     size_t type_pos = sink_obj.find("\"type\"");
                     if (type_pos != std::string::npos) {
                         size_t colon = sink_obj.find(':', type_pos);
@@ -197,7 +194,7 @@ bool ConfigLoader::parse_json_internal(const std::string& content) {
                             std::string sink_type = sink_obj.substr(quote1 + 1, quote2 - quote1 - 1);
                             config.sinks.push_back(sink_type);
                             
-                            // Parse sink-specific parameters
+                 
                             if (sink_type == "file" || sink_type == "rotating") {
                                 size_t path_pos = sink_obj.find("\"path\"");
                                 if (path_pos != std::string::npos) {

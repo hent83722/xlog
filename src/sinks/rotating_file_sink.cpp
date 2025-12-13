@@ -1,5 +1,6 @@
 #include "xlog/sinks/rotating_file_sink.hpp"
 #include "xlog/sinks/file_sink.hpp"
+#include "xlog/util.hpp"
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -11,18 +12,59 @@ RotatingFileSink::RotatingFileSink(const std::string& base, size_t max_s, size_t
 }
 
 void RotatingFileSink::open_file() {
-    file.open(base_name + ".log", std::ios::app);
-    if (file.is_open()) current_size = std::filesystem::file_size(base_name + ".log");
+    std::string filename = base_name + ".log";
+    
+   
+#ifdef _WIN32
+    std::wstring wpath = path::to_native(filename);
+    file.open(wpath, std::ios::app);
+    if (file.is_open()) {
+        current_size = std::filesystem::file_size(fs::path(wpath));
+    }
+#else
+    file.open(filename, std::ios::app);
+    if (file.is_open()) {
+        current_size = std::filesystem::file_size(filename);
+    }
+#endif
 }
 
 void RotatingFileSink::rotate() {
     file.close();
+    
+
     for (size_t i = max_files; i > 0; --i) {
         std::string old_name = base_name + "." + std::to_string(i-1) + ".log";
         std::string new_name = base_name + "." + std::to_string(i) + ".log";
-        if (std::filesystem::exists(old_name)) std::filesystem::rename(old_name, new_name);
+        
+#ifdef _WIN32
+        fs::path old_path(path::to_native(old_name));
+        fs::path new_path(path::to_native(new_name));
+        if (fs::exists(old_path)) {
+            std::error_code ec;
+            fs::rename(old_path, new_path, ec);
+        }
+#else
+        if (fs::exists(old_name)) {
+            std::error_code ec;
+            fs::rename(old_name, new_name, ec);
+        }
+#endif
     }
-    std::filesystem::rename(base_name + ".log", base_name + ".0.log");
+    
+    std::string current_file = base_name + ".log";
+    std::string rotated_file = base_name + ".0.log";
+    
+#ifdef _WIN32
+    fs::path current_path(path::to_native(current_file));
+    fs::path rotated_path(path::to_native(rotated_file));
+    std::error_code ec;
+    fs::rename(current_path, rotated_path, ec);
+#else
+    std::error_code ec;
+    fs::rename(current_file, rotated_file, ec);
+#endif
+    
     open_file();
 }
 

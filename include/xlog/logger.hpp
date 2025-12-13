@@ -9,6 +9,7 @@
 #include <chrono>
 #include <deque>
 #include <map>
+#include <shared_mutex>
 #include "log_sink.hpp"
 #include "log_level.hpp"
 #include "log_record.hpp"
@@ -32,12 +33,105 @@ struct TemporaryLevelChange {
     bool active;
 };
 
+/**
+ * @brief Reference-counted sink wrapper for thread-safe removal (v1.1.2)
+ */
+struct SinkEntry {
+    LogSinkPtr sink;
+    std::string name;
+    std::atomic<bool> marked_for_removal{false};
+    std::atomic<int> ref_count{0};
+    
+    SinkEntry(LogSinkPtr s, std::string n = "") 
+        : sink(std::move(s)), name(std::move(n)) {}
+};
+
+using SinkEntryPtr = std::shared_ptr<SinkEntry>;
+
+/**
+ * @brief RAII guard for sink reference counting (v1.1.2)
+ */
+class SinkGuard {
+public:
+    explicit SinkGuard(SinkEntryPtr entry) : entry_(std::move(entry)) {
+        if (entry_) {
+            entry_->ref_count.fetch_add(1, std::memory_order_acquire);
+        }
+    }
+    
+    ~SinkGuard() {
+        if (entry_) {
+            entry_->ref_count.fetch_sub(1, std::memory_order_release);
+        }
+    }
+    
+    SinkGuard(const SinkGuard&) = delete;
+    SinkGuard& operator=(const SinkGuard&) = delete;
+    
+    SinkGuard(SinkGuard&& other) noexcept : entry_(std::move(other.entry_)) {
+        other.entry_ = nullptr;
+    }
+    
+    SinkGuard& operator=(SinkGuard&& other) noexcept {
+        if (this != &other) {
+            if (entry_) {
+                entry_->ref_count.fetch_sub(1, std::memory_order_release);
+            }
+            entry_ = std::move(other.entry_);
+            other.entry_ = nullptr;
+        }
+        return *this;
+    }
+    
+    LogSink* operator->() const { return entry_ ? entry_->sink.get() : nullptr; }
+    LogSink& operator*() const { return *entry_->sink; }
+    explicit operator bool() const { return entry_ && entry_->sink && !entry_->marked_for_removal; }
+    
+private:
+    SinkEntryPtr entry_;
+};
+
 class Logger {
 public:
     explicit Logger(std::string name);
+    
+    /**
+     * @brief Destructor - ensures graceful shutdown (v1.1.2)
+     */
+    ~Logger();
 
     void add_sink(LogSinkPtr sink);
+    
+    /**
+     * @brief Add a named sink for easier management (v1.1.2)
+     * @param sink The sink to add
+     * @param name Name for the sink (used in remove_sink)
+     */
+    void add_sink(LogSinkPtr sink, const std::string& name);
+    
     void clear_sinks();
+    
+    /**
+     * @brief Thread-safe sink removal without blocking writers (v1.1.2)
+     * @param name Name of the sink to remove
+     * @param wait_for_completion If true, waits for active writes to complete
+     * @return true if sink was found and removed
+     */
+    bool remove_sink(const std::string& name, bool wait_for_completion = true);
+    
+    /**
+     * @brief Remove sink by index (v1.1.2)
+     * @param index Index of the sink to remove
+     * @param wait_for_completion If true, waits for active writes to complete
+     * @return true if sink was found and removed
+     */
+    bool remove_sink(size_t index, bool wait_for_completion = true);
+    
+    /**
+     * @brief Get number of active sinks
+     */
+    size_t sink_count() const;
+    
     void log(LogLevel level, const std::string& message);
 
     void trace(const std::string& msg);
@@ -89,8 +183,13 @@ private:
     bool should_log(const LogRecord& record) const;
     void check_temporary_level_expiry();
     void record_level_change(LogLevel old_level, LogLevel new_level, const std::string& reason);
+    void cleanup_removed_sinks(); 
+    void wait_for_sink_drain(SinkEntryPtr& entry); 
     
-    std::vector<LogSinkPtr> sinks;
+
+    std::vector<SinkEntryPtr> sink_entries_;
+    mutable std::shared_mutex sinks_mtx_;  
+    
 #ifndef XLOG_NO_FILTERS
     std::vector<std::shared_ptr<LogFilter>> filters_;
     std::function<bool(const LogRecord&)> filter_func_;
@@ -106,7 +205,7 @@ private:
     
     TemporaryLevelChange temp_level_;
     
-    std::mutex mtx;
+    mutable std::mutex mtx_;  
 };
 
 using LoggerPtr = std::shared_ptr<Logger>;
