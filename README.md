@@ -112,7 +112,7 @@ We provide platform-specific scripts that handle the entire build and install pr
 ```bash
 git clone https://github.com/hent83722/xlog.git
 cd xlog
-./scripts/install.sh
+./scripts/install_linux.sh
 ```
 
 **macOS:**
