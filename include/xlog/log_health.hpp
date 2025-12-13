@@ -6,6 +6,8 @@
 #include <memory>
 #include <chrono>
 #include <map>
+#include <functional>
+#include <vector>
 
 namespace xlog {
 
@@ -16,6 +18,7 @@ enum class HealthStatus {
     Healthy,    
     Degraded,     
     Unhealthy     
+};
 
 
 struct HealthCheckResult {
@@ -38,7 +41,10 @@ struct HealthCheckResult {
     double drop_rate;         
     double error_rate;         
     bool queue_full_warning;   
-    bool high_latency_warning; 
+    bool high_latency_warning;
+    
+    std::string last_error_message;
+    std::chrono::system_clock::time_point last_error_time;
     
   
     std::string to_json() const;
@@ -59,6 +65,36 @@ struct HealthCheckConfig {
     double max_queue_usage_healthy = 0.7; // 70% queue usage = healthy
     double max_queue_usage_degraded = 0.9;  // 90% queue usage = degraded
 };
+
+struct AggregateHealthResult {
+    HealthStatus overall_status;
+    std::chrono::system_clock::time_point timestamp;
+    
+    size_t total_loggers;
+    size_t healthy_count;
+    size_t degraded_count;
+    size_t unhealthy_count;
+    
+    uint64_t total_messages_logged;
+    uint64_t total_messages_dropped;
+    uint64_t total_errors;
+    double avg_messages_per_second;
+    
+    std::string worst_logger_name;
+    HealthStatus worst_logger_status;
+    
+    std::map<std::string, HealthCheckResult> individual_results;
+    
+    std::string to_json() const;
+    std::string to_string() const;
+};
+
+using HealthStateChangeCallback = std::function<void(
+    const std::string& logger_name,
+    HealthStatus old_status,
+    HealthStatus new_status,
+    const HealthCheckResult& result
+)>;
 
 
 class HealthChecker {
@@ -107,6 +143,9 @@ public:
 
     void register_logger(const std::string& name, std::shared_ptr<Logger> logger);
     
+    void register_logger(const std::string& name, std::shared_ptr<Logger> logger,
+                        const HealthCheckConfig& config);
+    
 
     void unregister_logger(const std::string& name);
     
@@ -114,6 +153,8 @@ public:
     HealthCheckResult check_logger(const std::string& name) const;
 
     std::map<std::string, HealthCheckResult> check_all() const;
+    
+    AggregateHealthResult check_all_aggregate() const;
     
 
     std::string export_json() const;
@@ -124,12 +165,38 @@ public:
   
     void set_health_checker(std::shared_ptr<HealthChecker> checker);
     
+    void set_logger_config(const std::string& name, const HealthCheckConfig& config);
+    
+    void register_state_change_callback(HealthStateChangeCallback callback);
+    void clear_state_change_callbacks();
+    
+    void record_error(const std::string& logger_name, const std::string& error_message);
+    
+    static void enable_auto_registration(bool enable = true);
+    static bool is_auto_registration_enabled();
+    
+    static void auto_register(const std::string& name, std::shared_ptr<Logger> logger);
+    
 private:
     HealthRegistry() : health_checker_(std::make_shared<HealthChecker>()) {}
     
-    std::map<std::string, std::weak_ptr<Logger>> loggers_;
+    struct LoggerEntry {
+        std::weak_ptr<Logger> logger;
+        std::shared_ptr<HealthChecker> custom_checker;
+        HealthStatus last_status = HealthStatus::Healthy;
+        std::string last_error_message;
+        std::chrono::system_clock::time_point last_error_time;
+    };
+    
+    std::map<std::string, LoggerEntry> loggers_;
     std::shared_ptr<HealthChecker> health_checker_;
+    std::vector<HealthStateChangeCallback> state_change_callbacks_;
     mutable std::mutex mutex_;
+    
+    static std::atomic<bool> auto_registration_enabled_;
+    
+    void notify_state_change(const std::string& name, HealthStatus old_status,
+                            HealthStatus new_status, const HealthCheckResult& result);
 };
 
 
@@ -144,6 +211,10 @@ inline std::string handle_health_check_request(const std::string& logger_name = 
         auto result = registry.check_logger(logger_name);
         return result.to_json();
     }
+}
+
+inline AggregateHealthResult handle_aggregate_health_check() {
+    return HealthRegistry::instance().check_all_aggregate();
 }
 
 } // namespace xlog

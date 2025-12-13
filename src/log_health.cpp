@@ -40,7 +40,15 @@ std::string HealthCheckResult::to_json() const {
     oss << "    \"drop_rate\": " << (drop_rate * 100.0) << ",\n";
     oss << "    \"error_rate\": " << (error_rate * 100.0) << ",\n";
     oss << "    \"queue_full_warning\": " << (queue_full_warning ? "true" : "false") << ",\n";
-    oss << "    \"high_latency_warning\": " << (high_latency_warning ? "true" : "false") << "\n";
+    oss << "    \"high_latency_warning\": " << (high_latency_warning ? "true" : "false") << ",\n";
+    
+    if (!last_error_message.empty()) {
+        oss << "    \"last_error_message\": \"" << last_error_message << "\",\n";
+        auto error_time_t = std::chrono::system_clock::to_time_t(last_error_time);
+        oss << "    \"last_error_time\": \"" << std::put_time(std::gmtime(&error_time_t), "%Y-%m-%dT%H:%M:%SZ") << "\"\n";
+    } else {
+        oss << "    \"last_error_message\": null\n";
+    }
     oss << "  }\n";
     oss << "}";
     
@@ -197,7 +205,10 @@ HealthRegistry& HealthRegistry::instance() {
 
 void HealthRegistry::register_logger(const std::string& name, std::shared_ptr<Logger> logger) {
     std::lock_guard<std::mutex> lock(mutex_);
-    loggers_[name] = logger;
+    LoggerEntry entry;
+    entry.logger = logger;
+    entry.custom_checker = nullptr;
+    loggers_[name] = entry;
 }
 
 void HealthRegistry::unregister_logger(const std::string& name) {
@@ -217,7 +228,7 @@ HealthCheckResult HealthRegistry::check_logger(const std::string& name) const {
         return result;
     }
     
-    auto logger = it->second.lock();
+    auto logger = it->second.logger.lock();
     if (!logger) {
         HealthCheckResult result;
         result.status = HealthStatus::Unhealthy;
@@ -226,20 +237,30 @@ HealthCheckResult HealthRegistry::check_logger(const std::string& name) const {
         return result;
     }
     
+    const auto& checker = it->second.custom_checker ? it->second.custom_checker : health_checker_;
 
     LogMetrics metrics;
-    return health_checker_->check_logger(*logger, metrics);
+    HealthCheckResult result = checker->check_logger(*logger, metrics);
+    
+    result.last_error_message = it->second.last_error_message;
+    result.last_error_time = it->second.last_error_time;
+    
+    return result;
 }
 
 std::map<std::string, HealthCheckResult> HealthRegistry::check_all() const {
     std::lock_guard<std::mutex> lock(mutex_);
     
     std::map<std::string, HealthCheckResult> results;
-    for (const auto& [name, weak_logger] : loggers_) {
-        auto logger = weak_logger.lock();
+    for (const auto& [name, entry] : loggers_) {
+        auto logger = entry.logger.lock();
         if (logger) {
+            const auto& checker = entry.custom_checker ? entry.custom_checker : health_checker_;
             LogMetrics metrics;
-            results[name] = health_checker_->check_logger(*logger, metrics);
+            HealthCheckResult result = checker->check_logger(*logger, metrics);
+            result.last_error_message = entry.last_error_message;
+            result.last_error_time = entry.last_error_time;
+            results[name] = result;
         }
     }
     
@@ -320,6 +341,204 @@ HealthStatus HealthRegistry::get_overall_status() const {
 void HealthRegistry::set_health_checker(std::shared_ptr<HealthChecker> checker) {
     std::lock_guard<std::mutex> lock(mutex_);
     health_checker_ = std::move(checker);
+}
+
+std::atomic<bool> HealthRegistry::auto_registration_enabled_{false};
+
+void HealthRegistry::register_logger(const std::string& name, std::shared_ptr<Logger> logger,
+                                     const HealthCheckConfig& config) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    LoggerEntry entry;
+    entry.logger = logger;
+    entry.custom_checker = std::make_shared<HealthChecker>(config);
+    loggers_[name] = entry;
+}
+
+void HealthRegistry::set_logger_config(const std::string& name, const HealthCheckConfig& config) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    auto it = loggers_.find(name);
+    if (it != loggers_.end()) {
+        it->second.custom_checker = std::make_shared<HealthChecker>(config);
+    }
+}
+
+void HealthRegistry::register_state_change_callback(HealthStateChangeCallback callback) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    state_change_callbacks_.push_back(std::move(callback));
+}
+
+void HealthRegistry::clear_state_change_callbacks() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    state_change_callbacks_.clear();
+}
+
+void HealthRegistry::record_error(const std::string& logger_name, const std::string& error_message) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    auto it = loggers_.find(logger_name);
+    if (it != loggers_.end()) {
+        it->second.last_error_message = error_message;
+        it->second.last_error_time = std::chrono::system_clock::now();
+    }
+}
+
+void HealthRegistry::enable_auto_registration(bool enable) {
+    auto_registration_enabled_.store(enable, std::memory_order_release);
+}
+
+bool HealthRegistry::is_auto_registration_enabled() {
+    return auto_registration_enabled_.load(std::memory_order_acquire);
+}
+
+void HealthRegistry::auto_register(const std::string& name, std::shared_ptr<Logger> logger) {
+    if (auto_registration_enabled_.load(std::memory_order_acquire)) {
+        instance().register_logger(name, logger);
+    }
+}
+
+void HealthRegistry::notify_state_change(const std::string& name, HealthStatus old_status,
+                                         HealthStatus new_status, const HealthCheckResult& result) {
+    for (const auto& callback : state_change_callbacks_) {
+        callback(name, old_status, new_status, result);
+    }
+}
+
+AggregateHealthResult HealthRegistry::check_all_aggregate() const {
+    auto individual_results = check_all();
+    
+    AggregateHealthResult agg;
+    agg.timestamp = std::chrono::system_clock::now();
+    agg.total_loggers = individual_results.size();
+    agg.healthy_count = 0;
+    agg.degraded_count = 0;
+    agg.unhealthy_count = 0;
+    agg.total_messages_logged = 0;
+    agg.total_messages_dropped = 0;
+    agg.total_errors = 0;
+    agg.avg_messages_per_second = 0.0;
+    agg.worst_logger_status = HealthStatus::Healthy;
+    agg.individual_results = individual_results;
+    
+    for (const auto& [name, result] : individual_results) {
+        agg.total_messages_logged += result.messages_logged;
+        agg.total_messages_dropped += result.messages_dropped;
+        agg.total_errors += result.errors;
+        agg.avg_messages_per_second += result.messages_per_second;
+        
+        switch (result.status) {
+            case HealthStatus::Healthy:
+                agg.healthy_count++;
+                break;
+            case HealthStatus::Degraded:
+                agg.degraded_count++;
+                if (agg.worst_logger_status == HealthStatus::Healthy) {
+                    agg.worst_logger_name = name;
+                    agg.worst_logger_status = HealthStatus::Degraded;
+                }
+                break;
+            case HealthStatus::Unhealthy:
+                agg.unhealthy_count++;
+                if (agg.worst_logger_status != HealthStatus::Unhealthy) {
+                    agg.worst_logger_name = name;
+                    agg.worst_logger_status = HealthStatus::Unhealthy;
+                }
+                break;
+        }
+    }
+    
+    if (agg.unhealthy_count > 0) {
+        agg.overall_status = HealthStatus::Unhealthy;
+    } else if (agg.degraded_count > 0) {
+        agg.overall_status = HealthStatus::Degraded;
+    } else {
+        agg.overall_status = HealthStatus::Healthy;
+    }
+    
+    return agg;
+}
+
+std::string AggregateHealthResult::to_json() const {
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(2);
+    
+    oss << "{\n";
+    oss << "  \"overall_status\": \"";
+    switch (overall_status) {
+        case HealthStatus::Healthy: oss << "healthy"; break;
+        case HealthStatus::Degraded: oss << "degraded"; break;
+        case HealthStatus::Unhealthy: oss << "unhealthy"; break;
+    }
+    oss << "\",\n";
+    
+    auto time_t_val = std::chrono::system_clock::to_time_t(timestamp);
+    oss << "  \"timestamp\": \"" << std::put_time(std::gmtime(&time_t_val), "%Y-%m-%dT%H:%M:%SZ") << "\",\n";
+    
+    oss << "  \"summary\": {\n";
+    oss << "    \"total_loggers\": " << total_loggers << ",\n";
+    oss << "    \"healthy\": " << healthy_count << ",\n";
+    oss << "    \"degraded\": " << degraded_count << ",\n";
+    oss << "    \"unhealthy\": " << unhealthy_count << "\n";
+    oss << "  },\n";
+    
+    oss << "  \"aggregate_metrics\": {\n";
+    oss << "    \"total_messages_logged\": " << total_messages_logged << ",\n";
+    oss << "    \"total_messages_dropped\": " << total_messages_dropped << ",\n";
+    oss << "    \"total_errors\": " << total_errors << ",\n";
+    oss << "    \"avg_messages_per_second\": " << avg_messages_per_second << "\n";
+    oss << "  },\n";
+    
+    if (!worst_logger_name.empty() && worst_logger_status != HealthStatus::Healthy) {
+        oss << "  \"worst_logger\": {\n";
+        oss << "    \"name\": \"" << worst_logger_name << "\",\n";
+        oss << "    \"status\": \"";
+        switch (worst_logger_status) {
+            case HealthStatus::Degraded: oss << "degraded"; break;
+            case HealthStatus::Unhealthy: oss << "unhealthy"; break;
+            default: oss << "healthy"; break;
+        }
+        oss << "\"\n";
+        oss << "  },\n";
+    }
+    
+    oss << "  \"loggers\": " << individual_results.size() << "\n";
+    oss << "}";
+    
+    return oss.str();
+}
+
+std::string AggregateHealthResult::to_string() const {
+    std::ostringstream oss;
+    
+    oss << "=== Aggregate Health Check ===\n";
+    oss << "Overall Status: ";
+    switch (overall_status) {
+        case HealthStatus::Healthy: oss << "HEALTHY"; break;
+        case HealthStatus::Degraded: oss << "DEGRADED"; break;
+        case HealthStatus::Unhealthy: oss << "UNHEALTHY"; break;
+    }
+    oss << "\n\n";
+    
+    oss << "Loggers: " << total_loggers << " total\n";
+    oss << "  - Healthy: " << healthy_count << "\n";
+    oss << "  - Degraded: " << degraded_count << "\n";
+    oss << "  - Unhealthy: " << unhealthy_count << "\n\n";
+    
+    oss << "Aggregate Metrics:\n";
+    oss << "  - Total Messages: " << total_messages_logged << "\n";
+    oss << "  - Total Dropped: " << total_messages_dropped << "\n";
+    oss << "  - Total Errors: " << total_errors << "\n";
+    oss << "  - Throughput: " << avg_messages_per_second << " msg/sec\n";
+    
+    if (!worst_logger_name.empty() && worst_logger_status != HealthStatus::Healthy) {
+        oss << "\nWorst Performing Logger: " << worst_logger_name << " (";
+        switch (worst_logger_status) {
+            case HealthStatus::Degraded: oss << "DEGRADED"; break;
+            case HealthStatus::Unhealthy: oss << "UNHEALTHY"; break;
+            default: break;
+        }
+        oss << ")\n";
+    }
+    
+    return oss.str();
 }
 
 } // namespace xlog
