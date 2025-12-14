@@ -3,7 +3,7 @@
 I appreciate you giving this project a ⭐ :)
 
 # 🚀 XLog
- 
+  
 ### Modern High-Performance C++ Logging Library
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
