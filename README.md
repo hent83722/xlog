@@ -1,6 +1,5 @@
 <div align="center">
 
-Happy holidays :)
 
 # 🚀 XLog
   
