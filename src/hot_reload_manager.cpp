@@ -1,7 +1,7 @@
-#include "xlog/hot_reload_manager.hpp"
+#include "Zyrnix/hot_reload_manager.hpp"
 #include <iostream>
 
-namespace xlog {
+namespace Zyrnix {
 
 HotReloadManager::HotReloadManager(const std::string& config_path)
     : config_path_(config_path) {}
@@ -50,4 +50,4 @@ std::map<std::string, std::shared_ptr<Logger>> HotReloadManager::get_all_loggers
     return loggers_;
 }
 
-} // namespace xlog
+} // namespace Zyrnix

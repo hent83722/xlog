@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-clang_format_all.py - Format all C++ source files in the xlog project.
+clang_format_all.py - Format all C++ source files in the Zyrnix project.
 
 Usage:
     python tools/clang_format_all.py [--check] [--verbose]
@@ -105,7 +105,7 @@ def format_file(clang_format: str, filepath: Path, check_only: bool = False,
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Format all C++ files in the xlog project using clang-format'
+        description='Format all C++ files in the Zyrnix project using clang-format'
     )
     parser.add_argument('--check', action='store_true',
                         help='Check formatting without modifying files')

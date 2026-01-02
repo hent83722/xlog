@@ -1,9 +1,9 @@
-#include "xlog/sinks/daily_file_sink.hpp"
-#include "xlog/sinks/file_sink.hpp"
+#include "Zyrnix/sinks/daily_file_sink.hpp"
+#include "Zyrnix/sinks/file_sink.hpp"
 #include <filesystem>
 namespace fs = std::filesystem;
 
-namespace xlog {
+namespace Zyrnix {
 
 DailyFileSink::DailyFileSink(const std::string& base) : base_name(base) {
     current_date = get_date();

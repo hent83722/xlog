@@ -1,12 +1,12 @@
-# XLog v1.1.0 Testing Guide
+# Zyrnix v1.1.0 Testing Guide
 
 ## Quick Start Testing
 
 ### Build the Comprehensive Test
 
 ```bash
-cd /home/henri/xlog
-g++ -std=c++17 examples/comprehensive_test.cpp -I include -L build -lxlog -lpthread -o test_v1.1.0
+cd /home/henri/Zyrnix
+g++ -std=c++17 examples/comprehensive_test.cpp -I include -L build -lZyrnix -lpthread -o test_v1.1.0
 ./test_v1.1.0
 ```
 
@@ -82,8 +82,8 @@ The test will run 8 real-world scenarios demonstrating all v1.1.0 features.
 ### Test 1: Rate Limiting
 
 ```bash
-cd /home/henri/xlog
-g++ -std=c++17 examples/rate_limiting_example.cpp -I include -L build -lxlog -lpthread -o test_rate_limiting
+cd /home/henri/Zyrnix
+g++ -std=c++17 examples/rate_limiting_example.cpp -I include -L build -lZyrnix -lpthread -o test_rate_limiting
 ./test_rate_limiting
 ```
 
@@ -96,7 +96,7 @@ g++ -std=c++17 examples/rate_limiting_example.cpp -I include -L build -lxlog -lp
 ### Test 2: Compression
 
 ```bash
-g++ -std=c++17 examples/compression_example.cpp -I include -L build -lxlog -lpthread -lz -lzstd -o test_compression
+g++ -std=c++17 examples/compression_example.cpp -I include -L build -lZyrnix -lpthread -lz -lzstd -o test_compression
 ./test_compression
 ```
 
@@ -119,7 +119,7 @@ export AWS_ACCESS_KEY_ID="your-key"
 export AWS_SECRET_ACCESS_KEY="your-secret"
 export APPINSIGHTS_INSTRUMENTATIONKEY="your-key"
 
-g++ -std=c++17 examples/cloud_sinks_example.cpp -I include -L build -lxlog -lpthread -lcurl -o test_cloud
+g++ -std=c++17 examples/cloud_sinks_example.cpp -I include -L build -lZyrnix -lpthread -lcurl -o test_cloud
 ./test_cloud
 ```
 
@@ -132,7 +132,7 @@ g++ -std=c++17 examples/cloud_sinks_example.cpp -I include -L build -lxlog -lpth
 ### Test 4: Metrics
 
 ```bash
-g++ -std=c++17 examples/metrics_example.cpp -I include -L build -lxlog -lpthread -o test_metrics
+g++ -std=c++17 examples/metrics_example.cpp -I include -L build -lZyrnix -lpthread -o test_metrics
 ./test_metrics
 ```
 
@@ -150,17 +150,17 @@ g++ -std=c++17 examples/metrics_example.cpp -I include -L build -lxlog -lpthread
 ### Scenario A: Web Server Under Load
 
 ```cpp
-#include <xlog/xlog.hpp>
-#include <xlog/rate_limiter.hpp>
-#include <xlog/log_metrics.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/rate_limiter.hpp>
+#include <Zyrnix/log_metrics.hpp>
 
 void simulate_web_server() {
-    auto access_log = xlog::Logger::create_stdout_logger("access");
-    auto error_log = xlog::Logger::create_stdout_logger("error");
+    auto access_log = Zyrnix::Logger::create_stdout_logger("access");
+    auto error_log = Zyrnix::Logger::create_stdout_logger("error");
     
-    xlog::RateLimiter error_limiter(10, 20);
+    Zyrnix::RateLimiter error_limiter(10, 20);
     
-    auto& registry = xlog::MetricsRegistry::instance();
+    auto& registry = Zyrnix::MetricsRegistry::instance();
     auto metrics = registry.get_logger_metrics("access");
     
     for (int i = 0; i < 10000; ++i) {
@@ -185,13 +185,13 @@ void simulate_web_server() {
 ### Scenario B: Microservices with Distributed Tracing
 
 ```cpp
-#include <xlog/xlog.hpp>
-#include <xlog/log_metrics.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/log_metrics.hpp>
 
 void process_request(const std::string& request_id) {
-    auto api_logger = xlog::Logger::create_stdout_logger("api-gateway");
-    auto auth_logger = xlog::Logger::create_stdout_logger("auth-service");
-    auto db_logger = xlog::Logger::create_stdout_logger("db-service");
+    auto api_logger = Zyrnix::Logger::create_stdout_logger("api-gateway");
+    auto auth_logger = Zyrnix::Logger::create_stdout_logger("auth-service");
+    auto db_logger = Zyrnix::Logger::create_stdout_logger("db-service");
     
     api_logger->info("Request " + request_id + " received");
     auth_logger->info("Request " + request_id + " authenticated");
@@ -212,12 +212,12 @@ void simulate_microservices() {
 ### Scenario C: Batch Processing with Progress Logging
 
 ```cpp
-#include <xlog/xlog.hpp>
-#include <xlog/rate_limiter.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/rate_limiter.hpp>
 
 void simulate_batch_processing() {
-    auto logger = xlog::Logger::create_stdout_logger("batch-processor");
-    xlog::SamplingLimiter sampler(1000);
+    auto logger = Zyrnix::Logger::create_stdout_logger("batch-processor");
+    Zyrnix::SamplingLimiter sampler(1000);
     
     logger->info("Starting batch processing of 1,000,000 records");
     
@@ -241,15 +241,15 @@ void simulate_batch_processing() {
 ### Scenario D: Real-Time Monitoring Dashboard
 
 ```cpp
-#include <xlog/xlog.hpp>
-#include <xlog/log_metrics.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/log_metrics.hpp>
 #include <thread>
 #include <chrono>
 
 void monitoring_dashboard() {
-    auto& registry = xlog::MetricsRegistry::instance();
+    auto& registry = Zyrnix::MetricsRegistry::instance();
     
-    auto logger = xlog::Logger::create_stdout_logger("app");
+    auto logger = Zyrnix::Logger::create_stdout_logger("app");
     auto metrics = registry.get_logger_metrics("app");
     
     std::thread worker([&]() {
@@ -286,12 +286,12 @@ void monitoring_dashboard() {
 ### Benchmark 1: Rate Limiter Overhead
 
 ```cpp
-#include <xlog/rate_limiter.hpp>
+#include <Zyrnix/rate_limiter.hpp>
 #include <chrono>
 #include <iostream>
 
 void benchmark_rate_limiter() {
-    xlog::RateLimiter limiter(10000, 20000);
+    Zyrnix::RateLimiter limiter(10000, 20000);
     
     auto start = std::chrono::high_resolution_clock::now();
     
@@ -311,11 +311,11 @@ void benchmark_rate_limiter() {
 ### Benchmark 2: Metrics Overhead
 
 ```cpp
-#include <xlog/log_metrics.hpp>
+#include <Zyrnix/log_metrics.hpp>
 #include <chrono>
 
 void benchmark_metrics() {
-    xlog::LogMetrics metrics;
+    Zyrnix::LogMetrics metrics;
     
     auto start = std::chrono::high_resolution_clock::now();
     
@@ -337,24 +337,24 @@ void benchmark_metrics() {
 
 ## Integration Testing
 
-### Test with Existing XLog Features
+### Test with Existing Zyrnix Features
 
 ```cpp
-#include <xlog/xlog.hpp>
-#include <xlog/structured_logger.hpp>
-#include <xlog/log_context.hpp>
-#include <xlog/rate_limiter.hpp>
-#include <xlog/log_metrics.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/structured_logger.hpp>
+#include <Zyrnix/log_context.hpp>
+#include <Zyrnix/rate_limiter.hpp>
+#include <Zyrnix/log_metrics.hpp>
 
 void integration_test() {
-    auto slog = xlog::StructuredLogger::create("api", "api.jsonl");
+    auto slog = Zyrnix::StructuredLogger::create("api", "api.jsonl");
     
-    xlog::ScopedContext ctx;
+    Zyrnix::ScopedContext ctx;
     ctx.set("request_id", "req-12345").set("user_id", "user-456");
     
-    xlog::RateLimiter limiter(100, 200);
+    Zyrnix::RateLimiter limiter(100, 200);
     
-    auto& registry = xlog::MetricsRegistry::instance();
+    auto& registry = Zyrnix::MetricsRegistry::instance();
     auto metrics = registry.get_logger_metrics("api");
     
     for (int i = 0; i < 1000; ++i) {
@@ -385,16 +385,16 @@ void integration_test() {
 ### Setup Prometheus Endpoint
 
 ```cpp
-#include <xlog/log_metrics.hpp>
+#include <Zyrnix/log_metrics.hpp>
 #include <thread>
 #include <chrono>
 #include <fstream>
 
 void prometheus_exporter() {
-    auto& registry = xlog::MetricsRegistry::instance();
+    auto& registry = Zyrnix::MetricsRegistry::instance();
     
     while (true) {
-        std::string metrics = registry.export_all_prometheus("xlog");
+        std::string metrics = registry.export_all_prometheus("Zyrnix");
         
         std::ofstream out("metrics.prom");
         out << metrics;

@@ -8,16 +8,16 @@
  * 4. Compression auto-tune
  */
 
-#include <xlog/xlog.hpp>
-#include <xlog/log_filter.hpp>
-#include <xlog/log_health.hpp>
-#include <xlog/sinks/compressed_file_sink.hpp>
-#include <xlog/log_metrics.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/log_filter.hpp>
+#include <Zyrnix/log_health.hpp>
+#include <Zyrnix/sinks/compressed_file_sink.hpp>
+#include <Zyrnix/log_metrics.hpp>
 #include <iostream>
 #include <thread>
 #include <chrono>
 
-using namespace xlog;
+using namespace Zyrnix;
 
 // ============================================================================
 // 1. Regex-Based Filtering Example
@@ -242,7 +242,7 @@ void demo_combined_features() {
 
 int main() {
     std::cout << "╔══════════════════════════════════════════════════════════╗\n";
-    std::cout << "║     XLog v1.1.1-beta.1 New Features Demonstration       ║\n";
+    std::cout << "║     Zyrnix v1.1.1-beta.1 New Features Demonstration       ║\n";
     std::cout << "╚══════════════════════════════════════════════════════════╝\n";
     
     try {

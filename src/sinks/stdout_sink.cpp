@@ -1,10 +1,10 @@
-#include "xlog/sinks/stdout_sink.hpp"
-#include "xlog/formatter.hpp"
-#include "xlog/color.hpp"
-#include "xlog/log_level.hpp"
+#include "Zyrnix/sinks/stdout_sink.hpp"
+#include "Zyrnix/formatter.hpp"
+#include "Zyrnix/color.hpp"
+#include "Zyrnix/log_level.hpp"
 #include <iostream>
 
-namespace xlog {
+namespace Zyrnix {
 
 StdoutSink::StdoutSink() {}
 

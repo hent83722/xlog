@@ -1,6 +1,6 @@
-# XLog Documentation
+# Zyrnix Documentation
 
-Welcome to the XLog documentation. This collection of pages explains architecture, configuration, sinks, threading and performance considerations, examples, and troubleshooting tips for integrating XLog into your projects.
+Welcome to the Zyrnix documentation. This collection of pages explains architecture, configuration, sinks, threading and performance considerations, examples, and troubleshooting tips for integrating Zyrnix into your projects.
 
 Quick links:
 
@@ -24,12 +24,12 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build . --parallel
 ```
 
-2. Add XLog to your project:
+2. Add Zyrnix to your project:
 
 ```cmake
-add_subdirectory(path/to/xlog)
-target_link_libraries(your_project PRIVATE xlog)
-target_include_directories(your_project PRIVATE path/to/xlog/include)
+add_subdirectory(path/to/Zyrnix)
+target_link_libraries(your_project PRIVATE Zyrnix)
+target_include_directories(your_project PRIVATE path/to/Zyrnix/include)
 ```
 
 3. See `examples.md` for concrete usage patterns and recommended sink setups.

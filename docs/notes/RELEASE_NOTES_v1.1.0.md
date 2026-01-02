@@ -1,4 +1,4 @@
-# XLog v1.1.0 Release Notes
+# Zyrnix v1.1.0 Release Notes
 
 **Release Date**: December 10, 2025  
 **Version**: 1.1.0  
@@ -97,15 +97,15 @@ Built-in telemetry for monitoring your logging infrastructure.
 
 **Metrics Exposed:**
 ```
-xlog_messages_logged_total
-xlog_messages_dropped_total
-xlog_messages_per_second
-xlog_log_latency_us_avg
-xlog_log_latency_us_max
-xlog_queue_depth
-xlog_errors_total
-xlog_sink_writes_total{sink=""}
-xlog_sink_bytes_written_total{sink=""}
+Zyrnix_messages_logged_total
+Zyrnix_messages_dropped_total
+Zyrnix_messages_per_second
+Zyrnix_log_latency_us_avg
+Zyrnix_log_latency_us_max
+Zyrnix_queue_depth
+Zyrnix_errors_total
+Zyrnix_sink_writes_total{sink=""}
+Zyrnix_sink_bytes_written_total{sink=""}
 ```
 
 **Benefits:**
@@ -171,7 +171,7 @@ Four comprehensive example programs demonstrating all features:
 
 **Add Rate Limiting:**
 ```cpp
-xlog::RateLimiter limiter(100, 200);
+Zyrnix::RateLimiter limiter(100, 200);
 if (limiter.try_log()) {
     logger->error("Message");
 }
@@ -179,25 +179,25 @@ if (limiter.try_log()) {
 
 **Switch to Compressed Sink:**
 ```cpp
-xlog::CompressionOptions opts;
-opts.type = xlog::CompressionType::Gzip;
-auto sink = std::make_shared<xlog::CompressedFileSink>(
+Zyrnix::CompressionOptions opts;
+opts.type = Zyrnix::CompressionType::Gzip;
+auto sink = std::make_shared<Zyrnix::CompressedFileSink>(
     "app.log", 10*1024*1024, 30, opts
 );
 ```
 
 **Add Cloud Sink:**
 ```cpp
-xlog::CloudWatchSink::Config config;
+Zyrnix::CloudWatchSink::Config config;
 config.region = "us-east-1";
 config.log_group_name = "/aws/myapp";
-auto sink = std::make_shared<xlog::CloudWatchSink>(config);
+auto sink = std::make_shared<Zyrnix::CloudWatchSink>(config);
 logger->add_sink(sink);
 ```
 
 **Query Metrics:**
 ```cpp
-auto& registry = xlog::MetricsRegistry::instance();
+auto& registry = Zyrnix::MetricsRegistry::instance();
 auto metrics = registry.get_logger_metrics("app");
 auto snapshot = metrics->get_snapshot();
 ```
@@ -249,8 +249,8 @@ Update the new sink signatures in `cloud_sinks.hpp` and `compressed_file_sink.hp
 ### Quick Install
 
 ```bash
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 bash scripts/build.sh
 sudo bash scripts/install.sh
 ```
@@ -262,7 +262,7 @@ sudo bash scripts/install.sh
 sudo apt-get install zlib1g-dev libzstd-dev libcurl4-openssl-dev
 
 # Build with all features enabled
-cd xlog/build
+cd Zyrnix/build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j$(nproc)
 sudo make install
@@ -346,7 +346,7 @@ Potential future enhancements:
 
 ## 🙏 Credits
 
-**Author:** XLog Contributors  
+**Author:** Zyrnix Contributors  
 **Inspired by:** spdlog, log4j, serilog  
 **License:** MIT
 
@@ -354,9 +354,9 @@ Potential future enhancements:
 
 ## 📞 Support
 
-- **GitHub Issues:** https://github.com/hent83722/xlog/issues
-- **Documentation:** https://github.com/hent83722/xlog/docs
-- **Examples:** https://github.com/hent83722/xlog/examples
+- **GitHub Issues:** https://github.com/hent83722/Zyrnix/issues
+- **Documentation:** https://github.com/hent83722/Zyrnix/docs
+- **Examples:** https://github.com/hent83722/Zyrnix/examples
 
 ---
 
@@ -377,4 +377,4 @@ Potential future enhancements:
 
 ---
 
-**Thank you for using XLog! Happy logging! 🚀**
+**Thank you for using Zyrnix! Happy logging! 🚀**

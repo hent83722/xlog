@@ -12,7 +12,7 @@
 		</marker>
 	</defs>
 
-	<text x="20" y="28" class="title">XLog Architecture</text>
+	<text x="20" y="28" class="title">Zyrnix Architecture</text>
 
 	<!-- Application -->
 	<rect class="box" x="40" y="60" width="220" height="80" />

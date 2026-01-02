@@ -1,11 +1,11 @@
-#include "xlog/experimental/network_sink.hpp"
-#include "xlog/sinks/file_sink.hpp"
+#include "Zyrnix/experimental/network_sink.hpp"
+#include "Zyrnix/sinks/file_sink.hpp"
 #include <asio.hpp>
 #include <mutex>
 #include <queue>
 #include <string>
 
-namespace xlog {
+namespace Zyrnix {
 
 NetworkSink::NetworkSink(const std::string& h, unsigned short p)
     : host(h), port(p), running(true), thread(&NetworkSink::worker, this) {}

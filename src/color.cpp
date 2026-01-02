@@ -1,6 +1,6 @@
-#include "xlog/color.hpp"
+#include "Zyrnix/color.hpp"
 
-namespace xlog {
+namespace Zyrnix {
 
 std::string apply_color(const std::string& text, Color color) {
     switch (color) {

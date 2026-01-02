@@ -1,7 +1,7 @@
-#include "xlog/rate_limiter.hpp"
+#include "Zyrnix/rate_limiter.hpp"
 #include <algorithm>
 
-namespace xlog {
+namespace Zyrnix {
 
 RateLimiter::RateLimiter(size_t messages_per_second, size_t burst_capacity)
     : max_tokens_(burst_capacity > 0 ? burst_capacity : messages_per_second)
@@ -120,4 +120,4 @@ void CombinedLimiter::reset() {
     logged_count_.store(0, std::memory_order_relaxed);
 }
 
-} // namespace xlog
+} // namespace Zyrnix

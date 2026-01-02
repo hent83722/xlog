@@ -1,7 +1,7 @@
-#include "xlog/sinks/syslog_sink.hpp"
+#include "Zyrnix/sinks/syslog_sink.hpp"
 #include <syslog.h>
 
-namespace xlog {
+namespace Zyrnix {
 
 SyslogSink::SyslogSink(const std::string& ident_, int option_, int facility_)
     : ident(ident_), option(option_), facility(facility_) {

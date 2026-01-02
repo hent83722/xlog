@@ -1,4 +1,4 @@
-# XLog v1.0.3 Release Notes
+# Zyrnix v1.0.3 Release Notes
 
 **Release Date:** December 7, 2025
 
@@ -6,7 +6,7 @@
 
 ## Overview
 
-XLog v1.0.3 introduces a major new feature for enterprise logging: **Log Contexts & Scoped Attributes** (MDC/NDC), along with comprehensive testing infrastructure improvements including sanitizers and fuzz testing. This release significantly enhances XLog's capabilities for distributed systems, microservices, and production environments.
+Zyrnix v1.0.3 introduces a major new feature for enterprise logging: **Log Contexts & Scoped Attributes** (MDC/NDC), along with comprehensive testing infrastructure improvements including sanitizers and fuzz testing. This release significantly enhances Zyrnix's capabilities for distributed systems, microservices, and production environments.
 
 ---
 
@@ -39,13 +39,13 @@ In complex applications, especially microservices and distributed systems, track
 #### Basic Request Tracking
 
 ```cpp
-#include <xlog/log_context.hpp>
-#include <xlog/structured_logger.hpp>
+#include <Zyrnix/log_context.hpp>
+#include <Zyrnix/structured_logger.hpp>
 
 void handle_request(const std::string& request_id, const std::string& user_id) {
-    auto logger = xlog::StructuredLogger::create("api", "api.jsonl");
+    auto logger = Zyrnix::StructuredLogger::create("api", "api.jsonl");
     
-    xlog::ScopedContext ctx;
+    Zyrnix::ScopedContext ctx;
     ctx.set("request_id", request_id)
        .set("user_id", user_id);
     
@@ -64,13 +64,13 @@ All logs automatically include `request_id` and `user_id` fields in JSON output.
 
 ```cpp
 void process_order(const std::string& order_id) {
-    xlog::ScopedContext order_ctx;
+    Zyrnix::ScopedContext order_ctx;
     order_ctx.set("order_id", order_id);
     
     logger->info("Starting order processing");
     
     {
-        xlog::ScopedContext db_ctx;
+        Zyrnix::ScopedContext db_ctx;
         db_ctx.set("operation", "database");
         
         logger->debug("Fetching order details");  // Includes order_id + operation
@@ -84,9 +84,9 @@ void process_order(const std::string& order_id) {
 
 ```cpp
 int main() {
-    xlog::LogContext::set("app_version", "1.0.3");
-    xlog::LogContext::set("environment", "production");
-    xlog::LogContext::set("hostname", "server-01");
+    Zyrnix::LogContext::set("app_version", "1.0.3");
+    Zyrnix::LogContext::set("environment", "production");
+    Zyrnix::LogContext::set("hostname", "server-01");
     
     // All logs in the application now include these fields
 }
@@ -94,14 +94,14 @@ int main() {
 
 ### API Reference
 
-**`xlog::ScopedContext`** - RAII context manager
+**`Zyrnix::ScopedContext`** - RAII context manager
 - `ScopedContext()` - Create empty scoped context
 - `set(key, value)` - Set context attribute (returns `*this` for chaining)
 - `get(key)` - Get context attribute value
 - `remove(key)` - Remove context attribute
 - `get_all()` - Get all context attributes as map
 
-**`xlog::LogContext`** - Static context API
+**`Zyrnix::LogContext`** - Static context API
 - `LogContext::set(key, value)` - Set global context
 - `LogContext::get(key)` - Get global context value
 - `LogContext::clear()` - Clear all global context
@@ -189,7 +189,7 @@ cmake .. -DBUILD_TESTS=OFF
 ## 📦 New Files
 
 ### Headers
-- `include/xlog/log_context.hpp` - Log context API
+- `include/Zyrnix/log_context.hpp` - Log context API
 
 ### Source
 - `src/log_context.cpp` - Log context implementation
@@ -219,7 +219,7 @@ cmake .. -DBUILD_TESTS=OFF
 ## 🔧 Modified Files
 
 ### Core Library
-- `include/xlog/xlog.hpp` - Added `#include "log_context.hpp"` for convenience
+- `include/Zyrnix/Zyrnix.hpp` - Added `#include "log_context.hpp"` for convenience
 - `src/sinks/structured_json_sink.cpp` - Automatic context field injection via `LogContext::get_all()`
 
 ### Build System
@@ -258,13 +258,13 @@ No breaking changes. The new context feature is purely additive.
 
 **Old code continues to work:**
 ```cpp
-auto logger = xlog::StructuredLogger::create("app", "app.jsonl");
+auto logger = Zyrnix::StructuredLogger::create("app", "app.jsonl");
 logger->info("Message", {{"field", "value"}});  // Still works
 ```
 
 **New code gains automatic context:**
 ```cpp
-xlog::ScopedContext ctx;
+Zyrnix::ScopedContext ctx;
 ctx.set("request_id", "req-123");
 logger->info("Message");  // Automatically includes request_id
 ```
@@ -340,10 +340,10 @@ This release adds enterprise-grade features inspired by mature logging framework
 
 ## 🔗 Resources
 
-- **GitHub Repository:** https://github.com/hent83722/xlog
+- **GitHub Repository:** https://github.com/hent83722/Zyrnix
 - **Documentation:** See `README.md` and `docs/` folder
 - **Examples:** See `examples/` folder
-- **Issues:** https://github.com/hent83722/xlog/issues
+- **Issues:** https://github.com/hent83722/Zyrnix/issues
 
 ---
 
@@ -361,10 +361,10 @@ Planned features for future releases:
 
 ## 📄 License
 
-XLog v1.0.3 is released under the MIT License. See `LICENSE` file for details.
+Zyrnix v1.0.3 is released under the MIT License. See `LICENSE` file for details.
 
 ---
 
-**Thank you for using XLog!** 
+**Thank you for using Zyrnix!** 
 
 For questions, feature requests, or bug reports, please open an issue on GitHub.

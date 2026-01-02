@@ -1,10 +1,10 @@
-#include "xlog/sinks/rotating_file_sink.hpp"
-#include "xlog/sinks/file_sink.hpp"
-#include "xlog/util.hpp"
+#include "Zyrnix/sinks/rotating_file_sink.hpp"
+#include "Zyrnix/sinks/file_sink.hpp"
+#include "Zyrnix/util.hpp"
 #include <filesystem>
 namespace fs = std::filesystem;
 
-namespace xlog {
+namespace Zyrnix {
 
 RotatingFileSink::RotatingFileSink(const std::string& base, size_t max_s, size_t max_f)
     : base_name(base), max_size(max_s), max_files(max_f) {

@@ -1,10 +1,10 @@
-#include "xlog/sinks/file_sink.hpp"
-#include "xlog/log_sink.hpp"
-#include "xlog/util.hpp"
+#include "Zyrnix/sinks/file_sink.hpp"
+#include "Zyrnix/log_sink.hpp"
+#include "Zyrnix/util.hpp"
 #include <fstream>
 #include <mutex>
 
-namespace xlog {
+namespace Zyrnix {
 
 FileSink::FileSink(const std::string& filename) {
 #ifdef _WIN32

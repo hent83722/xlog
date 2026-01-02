@@ -1,5 +1,5 @@
 /**
- * XLog v1.1.1-beta.2 Features Demonstration
+ * Zyrnix v1.1.1-beta.2 Features Demonstration
  * 
  * This example showcases the new features in v1.1.1-beta.2:
  * 
@@ -21,15 +21,15 @@
  *    - REST API helper for web-based log level control
  */
 
-#include <xlog/xlog.hpp>
-#include <xlog/log_filter.hpp>
-#include <xlog/log_health.hpp>
-#include <xlog/logger.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/log_filter.hpp>
+#include <Zyrnix/log_health.hpp>
+#include <Zyrnix/logger.hpp>
 #include <iostream>
 #include <thread>
 #include <chrono>
 
-using namespace xlog;
+using namespace Zyrnix;
 using namespace std::chrono_literals;
 
 void demo_regex_filter_enhancements() {
@@ -216,7 +216,7 @@ void demo_dynamic_log_level_enhancements() {
 
 int main() {
     std::cout << "╔════════════════════════════════════════════════════════════╗\n";
-    std::cout << "║         XLog v1.1.1-beta.2 Features Demonstration          ║\n";
+    std::cout << "║         Zyrnix v1.1.1-beta.2 Features Demonstration          ║\n";
     std::cout << "╚════════════════════════════════════════════════════════════╝\n";
     
     demo_regex_filter_enhancements();

@@ -1,7 +1,7 @@
-#include "xlog.hpp"
+#include "Zyrnix.hpp"
 
 int main() {
-    auto logger = xlog::create_logger("basic");
+    auto logger = Zyrnix::create_logger("basic");
     logger->trace("Trace message");
     logger->debug("Debug message");
     logger->info("Info message");

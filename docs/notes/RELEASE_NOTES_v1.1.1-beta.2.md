@@ -1,4 +1,4 @@
-# XLog v1.1.1-beta.2 Release Notes
+# Zyrnix v1.1.1-beta.2 Release Notes
 
 **Release Date**: December 13, 2025  
 **Version**: 1.1.1-beta.2  
@@ -23,7 +23,7 @@ Enhanced regex filtering with performance optimizations and statistics tracking.
 
 **Example:**
 ```cpp
-#include <xlog/log_filter.hpp>
+#include <Zyrnix/log_filter.hpp>
 
 // Case-insensitive matching
 RegexFilterOptions options;
@@ -68,7 +68,7 @@ Enhanced health monitoring with auto-registration, aggregate checks, and better 
 
 **Example:**
 ```cpp
-#include <xlog/log_health.hpp>
+#include <Zyrnix/log_health.hpp>
 
 // Enable auto-registration (loggers register themselves)
 HealthRegistry::enable_auto_registration(true);
@@ -181,8 +181,8 @@ std::cout << response.to_json();
 ## 🔧 API Changes
 
 ### New Headers/Includes
-- `<xlog/log_filter.hpp>` - Enhanced with `FilterStats`, `RegexFilterOptions`, `RegexFilterCache`
-- `<xlog/log_health.hpp>` - Enhanced with `AggregateHealthResult`, `HealthStateChangeCallback`
+- `<Zyrnix/log_filter.hpp>` - Enhanced with `FilterStats`, `RegexFilterOptions`, `RegexFilterCache`
+- `<Zyrnix/log_health.hpp>` - Enhanced with `AggregateHealthResult`, `HealthStateChangeCallback`
 
 ### New Classes & Structures
 
@@ -297,18 +297,18 @@ New comprehensive example demonstrating all v1.1.1-beta.2 features:
 1. **Enable auto-registration for easier health monitoring:**
    ```cpp
    // At application startup
-   xlog::HealthRegistry::enable_auto_registration(true);
+   Zyrnix::HealthRegistry::enable_auto_registration(true);
    
    // Now loggers auto-register - no manual registration needed!
-   auto logger = xlog::Logger::create_stdout_logger("api");
+   auto logger = Zyrnix::Logger::create_stdout_logger("api");
    ```
 
 2. **Add filter statistics for debugging:**
    ```cpp
    // Update your RegexFilter creation
-   xlog::RegexFilterOptions options;
+   Zyrnix::RegexFilterOptions options;
    options.track_stats = true;  // Enable stats
-   auto filter = std::make_shared<xlog::RegexFilter>(pattern, options);
+   auto filter = std::make_shared<Zyrnix::RegexFilter>(pattern, options);
    ```
 
 3. **Use temporary levels for debugging sessions:**
@@ -324,7 +324,7 @@ New comprehensive example demonstrating all v1.1.1-beta.2 features:
    ```cpp
    // REST endpoint handler
    std::string handle_health() {
-       return xlog::handle_aggregate_health_check().to_json();
+       return Zyrnix::handle_aggregate_health_check().to_json();
    }
    ```
 
@@ -357,15 +357,15 @@ New comprehensive example demonstrating all v1.1.1-beta.2 features:
 
 ## 🙏 Acknowledgments
 
-Thank you to the XLog community for the feature requests that shaped this release!
+Thank you to the Zyrnix community for the feature requests that shaped this release!
 
 ---
 
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 git checkout v1.1.1-beta.2
 bash scripts/build.sh
 sudo bash scripts/install.sh

@@ -5,7 +5,7 @@
 ### 1. Build the Project
 
 ```bash
-cd /home/henri/xlog
+cd /home/henri/Zyrnix
 mkdir -p build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
@@ -16,7 +16,7 @@ cmake --build . --parallel
 
 ```bash
 cd build
-g++ -std=c++17 -I../include -L. -o context_example ../examples/context_logging.cpp -lxlog -lpthread
+g++ -std=c++17 -I../include -L. -o context_example ../examples/context_logging.cpp -lZyrnix -lpthread
 ```
 
 ### 3. Run the Example
@@ -91,14 +91,14 @@ cat app.jsonl | python3 -m json.tool
 Create a simple test file:
 
 ```cpp
-#include <xlog/structured_logger.hpp>
-#include <xlog/log_context.hpp>
+#include <Zyrnix/structured_logger.hpp>
+#include <Zyrnix/log_context.hpp>
 
 int main() {
-    auto logger = xlog::StructuredLogger::create("test", "test.jsonl");
+    auto logger = Zyrnix::StructuredLogger::create("test", "test.jsonl");
     
     // Test scoped context
-    xlog::ScopedContext ctx;
+    Zyrnix::ScopedContext ctx;
     ctx.set("user_id", "test-user-123");
     ctx.set("session_id", "session-xyz");
     
@@ -114,7 +114,7 @@ Compile and run:
 
 ```bash
 cd build
-g++ -std=c++17 -I../include -L. -o my_test my_test.cpp -lxlog -lpthread
+g++ -std=c++17 -I../include -L. -o my_test my_test.cpp -lZyrnix -lpthread
 ./my_test
 cat test.jsonl
 ```
@@ -148,13 +148,13 @@ rm *.jsonl context_example
 ## Integration with Your Code
 
 ```cpp
-#include <xlog/log_context.hpp>
-#include <xlog/structured_logger.hpp>
+#include <Zyrnix/log_context.hpp>
+#include <Zyrnix/structured_logger.hpp>
 
 void handle_request(const Request& req) {
-    auto logger = xlog::StructuredLogger::create("api", "api.jsonl");
+    auto logger = Zyrnix::StructuredLogger::create("api", "api.jsonl");
     
-    xlog::ScopedContext ctx;
+    Zyrnix::ScopedContext ctx;
     ctx.set("request_id", req.id())
        .set("user_id", req.user_id())
        .set("ip", req.client_ip());

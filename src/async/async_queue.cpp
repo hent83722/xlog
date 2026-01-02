@@ -1,9 +1,9 @@
-#include "xlog/async/async_queue.hpp"
-#include "xlog/logger.hpp"
-#include "xlog/log_sink.hpp"
-#include "xlog/formatter.hpp"
+#include "Zyrnix/async/async_queue.hpp"
+#include "Zyrnix/logger.hpp"
+#include "Zyrnix/log_sink.hpp"
+#include "Zyrnix/formatter.hpp"
 
-namespace xlog {
+namespace Zyrnix {
 
 AsyncQueue::AsyncQueue(size_t shutdown_timeout_ms)
     : shutdown_timeout_ms_(shutdown_timeout_ms) {
@@ -95,4 +95,4 @@ size_t AsyncQueue::dropped_on_shutdown() const {
     return dropped_count_.load(std::memory_order_acquire);
 }
 
-} // namespace xlog
+} // namespace Zyrnix

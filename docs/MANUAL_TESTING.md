@@ -1,10 +1,10 @@
-# Quick Manual Testing Guide for XLog v1.0.3
+# Quick Manual Testing Guide for Zyrnix v1.0.3
 
 ## Quick Test (5 minutes)
 
 ### 1. Build the project
 ```bash
-cd /home/henri/xlog
+cd /home/henri/Zyrnix
 rm -rf build
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON
@@ -21,16 +21,16 @@ cmake --build . --parallel
 ### 3. Test each example quickly
 ```bash
 # Basic logging
-g++ -std=c++17 -I../include -L. -o test1 ../examples/basic_logging.cpp -lxlog -lpthread && ./test1
+g++ -std=c++17 -I../include -L. -o test1 ../examples/basic_logging.cpp -lZyrnix -lpthread && ./test1
 
 # Async logging  
-g++ -std=c++17 -I../include -L. -o test2 ../examples/async_logging.cpp -lxlog -lpthread && ./test2
+g++ -std=c++17 -I../include -L. -o test2 ../examples/async_logging.cpp -lZyrnix -lpthread && ./test2
 
 # Context logging (NEW FEATURE)
-g++ -std=c++17 -I../include -L. -o test3 ../examples/context_logging.cpp -lxlog -lpthread && ./test3
+g++ -std=c++17 -I../include -L. -o test3 ../examples/context_logging.cpp -lZyrnix -lpthread && ./test3
 
 # Structured JSON
-g++ -std=c++17 -I../include -L. -o test4 ../examples/structured_json_example.cpp -lxlog -lpthread && ./test4
+g++ -std=c++17 -I../include -L. -o test4 ../examples/structured_json_example.cpp -lZyrnix -lpthread && ./test4
 ```
 **Expected:** All compile and run without errors
 
@@ -52,7 +52,7 @@ cd .. && bash local_test/run_asan.sh
 
 Run the full test suite:
 ```bash
-cd /home/henri/xlog
+cd /home/henri/Zyrnix
 bash test_all_features.sh
 ```
 
@@ -111,7 +111,7 @@ This tests:
 ## Quick Smoke Test (1 minute)
 
 ```bash
-cd /home/henri/xlog/build
+cd /home/henri/Zyrnix/build
 
 # Test 1: Build
 cmake --build . --parallel && echo "✓ Build passed" || echo "✗ Build failed"
@@ -120,7 +120,7 @@ cmake --build . --parallel && echo "✓ Build passed" || echo "✗ Build failed"
 ./tests/tests && echo "✓ Tests passed" || echo "✗ Tests failed"
 
 # Test 3: Context feature
-g++ -std=c++17 -I../include -L. ../examples/context_logging.cpp -lxlog -lpthread -o ctx && \
+g++ -std=c++17 -I../include -L. ../examples/context_logging.cpp -lZyrnix -lpthread -o ctx && \
 ./ctx && \
 [ -f payments.jsonl ] && \
 grep -q "payment_id" payments.jsonl && \
@@ -133,7 +133,7 @@ echo "✓ Context feature works" || echo "✗ Context feature failed"
 
 ### Build fails
 ```bash
-cd /home/henri/xlog
+cd /home/henri/Zyrnix
 rm -rf build
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Debug
@@ -143,19 +143,19 @@ cmake --build . --parallel --verbose
 ### Example fails to compile
 ```bash
 # Check library was built
-ls -lh build/libxlog.a
+ls -lh build/libZyrnix.a
 
 # Try manual compile with verbose output
-g++ -std=c++17 -I include -L build -o test examples/basic_logging.cpp -lxlog -lpthread -v
+g++ -std=c++17 -I include -L build -o test examples/basic_logging.cpp -lZyrnix -lpthread -v
 ```
 
 ### Context feature not working
 ```bash
 # Check header exists
-ls -lh include/xlog/log_context.hpp
+ls -lh include/Zyrnix/log_context.hpp
 
 # Check implementation compiled
-nm build/libxlog.a | grep LogContext
+nm build/libZyrnix.a | grep LogContext
 
 # Run with debug output
 ./context_example
@@ -188,7 +188,7 @@ All tests should show:
 
 ========================================
 ALL TESTS PASSED! ✓
-XLog v1.0.3 is working correctly!
+Zyrnix v1.0.3 is working correctly!
 ========================================
 ```
 

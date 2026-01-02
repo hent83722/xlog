@@ -1,6 +1,6 @@
 @echo off
 REM ============================================
-REM XLog Installation Script for Windows (Batch)
+REM Zyrnix Installation Script for Windows (Batch)
 REM Builds from source and installs system-wide
 REM Run as Administrator for system installation
 REM ============================================
@@ -15,7 +15,7 @@ echo  ██╔██╗ ██║     ██║   ██║██║   ██�
 echo ██╔╝ ██╗███████╗╚██████╔╝╚██████╔╝
 echo ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ 
 echo.
-echo XLog Installation Script for Windows
+echo Zyrnix Installation Script for Windows
 echo ==========================================
 echo.
 
@@ -27,7 +27,7 @@ cd /d "%PROJECT_DIR%"
 
 REM Default settings
 set "BUILD_TYPE=Release"
-set "INSTALL_PREFIX=C:\Program Files\xlog"
+set "INSTALL_PREFIX=C:\Program Files\Zyrnix"
 set "GENERATOR="
 
 REM Parse command line arguments
@@ -54,7 +54,7 @@ if /i "%~1"=="--help" (
     echo Usage: %~nx0 [options]
     echo Options:
     echo   --debug              Build in debug mode ^(default: Release^)
-    echo   --prefix PATH        Installation prefix ^(default: C:\Program Files\xlog^)
+    echo   --prefix PATH        Installation prefix ^(default: C:\Program Files\Zyrnix^)
     echo   --generator NAME     CMake generator ^(e.g., "Visual Studio 17 2022"^)
     echo   --help               Show this help message
     echo.
@@ -133,7 +133,7 @@ if %errorlevel% neq 0 (
 )
 
 REM Build
-echo Building XLog...
+echo Building Zyrnix...
 cmake --build . --config %BUILD_TYPE% --parallel
 
 if %errorlevel% neq 0 (
@@ -164,7 +164,7 @@ if %errorlevel% neq 0 (
 )
 
 REM Install
-echo Installing XLog...
+echo Installing Zyrnix...
 cmake --install . --config %BUILD_TYPE%
 
 if %errorlevel% neq 0 (
@@ -175,15 +175,15 @@ if %errorlevel% neq 0 (
 
 echo.
 echo ==========================================
-echo XLog has been installed successfully!
+echo Zyrnix has been installed successfully!
 echo ==========================================
 echo.
 echo Installation location: %INSTALL_PREFIX%
 echo.
-echo To use XLog in your CMake project, add:
+echo To use Zyrnix in your CMake project, add:
 echo   set(CMAKE_PREFIX_PATH "%INSTALL_PREFIX%")
-echo   find_package(xlog REQUIRED)
-echo   target_link_libraries(your_target PRIVATE xlog::xlog)
+echo   find_package(Zyrnix REQUIRED)
+echo   target_link_libraries(your_target PRIVATE Zyrnix::Zyrnix)
 echo.
 
 endlocal

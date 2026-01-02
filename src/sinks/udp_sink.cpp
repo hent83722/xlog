@@ -1,4 +1,4 @@
-#include "xlog/sinks/udp_sink.hpp"
+#include "Zyrnix/sinks/udp_sink.hpp"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 
-namespace xlog {
+namespace Zyrnix {
 
 UdpSink::UdpSink(const std::string& host, unsigned short port) : sockfd(-1), dest_len(0), initialized(false) {
     struct addrinfo hints;

@@ -1,4 +1,4 @@
-# XLog v1.1.1-beta.1 Release Notes
+# Zyrnix v1.1.1-beta.1 Release Notes
 
 **Release Date**: December 12, 2025  
 **Version**: 1.1.1-beta.1  
@@ -9,7 +9,7 @@
 
 ## 🎉 New Features
 
-Version 1.1.1-beta.1 introduces four powerful new features that enhance XLog's flexibility, observability, and ease of use in production environments.
+Version 1.1.1-beta.1 introduces four powerful new features that enhance Zyrnix's flexibility, observability, and ease of use in production environments.
 
 ### 1. 🎯 Regex-Based Log Filtering
 
@@ -30,16 +30,16 @@ Pattern-based filtering using regular expressions for flexible log control.
 
 **Example:**
 ```cpp
-#include <xlog/log_filter.hpp>
+#include <Zyrnix/log_filter.hpp>
 
-auto logger = xlog::Logger::create_stdout_logger("app");
+auto logger = Zyrnix::Logger::create_stdout_logger("app");
 
 // Only log messages containing ERROR or CRITICAL
-auto error_filter = std::make_shared<xlog::RegexFilter>("(ERROR|CRITICAL)");
+auto error_filter = std::make_shared<Zyrnix::RegexFilter>("(ERROR|CRITICAL)");
 logger->add_filter(error_filter);
 
 // Exclude sensitive data (inverted match)
-auto no_secrets = std::make_shared<xlog::RegexFilter>("(password|token|secret)", true);
+auto no_secrets = std::make_shared<Zyrnix::RegexFilter>("(password|token|secret)", true);
 logger->add_filter(no_secrets);
 ```
 
@@ -70,7 +70,7 @@ Thread-safe runtime log level adjustments without application restart.
 
 **Example:**
 ```cpp
-auto logger = xlog::Logger::create_stdout_logger("app");
+auto logger = Zyrnix::Logger::create_stdout_logger("app");
 
 // Register callback for level changes
 logger->register_level_change_callback([](LogLevel old_level, LogLevel new_level) {
@@ -113,25 +113,25 @@ Built-in health monitoring for observability and SRE practices.
 
 **Example:**
 ```cpp
-#include <xlog/log_health.hpp>
+#include <Zyrnix/log_health.hpp>
 
-auto logger = xlog::Logger::create_stdout_logger("api");
-xlog::LogMetrics metrics;
+auto logger = Zyrnix::Logger::create_stdout_logger("api");
+Zyrnix::LogMetrics metrics;
 
 // Register logger for monitoring
-xlog::HealthRegistry::instance().register_logger("api", logger);
+Zyrnix::HealthRegistry::instance().register_logger("api", logger);
 
 // Perform health check
-xlog::HealthChecker checker;
+Zyrnix::HealthChecker checker;
 auto result = checker.check_metrics(metrics);
 
 // Export as JSON for REST API
 std::cout << result.to_json() << "\n";
 
 // Check status
-if (xlog::HealthChecker::is_healthy(result)) {
+if (Zyrnix::HealthChecker::is_healthy(result)) {
     // System operating normally
-} else if (xlog::HealthChecker::is_degraded(result)) {
+} else if (Zyrnix::HealthChecker::is_degraded(result)) {
     // Performance issues detected
 } else {
     // Critical issues - take action
@@ -173,21 +173,21 @@ Adaptive compression level selection based on real-time performance metrics.
 
 **Example:**
 ```cpp
-#include <xlog/sinks/compressed_file_sink.hpp>
+#include <Zyrnix/sinks/compressed_file_sink.hpp>
 
-xlog::CompressionOptions options;
-options.type = xlog::CompressionType::Gzip;
+Zyrnix::CompressionOptions options;
+options.type = Zyrnix::CompressionType::Gzip;
 options.level = 6;  // Initial level
 options.auto_tune = true;  // Enable auto-tune
 
-auto sink = std::make_shared<xlog::CompressedFileSink>(
+auto sink = std::make_shared<Zyrnix::CompressedFileSink>(
     "app.log",
     10 * 1024 * 1024,  // 10 MB rotation
     5,                  // Keep 5 files
     options
 );
 
-auto logger = std::make_shared<xlog::Logger>("app");
+auto logger = std::make_shared<Zyrnix::Logger>("app");
 logger->add_sink(sink);
 
 // Auto-tune will adjust compression level based on:
@@ -221,15 +221,15 @@ std::cout << "Compression ratio: " << stats.compression_ratio << "x\n";
 ## 🔧 API Changes
 
 ### New Headers
-- `<xlog/log_health.hpp>` - Health check API
-- New classes in `<xlog/log_filter.hpp>` - RegexFilter
+- `<Zyrnix/log_health.hpp>` - Health check API
+- New classes in `<Zyrnix/log_filter.hpp>` - RegexFilter
 
 ### New Classes
-- `xlog::RegexFilter` - Pattern-based log filtering
-- `xlog::HealthChecker` - Health check coordinator
-- `xlog::HealthRegistry` - Global health monitoring registry
-- `xlog::HealthStatus` - Health status enum (Healthy/Degraded/Unhealthy)
-- `xlog::HealthCheckResult` - Health check result with metrics
+- `Zyrnix::RegexFilter` - Pattern-based log filtering
+- `Zyrnix::HealthChecker` - Health check coordinator
+- `Zyrnix::HealthRegistry` - Global health monitoring registry
+- `Zyrnix::HealthStatus` - Health status enum (Healthy/Degraded/Unhealthy)
+- `Zyrnix::HealthCheckResult` - Health check result with metrics
 
 ### Logger API Additions
 ```cpp
@@ -298,7 +298,7 @@ New comprehensive example demonstrating all v1.1.1 features:
 
 2. **Add health monitoring to production systems:**
    ```cpp
-   #include <xlog/log_health.hpp>
+   #include <Zyrnix/log_health.hpp>
    
    HealthRegistry::instance().register_logger("my_logger", logger);
    
@@ -346,15 +346,15 @@ New comprehensive example demonstrating all v1.1.1 features:
 
 ## 🙏 Acknowledgments
 
-Thank you to the XLog community for feature requests and feedback that shaped this release!
+Thank you to the Zyrnix community for feature requests and feedback that shaped this release!
 
 ---
 
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 git checkout v1.1.1-beta.1
 bash scripts/build.sh
 sudo bash scripts/install.sh

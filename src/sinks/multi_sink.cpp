@@ -1,6 +1,6 @@
-#include "xlog/sinks/multi_sink.hpp"
+#include "Zyrnix/sinks/multi_sink.hpp"
 
-namespace xlog {
+namespace Zyrnix {
 
 // All implementation is inline in header, but cpp can be empty
 }

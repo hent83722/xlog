@@ -1,6 +1,6 @@
-#include "xlog/async/async_logger.hpp"
+#include "Zyrnix/async/async_logger.hpp"
 
-namespace xlog {
+namespace Zyrnix {
 
 // AsyncLogger is header-only, implementation is inline in the header
 

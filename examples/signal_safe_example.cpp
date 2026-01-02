@@ -1,6 +1,6 @@
-#include <xlog/xlog.hpp>
-#include <xlog/sinks/signal_safe_sink.hpp>
-#include <xlog/logger.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/sinks/signal_safe_sink.hpp>
+#include <Zyrnix/logger.hpp>
 #include <signal.h>
 #include <unistd.h>
 #include <iostream>
@@ -20,8 +20,8 @@
  */
 
 // Global logger and sink for signal handler
-std::shared_ptr<xlog::Logger> g_crash_logger;
-std::shared_ptr<xlog::SignalSafeSink> g_crash_sink;
+std::shared_ptr<Zyrnix::Logger> g_crash_logger;
+std::shared_ptr<Zyrnix::SignalSafeSink> g_crash_sink;
 
 // Signal handler - must use only async-signal-safe functions
 void crash_handler(int sig) {
@@ -29,19 +29,19 @@ void crash_handler(int sig) {
     if (g_crash_logger) {
         switch (sig) {
             case SIGSEGV:
-                g_crash_logger->log(xlog::LogLevel::Critical, "Caught SIGSEGV (segmentation fault)");
+                g_crash_logger->log(Zyrnix::LogLevel::Critical, "Caught SIGSEGV (segmentation fault)");
                 break;
             case SIGABRT:
-                g_crash_logger->log(xlog::LogLevel::Critical, "Caught SIGABRT (abort)");
+                g_crash_logger->log(Zyrnix::LogLevel::Critical, "Caught SIGABRT (abort)");
                 break;
             case SIGFPE:
-                g_crash_logger->log(xlog::LogLevel::Critical, "Caught SIGFPE (floating point exception)");
+                g_crash_logger->log(Zyrnix::LogLevel::Critical, "Caught SIGFPE (floating point exception)");
                 break;
             case SIGILL:
-                g_crash_logger->log(xlog::LogLevel::Critical, "Caught SIGILL (illegal instruction)");
+                g_crash_logger->log(Zyrnix::LogLevel::Critical, "Caught SIGILL (illegal instruction)");
                 break;
             default:
-                g_crash_logger->log(xlog::LogLevel::Critical, "Caught unknown signal");
+                g_crash_logger->log(Zyrnix::LogLevel::Critical, "Caught unknown signal");
                 break;
         }
         
@@ -74,12 +74,12 @@ void trigger_crash(int type) {
 }
 
 int main(int argc, char* argv[]) {
-    std::cout << "=== XLog Signal-Safe Logging Example ===" << std::endl;
+    std::cout << "=== Zyrnix Signal-Safe Logging Example ===" << std::endl;
     std::cout << std::endl;
     
     // Create signal-safe sink
     std::cout << "1. Setting up signal-safe crash logger..." << std::endl;
-    g_crash_sink = std::make_shared<xlog::SignalSafeSink>("crash.log");
+    g_crash_sink = std::make_shared<Zyrnix::SignalSafeSink>("crash.log");
     
     if (!g_crash_sink->is_ready()) {
         std::cerr << "   ✗ Failed to create signal-safe sink" << std::endl;
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
     std::cout << "   ✓ Signal-safe sink created" << std::endl;
     
     // Create logger
-    g_crash_logger = std::make_shared<xlog::Logger>("crash");
+    g_crash_logger = std::make_shared<Zyrnix::Logger>("crash");
     g_crash_logger->add_sink(g_crash_sink);
     std::cout << "   ✓ Crash logger configured" << std::endl;
     
@@ -102,8 +102,8 @@ int main(int argc, char* argv[]) {
     
     // Log normal operation
     std::cout << "\n3. Normal logging before crash..." << std::endl;
-    g_crash_logger->log(xlog::LogLevel::Info, "Application started normally");
-    g_crash_logger->log(xlog::LogLevel::Info, "All systems operational");
+    g_crash_logger->log(Zyrnix::LogLevel::Info, "Application started normally");
+    g_crash_logger->log(Zyrnix::LogLevel::Info, "All systems operational");
     std::cout << "   ✓ Normal logs written" << std::endl;
     
     // Choose crash type
@@ -130,7 +130,7 @@ int main(int argc, char* argv[]) {
     
     // Normal shutdown
     std::cout << "\n5. Normal shutdown..." << std::endl;
-    g_crash_logger->log(xlog::LogLevel::Info, "Application shutting down normally");
+    g_crash_logger->log(Zyrnix::LogLevel::Info, "Application shutting down normally");
     g_crash_sink->flush();
     std::cout << "   ✓ Logs flushed successfully" << std::endl;
     

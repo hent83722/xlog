@@ -1,12 +1,12 @@
-#include "xlog/sinks/structured_json_sink.hpp"
-#include "xlog/log_level.hpp"
-#include "xlog/log_context.hpp"
+#include "Zyrnix/sinks/structured_json_sink.hpp"
+#include "Zyrnix/log_level.hpp"
+#include "Zyrnix/log_context.hpp"
 #include <chrono>
 #include <iomanip>
 #include <sstream>
 #include <ctime>
 
-namespace xlog {
+namespace Zyrnix {
 
 StructuredJsonSink::StructuredJsonSink(const std::string& fname)
     : filename(fname) {

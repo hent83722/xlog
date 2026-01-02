@@ -1,9 +1,9 @@
-#include "xlog/async/thread_pool.hpp"
-#include "xlog/logger.hpp"
-#include "xlog/log_sink.hpp"
-#include "xlog/async/async_logger.hpp"
+#include "Zyrnix/async/thread_pool.hpp"
+#include "Zyrnix/logger.hpp"
+#include "Zyrnix/log_sink.hpp"
+#include "Zyrnix/async/async_logger.hpp"
 
-namespace xlog {
+namespace Zyrnix {
 
 ThreadPool::ThreadPool(size_t threads) : running(true) {
     for (size_t i = 0; i < threads; ++i) {

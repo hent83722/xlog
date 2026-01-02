@@ -2,6 +2,6 @@
 #include <iostream>
 
 int main() {
-    std::cout << "xlog test stub running\n";
+    std::cout << "Zyrnix test stub running\n";
     return 0;
 }

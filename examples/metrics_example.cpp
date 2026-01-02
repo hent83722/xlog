@@ -10,10 +10,10 @@
  * 5. Global metrics registry
  */
 
-#include <xlog/logger.hpp>
-#include <xlog/log_metrics.hpp>
-#include <xlog/sinks/file_sink.hpp>
-#include <xlog/sinks/stdout_sink.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/log_metrics.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
+#include <Zyrnix/sinks/stdout_sink.hpp>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -21,7 +21,7 @@
 void example_basic_metrics() {
     std::cout << "\n=== Basic Metrics Example ===\n";
     
-    auto metrics = std::make_shared<xlog::LogMetrics>();
+    auto metrics = std::make_shared<Zyrnix::LogMetrics>();
     
     // Simulate logging activity
     for (int i = 0; i < 1000; ++i) {
@@ -63,7 +63,7 @@ void example_basic_metrics() {
 void example_prometheus_export() {
     std::cout << "\n=== Prometheus Export Example ===\n";
     
-    auto metrics = std::make_shared<xlog::LogMetrics>();
+    auto metrics = std::make_shared<Zyrnix::LogMetrics>();
     
     // Generate some activity
     for (int i = 0; i < 5000; ++i) {
@@ -88,7 +88,7 @@ void example_prometheus_export() {
 void example_json_export() {
     std::cout << "\n=== JSON Export Example ===\n";
     
-    auto metrics = std::make_shared<xlog::LogMetrics>();
+    auto metrics = std::make_shared<Zyrnix::LogMetrics>();
     
     // Simulate activity
     for (int i = 0; i < 2000; ++i) {
@@ -111,8 +111,8 @@ void example_json_export() {
 void example_sink_metrics() {
     std::cout << "\n=== Per-Sink Metrics Example ===\n";
     
-    auto file_metrics = std::make_shared<xlog::SinkMetrics>("file_sink");
-    auto stdout_metrics = std::make_shared<xlog::SinkMetrics>("stdout_sink");
+    auto file_metrics = std::make_shared<Zyrnix::SinkMetrics>("file_sink");
+    auto stdout_metrics = std::make_shared<Zyrnix::SinkMetrics>("stdout_sink");
     
     // Simulate sink activity
     for (int i = 0; i < 1000; ++i) {
@@ -142,7 +142,7 @@ void example_sink_metrics() {
 void example_global_registry() {
     std::cout << "\n=== Global Metrics Registry Example ===\n";
     
-    auto& registry = xlog::MetricsRegistry::instance();
+    auto& registry = Zyrnix::MetricsRegistry::instance();
     
     // Create metrics for multiple loggers
     auto app_metrics = registry.get_logger_metrics("app");
@@ -178,7 +178,7 @@ void example_global_registry() {
 void example_monitoring_endpoint() {
     std::cout << "\n=== HTTP Monitoring Endpoint Pattern ===\n";
     
-    auto& registry = xlog::MetricsRegistry::instance();
+    auto& registry = Zyrnix::MetricsRegistry::instance();
     
     // Simulate some application activity
     auto app = registry.get_logger_metrics("app");
@@ -191,7 +191,7 @@ void example_monitoring_endpoint() {
     std::cout << "------------------------------------\n";
     std::cout << "GET /metrics (Prometheus format):\n\n";
     
-    std::string prometheus = registry.export_all_prometheus("xlog");
+    std::string prometheus = registry.export_all_prometheus("Zyrnix");
     std::cout << prometheus << "\n";
     
     std::cout << "------------------------------------\n";
@@ -210,7 +210,7 @@ void example_monitoring_endpoint() {
 void example_production_monitoring() {
     std::cout << "\n=== Production Monitoring Example ===\n";
     
-    auto& registry = xlog::MetricsRegistry::instance();
+    auto& registry = Zyrnix::MetricsRegistry::instance();
     auto metrics = registry.get_logger_metrics("production");
     
     // Simulate production workload
@@ -264,7 +264,7 @@ void example_production_monitoring() {
 }
 
 int main() {
-    std::cout << "XLog Metrics & Observability Examples\n";
+    std::cout << "Zyrnix Metrics & Observability Examples\n";
     std::cout << "======================================\n";
     
     example_basic_metrics();

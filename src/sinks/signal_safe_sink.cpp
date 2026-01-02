@@ -1,4 +1,4 @@
-#include "xlog/sinks/signal_safe_sink.hpp"
+#include "Zyrnix/sinks/signal_safe_sink.hpp"
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <cerrno>
 
-namespace xlog {
+namespace Zyrnix {
 
 SignalSafeSink::SignalSafeSink(const std::string& path, size_t buffer_size) 
     : fd_(-1), capacity_(std::min(buffer_size, MAX_BUFFER_SIZE)) {

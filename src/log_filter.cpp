@@ -1,7 +1,7 @@
-#include "xlog/log_filter.hpp"
-#include "xlog/log_context.hpp"
+#include "Zyrnix/log_filter.hpp"
+#include "Zyrnix/log_context.hpp"
 
-namespace xlog {
+namespace Zyrnix {
 
 LevelFilter::LevelFilter(LogLevel min_level) : min_level_(min_level) {}
 

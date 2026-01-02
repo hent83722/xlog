@@ -1,14 +1,14 @@
-#include "xlog/config.hpp"
-#include "xlog/logger.hpp"
-#include "xlog/sinks/stdout_sink.hpp"
-#include "xlog/sinks/file_sink.hpp"
-#include "xlog/sinks/rotating_file_sink.hpp"
-#include "xlog/sinks/loki_sink.hpp"
+#include "Zyrnix/config.hpp"
+#include "Zyrnix/logger.hpp"
+#include "Zyrnix/sinks/stdout_sink.hpp"
+#include "Zyrnix/sinks/file_sink.hpp"
+#include "Zyrnix/sinks/rotating_file_sink.hpp"
+#include "Zyrnix/sinks/loki_sink.hpp"
 
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-namespace xlog {
+namespace Zyrnix {
 
 
 std::vector<LoggerConfig> ConfigLoader::configs_;

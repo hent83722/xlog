@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# XLog Installation Script for macOS
+# Zyrnix Installation Script for macOS
 # Builds from source and installs system-wide
 #
 set -e
@@ -20,7 +20,7 @@ echo " ██╔██╗ ██║     ██║   ██║██║   ██�
 echo "██╔╝ ██╗███████╗╚██████╔╝╚██████╔╝"
 echo "╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ "
 echo -e "${NC}"
-echo -e "${GREEN}XLog Installation Script for macOS${NC}"
+echo -e "${GREEN}Zyrnix Installation Script for macOS${NC}"
 echo "=========================================="
 
 # Get the directory where this script is located
@@ -107,24 +107,24 @@ cmake .. \
     -DCMAKE_OSX_DEPLOYMENT_TARGET="10.15"
 
 # Build
-echo -e "${YELLOW}Building XLog...${NC}"
+echo -e "${YELLOW}Building Zyrnix...${NC}"
 cmake --build . --parallel "$PARALLEL_JOBS"
 
 echo -e "${GREEN}Build complete!${NC}"
 echo ""
 
 # Install
-echo -e "${YELLOW}Installing XLog (requires sudo)...${NC}"
+echo -e "${YELLOW}Installing Zyrnix (requires sudo)...${NC}"
 sudo cmake --install .
 
 echo ""
 echo -e "${GREEN}=========================================="
-echo "XLog has been installed successfully!"
+echo "Zyrnix has been installed successfully!"
 echo "==========================================${NC}"
 echo ""
 echo "Installation location: $INSTALL_PREFIX"
 echo ""
-echo "To use XLog in your CMake project, add:"
-echo "  find_package(xlog REQUIRED)"
-echo "  target_link_libraries(your_target PRIVATE xlog::xlog)"
+echo "To use Zyrnix in your CMake project, add:"
+echo "  find_package(Zyrnix REQUIRED)"
+echo "  target_link_libraries(your_target PRIVATE Zyrnix::Zyrnix)"
 echo ""

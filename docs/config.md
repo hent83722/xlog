@@ -1,6 +1,6 @@
 # Configuration
 
-XLog supports both compile-time and runtime configuration. This page outlines the most important options and recommended defaults.
+Zyrnix supports both compile-time and runtime configuration. This page outlines the most important options and recommended defaults.
 
 Build-time options (CMake)
 --------------------------
@@ -14,10 +14,10 @@ Runtime configuration
 The library exposes no global configuration file by default; instead, create and attach sinks programmatically at application startup. A simple pattern:
 
 ```cpp
-auto logger = std::make_shared<xlog::Logger>("service");
-if (config.console) logger->add_sink(std::make_shared<xlog::StdoutSink>());
-if (config.file_path) logger->add_sink(std::make_shared<xlog::FileSink>(config.file_path));
-if (config.udp.host) logger->add_sink(std::make_shared<xlog::UdpSink>(config.udp.host, config.udp.port));
+auto logger = std::make_shared<Zyrnix::Logger>("service");
+if (config.console) logger->add_sink(std::make_shared<Zyrnix::StdoutSink>());
+if (config.file_path) logger->add_sink(std::make_shared<Zyrnix::FileSink>(config.file_path));
+if (config.udp.host) logger->add_sink(std::make_shared<Zyrnix::UdpSink>(config.udp.host, config.udp.port));
 ```
 
 Recommended configuration keys

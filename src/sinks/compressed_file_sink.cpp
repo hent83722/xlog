@@ -1,4 +1,4 @@
-#include "xlog/sinks/compressed_file_sink.hpp"
+#include "Zyrnix/sinks/compressed_file_sink.hpp"
 #include <fstream>
 #include <sstream>
 #include <cstdio>
@@ -12,7 +12,7 @@
 #include <zstd.h>
 #endif
 
-namespace xlog {
+namespace Zyrnix {
 
 CompressedFileSink::CompressedFileSink(
     const std::string& filename,

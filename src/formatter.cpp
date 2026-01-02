@@ -1,10 +1,10 @@
-#include "xlog/formatter.hpp"
-#include "xlog/log_level.hpp"
+#include "Zyrnix/formatter.hpp"
+#include "Zyrnix/log_level.hpp"
 #include <chrono>
 #include <iomanip>
 #include <sstream>
 
-namespace xlog {
+namespace Zyrnix {
 
 std::string Formatter::format(const std::string& logger_name, LogLevel level, const std::string& message) {
     auto now = std::chrono::system_clock::now();

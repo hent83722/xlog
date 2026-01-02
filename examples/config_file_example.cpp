@@ -1,6 +1,6 @@
-#include <xlog/xlog.hpp>
-#include <xlog/config.hpp>
-#include <xlog/logger.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/config.hpp>
+#include <Zyrnix/logger.hpp>
 #include <iostream>
 
 /**
@@ -16,7 +16,7 @@
  */
 
 int main() {
-    std::cout << "=== XLog Configuration File Example ===" << std::endl;
+    std::cout << "=== Zyrnix Configuration File Example ===" << std::endl;
     
     // Example 1: Create a JSON config file programmatically
     const char* config_json = R"({
@@ -43,7 +43,7 @@ int main() {
     
     // Example 2: Load from JSON string
     std::cout << "\n1. Loading configuration from JSON string..." << std::endl;
-    if (xlog::ConfigLoader::load_from_json_string(config_json)) {
+    if (Zyrnix::ConfigLoader::load_from_json_string(config_json)) {
         std::cout << "   ✓ Configuration loaded successfully" << std::endl;
     } else {
         std::cout << "   ✗ Failed to load configuration" << std::endl;
@@ -52,7 +52,7 @@ int main() {
     
     // Example 3: Create loggers from configuration
     std::cout << "\n2. Creating loggers from configuration..." << std::endl;
-    auto loggers = xlog::ConfigLoader::create_loggers();
+    auto loggers = Zyrnix::ConfigLoader::create_loggers();
     std::cout << "   ✓ Created " << loggers.size() << " loggers" << std::endl;
     
     // Example 4: Use the configured loggers
@@ -75,7 +75,7 @@ int main() {
     
     // Example 5: Load from file (typical production usage)
     std::cout << "\n4. Production usage - loading from file..." << std::endl;
-    std::cout << "   Create a file named 'xlog_config.json' with your configuration:" << std::endl;
+    std::cout << "   Create a file named 'Zyrnix_config.json' with your configuration:" << std::endl;
     std::cout << "   {" << std::endl;
     std::cout << "     \"loggers\": [" << std::endl;
     std::cout << "       {" << std::endl;
@@ -91,8 +91,8 @@ int main() {
     std::cout << "   }" << std::endl;
     std::cout << std::endl;
     std::cout << "   Then in your code:" << std::endl;
-    std::cout << "   if (xlog::ConfigLoader::load_from_json(\"xlog_config.json\")) {" << std::endl;
-    std::cout << "       auto loggers = xlog::ConfigLoader::create_loggers();" << std::endl;
+    std::cout << "   if (Zyrnix::ConfigLoader::load_from_json(\"Zyrnix_config.json\")) {" << std::endl;
+    std::cout << "       auto loggers = Zyrnix::ConfigLoader::create_loggers();" << std::endl;
     std::cout << "       // Use loggers..." << std::endl;
     std::cout << "   }" << std::endl;
     
@@ -100,7 +100,7 @@ int main() {
     std::cout << "\n5. Environment-specific configuration pattern..." << std::endl;
     std::cout << "   const char* env = std::getenv(\"ENVIRONMENT\");" << std::endl;
     std::cout << "   std::string config_file = std::string(\"config_\") + (env ? env : \"dev\") + \".json\";" << std::endl;
-    std::cout << "   xlog::ConfigLoader::load_from_json(config_file);" << std::endl;
+    std::cout << "   Zyrnix::ConfigLoader::load_from_json(config_file);" << std::endl;
     std::cout << "   // Automatically loads config_dev.json, config_prod.json, etc." << std::endl;
     
     std::cout << "\n=== Configuration example completed ===" << std::endl;

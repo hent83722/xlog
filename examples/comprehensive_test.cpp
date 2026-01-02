@@ -1,8 +1,8 @@
-#include <xlog/xlog.hpp>
-#include <xlog/rate_limiter.hpp>
-#include <xlog/log_metrics.hpp>
-#include <xlog/sinks/file_sink.hpp>
-#include <xlog/sinks/stdout_sink.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/rate_limiter.hpp>
+#include <Zyrnix/log_metrics.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
+#include <Zyrnix/sinks/stdout_sink.hpp>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -13,7 +13,7 @@ void simulate_application_startup() {
     std::cout << "SCENARIO 1: Application Startup\n";
     std::cout << "========================================\n\n";
     
-    auto logger = xlog::Logger::create_stdout_logger("app");
+    auto logger = Zyrnix::Logger::create_stdout_logger("app");
     
     logger->info("Application starting...");
     logger->info("Loading configuration from config.json");
@@ -30,9 +30,9 @@ void simulate_error_storm_with_rate_limiting() {
     std::cout << "SCENARIO 2: Error Storm with Rate Limiting\n";
     std::cout << "========================================\n\n";
     
-    auto logger = xlog::Logger::create_stdout_logger("error-handler");
+    auto logger = Zyrnix::Logger::create_stdout_logger("error-handler");
     
-    xlog::RateLimiter limiter(5, 10);
+    Zyrnix::RateLimiter limiter(5, 10);
     
     std::cout << "Simulating 100 rapid database errors...\n";
     std::cout << "Rate limit: 5 msg/sec, burst: 10\n\n";
@@ -61,9 +61,9 @@ void simulate_sampling_debug_logs() {
     std::cout << "SCENARIO 3: Sampling High-Frequency Debug Logs\n";
     std::cout << "========================================\n\n";
     
-    auto logger = xlog::Logger::create_stdout_logger("payment-processor");
+    auto logger = Zyrnix::Logger::create_stdout_logger("payment-processor");
     
-    xlog::SamplingLimiter sampler(20);
+    Zyrnix::SamplingLimiter sampler(20);
     
     std::cout << "Processing 200 transactions (sampling 1 in 20)...\n\n";
     
@@ -85,7 +85,7 @@ void simulate_metrics_monitoring() {
     std::cout << "SCENARIO 4: Metrics & Observability\n";
     std::cout << "========================================\n\n";
     
-    auto& registry = xlog::MetricsRegistry::instance();
+    auto& registry = Zyrnix::MetricsRegistry::instance();
     auto metrics = registry.get_logger_metrics("api-server");
     
     std::cout << "Simulating API server logging activity...\n\n";
@@ -131,9 +131,9 @@ void simulate_combined_rate_and_sampling() {
     std::cout << "SCENARIO 5: Combined Rate Limiting + Sampling\n";
     std::cout << "========================================\n\n";
     
-    auto logger = xlog::Logger::create_stdout_logger("high-frequency");
+    auto logger = Zyrnix::Logger::create_stdout_logger("high-frequency");
     
-    xlog::CombinedLimiter limiter(50, 100, 10);
+    Zyrnix::CombinedLimiter limiter(50, 100, 10);
     
     std::cout << "Simulating high-frequency event logging...\n";
     std::cout << "Rate limit: 50 msg/sec, Sampling: 1 in 10\n\n";
@@ -157,7 +157,7 @@ void simulate_combined_rate_and_sampling() {
 
 int main() {
     std::cout << "╔════════════════════════════════════════╗\n";
-    std::cout << "║   XLog v1.1.0 Comprehensive Test      ║\n";
+    std::cout << "║   Zyrnix v1.1.0 Comprehensive Test      ║\n";
     std::cout << "║   Real-World Scenarios Demonstration   ║\n";
     std::cout << "╚════════════════════════════════════════╝\n";
     
@@ -179,7 +179,7 @@ int main() {
         std::cout << "\n╔════════════════════════════════════════╗\n";
         std::cout << "║         ALL TESTS PASSED! ✓            ║\n";
         std::cout << "║                                        ║\n";
-        std::cout << "║  XLog v1.1.0 features demonstrated:   ║\n";
+        std::cout << "║  Zyrnix v1.1.0 features demonstrated:   ║\n";
         std::cout << "║  ✓ Rate Limiting                       ║\n";
         std::cout << "║  ✓ Sampling                            ║\n";
         std::cout << "║  ✓ Metrics & Observability             ║\n";

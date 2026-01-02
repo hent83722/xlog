@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(xlog VERSION 1.1.1)
+project(Zyrnix VERSION 1.1.1)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -55,13 +55,13 @@ if(XLOG_ENABLE_ASYNC)
     file(GLOB ASYNC_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/async/*.cpp")
     list(APPEND XLOG_SOURCES ${ASYNC_SOURCES})
 else()
-    target_compile_definitions(xlog PUBLIC XLOG_NO_ASYNC)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_ASYNC)
 endif()
 
 
 if(NOT XLOG_ENABLE_JSON)
     list(REMOVE_ITEM XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/structured_logger.cpp")
-    target_compile_definitions(xlog PUBLIC XLOG_NO_JSON)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_JSON)
 endif()
 
 
@@ -70,7 +70,7 @@ if(NOT XLOG_ENABLE_NETWORK)
         "${CMAKE_CURRENT_SOURCE_DIR}/src/sinks/udp_sink.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/sinks/network_sink.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/sinks/syslog_sink.cpp")
-    target_compile_definitions(xlog PUBLIC XLOG_NO_NETWORK)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_NETWORK)
 endif()
 
 
@@ -86,43 +86,43 @@ endif()
 
 
 if(NOT XLOG_ENABLE_COLORS)
-    target_compile_definitions(xlog PUBLIC XLOG_NO_COLORS)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_COLORS)
 endif()
 
 
 if(NOT XLOG_ENABLE_FILE_ROTATION)
     list(REMOVE_ITEM XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/sinks/rotating_file_sink.cpp")
-    target_compile_definitions(xlog PUBLIC XLOG_NO_FILE_ROTATION)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_FILE_ROTATION)
 endif()
 
 
 if(NOT XLOG_ENABLE_CONTEXT)
     list(REMOVE_ITEM XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/log_context.cpp")
-    target_compile_definitions(xlog PUBLIC XLOG_NO_CONTEXT)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_CONTEXT)
 endif()
 
 
 if(NOT XLOG_ENABLE_FILTERS)
     list(REMOVE_ITEM XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/log_filter.cpp")
-    target_compile_definitions(xlog PUBLIC XLOG_NO_FILTERS)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_FILTERS)
 endif()
 
 
 if(NOT XLOG_ENABLE_RATE_LIMITING)
     list(REMOVE_ITEM XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/rate_limiter.cpp")
-    target_compile_definitions(xlog PUBLIC XLOG_NO_RATE_LIMITING)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_RATE_LIMITING)
 endif()
 
 if(NOT XLOG_ENABLE_COMPRESSION)
     list(REMOVE_ITEM XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/sinks/compressed_file_sink.cpp")
-    target_compile_definitions(xlog PUBLIC XLOG_NO_COMPRESSION)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_COMPRESSION)
 endif()
 
 
 if(NOT XLOG_ENABLE_CLOUD_SINKS)
     list(REMOVE_ITEM XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/sinks/cloud_sinks.cpp")
     list(REMOVE_ITEM XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/sinks/loki_sink.cpp")
-    target_compile_definitions(xlog PUBLIC XLOG_NO_CLOUD_SINKS)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_CLOUD_SINKS)
 else()
     list(APPEND XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/sinks/loki_sink.cpp")
 endif()
@@ -130,10 +130,10 @@ endif()
 
 if(NOT XLOG_ENABLE_METRICS)
     list(REMOVE_ITEM XLOG_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/log_metrics.cpp")
-    target_compile_definitions(xlog PUBLIC XLOG_NO_METRICS)
+    target_compile_definitions(Zyrnix PUBLIC XLOG_NO_METRICS)
 endif()
 
-add_library(xlog STATIC
+add_library(Zyrnix STATIC
     ${XLOG_SOURCES}
     src/logger.cpp
     src/config_watcher.cpp
@@ -144,33 +144,33 @@ add_library(xlog STATIC
 
 find_package(ZLIB)
 if(ZLIB_FOUND AND XLOG_ENABLE_COMPRESSION)
-    target_link_libraries(xlog PRIVATE ZLIB::ZLIB)
-    target_compile_definitions(xlog PRIVATE XLOG_HAS_ZLIB)
+    target_link_libraries(Zyrnix PRIVATE ZLIB::ZLIB)
+    target_compile_definitions(Zyrnix PRIVATE XLOG_HAS_ZLIB)
 endif()
 
 find_library(ZSTD_LIBRARY NAMES zstd)
 if(ZSTD_LIBRARY AND XLOG_ENABLE_COMPRESSION)
-    target_link_libraries(xlog PRIVATE ${ZSTD_LIBRARY})
-    target_compile_definitions(xlog PRIVATE XLOG_HAS_ZSTD)
+    target_link_libraries(Zyrnix PRIVATE ${ZSTD_LIBRARY})
+    target_compile_definitions(Zyrnix PRIVATE XLOG_HAS_ZSTD)
 endif()
 
 find_package(CURL)
 if(CURL_FOUND AND XLOG_ENABLE_CLOUD_SINKS)
-    target_link_libraries(xlog PRIVATE CURL::libcurl)
-    target_compile_definitions(xlog PRIVATE XLOG_HAS_CURL)
+    target_link_libraries(Zyrnix PRIVATE CURL::libcurl)
+    target_compile_definitions(Zyrnix PRIVATE XLOG_HAS_CURL)
 else()
     if(XLOG_ENABLE_CLOUD_SINKS)
         message(FATAL_ERROR "CURL is required for cloud sinks (including LokiSink)")
     endif()
 endif()
 
-target_include_directories(xlog PUBLIC
+target_include_directories(Zyrnix PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/xlog>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/Zyrnix>
     $<INSTALL_INTERFACE:include>
 )
 
-install(TARGETS xlog
+install(TARGETS Zyrnix
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
 )
@@ -179,19 +179,19 @@ install(DIRECTORY include/ DESTINATION include)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/xlogConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/ZyrnixConfigVersion.cmake"
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
 
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/xlogConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/xlogConfig.cmake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ZyrnixConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/ZyrnixConfig.cmake"
     @ONLY
 )
 
 install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/xlogConfig.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/xlogConfigVersion.cmake"
-    DESTINATION lib/cmake/xlog
+    "${CMAKE_CURRENT_BINARY_DIR}/ZyrnixConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/ZyrnixConfigVersion.cmake"
+    DESTINATION lib/cmake/Zyrnix
 )

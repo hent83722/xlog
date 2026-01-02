@@ -1,11 +1,11 @@
-#include "xlog/logger.hpp"
-#include "xlog/sinks/stdout_sink.hpp"
-#include "xlog/sinks/file_sink.hpp"
-#include "xlog/sinks/multi_sink.hpp"
-#include "xlog/experimental/network_sink.hpp"
+#include "Zyrnix/logger.hpp"
+#include "Zyrnix/sinks/stdout_sink.hpp"
+#include "Zyrnix/sinks/file_sink.hpp"
+#include "Zyrnix/sinks/multi_sink.hpp"
+#include "Zyrnix/experimental/network_sink.hpp"
 
 int main() {
-    using namespace xlog;
+    using namespace Zyrnix;
 
     // Create sinks
     auto stdout_sink = std::make_shared<StdoutSink>();

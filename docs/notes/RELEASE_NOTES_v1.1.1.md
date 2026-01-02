@@ -1,4 +1,4 @@
-# XLog v1.1.1 Release Notes
+# Zyrnix v1.1.1 Release Notes
 
 **Release Date**: December 13, 2025  
 **Version**: 1.1.1  
@@ -9,7 +9,7 @@
 
 ## 🎉 Overview
 
-XLog v1.1.1 is a feature-rich release focused on **production operations**, **observability**, and **developer experience**. This release consolidates improvements from beta.1 and beta.2 into a stable, production-ready package.
+Zyrnix v1.1.1 is a feature-rich release focused on **production operations**, **observability**, and **developer experience**. This release consolidates improvements from beta.1 and beta.2 into a stable, production-ready package.
 
 ### Highlights
 
@@ -33,20 +33,20 @@ Pattern-based filtering using regular expressions for flexible log control.
 - Thread-safe, lock-free operation
 
 ```cpp
-#include <xlog/log_filter.hpp>
+#include <Zyrnix/log_filter.hpp>
 
 // Basic pattern filtering
-auto error_filter = std::make_shared<xlog::RegexFilter>("(ERROR|CRITICAL)");
+auto error_filter = std::make_shared<Zyrnix::RegexFilter>("(ERROR|CRITICAL)");
 logger->add_filter(error_filter);
 
 // Inverted: exclude sensitive data
-auto no_secrets = std::make_shared<xlog::RegexFilter>(
+auto no_secrets = std::make_shared<Zyrnix::RegexFilter>(
     "(password|token|secret)", true);  // invert = true
 logger->add_filter(no_secrets);
 
 // Composite filters
-auto composite = std::make_shared<xlog::CompositeFilter>(
-    xlog::CompositeFilter::Mode::AND);
+auto composite = std::make_shared<Zyrnix::CompositeFilter>(
+    Zyrnix::CompositeFilter::Mode::AND);
 composite->add_filter(error_filter);
 composite->add_filter(no_secrets);
 ```
@@ -65,11 +65,11 @@ Enhanced regex filtering with performance optimizations and statistics tracking.
 
 ```cpp
 // Case-insensitive matching with statistics
-xlog::RegexFilterOptions options;
+Zyrnix::RegexFilterOptions options;
 options.case_insensitive = true;
 options.track_stats = true;
 
-auto filter = std::make_shared<xlog::RegexFilter>("error|warning", options);
+auto filter = std::make_shared<Zyrnix::RegexFilter>("error|warning", options);
 logger->add_filter(filter);
 
 // Check statistics
@@ -77,7 +77,7 @@ auto stats = filter->get_stats();
 std::cout << "Match rate: " << (stats.match_rate() * 100) << "%\n";
 
 // Pre-compile commonly used patterns
-auto& cache = xlog::RegexFilterCache::instance();
+auto& cache = Zyrnix::RegexFilterCache::instance();
 cache.precompile("sensitive_data", "(password|token|secret)",
                  {.case_insensitive = true, .invert = true, .track_stats = true});
 
@@ -102,10 +102,10 @@ Runtime log level adjustments without restart, using lock-free atomic operations
 - No performance impact on logging path
 
 ```cpp
-auto logger = xlog::Logger::create_stdout_logger("app");
+auto logger = Zyrnix::Logger::create_stdout_logger("app");
 
 // Thread-safe runtime level change
-logger->set_level_dynamic(xlog::LogLevel::Debug);
+logger->set_level_dynamic(Zyrnix::LogLevel::Debug);
 
 // Register callback for monitoring
 logger->register_level_change_callback(
@@ -179,9 +179,9 @@ logger->cancel_temporary_level();
 Different log levels for different sinks - debug to file, info to console.
 
 ```cpp
-auto logger = std::make_shared<xlog::Logger>("app");
-logger->add_sink(std::make_shared<xlog::StdoutSink>());  // sink 0
-logger->add_sink(std::make_shared<xlog::FileSink>("debug.log"));  // sink 1
+auto logger = std::make_shared<Zyrnix::Logger>("app");
+logger->add_sink(std::make_shared<Zyrnix::StdoutSink>());  // sink 0
+logger->add_sink(std::make_shared<Zyrnix::FileSink>("debug.log"));  // sink 1
 
 // Console: Info and above
 logger->set_sink_level(0, LogLevel::Info);
@@ -201,7 +201,7 @@ Built-in support for web-based log level control.
 
 ```cpp
 // Handle REST API request
-auto response = xlog::handle_level_change_request(
+auto response = Zyrnix::handle_level_change_request(
     logger,
     "debug",           // New level string
     "Admin request",   // Reason
@@ -213,7 +213,7 @@ std::cout << response.to_json();
 // {"success": true, "message": "...", "logger_name": "app", "current_level": "debug"}
 
 // Parse level strings
-auto [ok, level] = xlog::parse_log_level("debug");  // case-insensitive
+auto [ok, level] = Zyrnix::parse_log_level("debug");  // case-insensitive
 ```
 
 ---
@@ -228,10 +228,10 @@ Built-in health monitoring for SRE practices and observability.
 - JSON output for monitoring systems
 
 ```cpp
-#include <xlog/log_health.hpp>
+#include <Zyrnix/log_health.hpp>
 
 // Register logger for monitoring
-auto& registry = xlog::HealthRegistry::instance();
+auto& registry = Zyrnix::HealthRegistry::instance();
 registry.register_logger("app", logger);
 
 // Check health
@@ -240,7 +240,7 @@ std::cout << result.to_json();
 
 // Kubernetes-style endpoint
 std::string handle_health(const Request& req) {
-    return xlog::handle_health_check_request(req.query("logger"));
+    return Zyrnix::handle_health_check_request(req.query("logger"));
 }
 ```
 
@@ -258,13 +258,13 @@ Automatic logger registration and system-wide health overview.
 
 ```cpp
 // Enable auto-registration
-xlog::HealthRegistry::enable_auto_registration(true);
+Zyrnix::HealthRegistry::enable_auto_registration(true);
 
 auto api = Logger::create_stdout_logger("api");      // Auto-registered
 auto db = Logger::create_stdout_logger("database");  // Auto-registered
 
 // Stricter thresholds for critical loggers
-xlog::HealthCheckConfig strict;
+Zyrnix::HealthCheckConfig strict;
 strict.max_drop_rate_healthy = 0.001;  // 0.1%
 strict.max_latency_us_healthy = 5000;   // 5ms
 registry.set_logger_config("api", strict);
@@ -279,7 +279,7 @@ registry.register_state_change_callback(
     });
 
 // Aggregate check (perfect for K8s probes)
-auto aggregate = xlog::handle_aggregate_health_check();
+auto aggregate = Zyrnix::handle_aggregate_health_check();
 std::cout << aggregate.to_json();
 ```
 
@@ -306,13 +306,13 @@ std::cout << result.last_error_time;     // When it occurred
 Adaptive compression level optimization based on workload characteristics.
 
 ```cpp
-#include <xlog/sinks/compressed_file_sink.hpp>
+#include <Zyrnix/sinks/compressed_file_sink.hpp>
 
-xlog::CompressionConfig config;
-config.algorithm = xlog::CompressionAlgorithm::Zstd;
+Zyrnix::CompressionConfig config;
+config.algorithm = Zyrnix::CompressionAlgorithm::Zstd;
 config.auto_tune = true;  // Enable adaptive optimization
 
-auto sink = std::make_shared<xlog::CompressedFileSink>("app.log", config);
+auto sink = std::make_shared<Zyrnix::CompressedFileSink>("app.log", config);
 logger->add_sink(sink);
 ```
 

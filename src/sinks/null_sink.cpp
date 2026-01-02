@@ -1,6 +1,6 @@
-#include "xlog/sinks/null_sink.hpp"
-#include "xlog/log_sink.hpp"
+#include "Zyrnix/sinks/null_sink.hpp"
+#include "Zyrnix/log_sink.hpp"
 
-namespace xlog {
+namespace Zyrnix {
 
 }

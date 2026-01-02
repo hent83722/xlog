@@ -1,5 +1,5 @@
-#include "xlog/sinks/cloud_sinks.hpp"
-#include "xlog/log_record.hpp"
+#include "Zyrnix/sinks/cloud_sinks.hpp"
+#include "Zyrnix/log_record.hpp"
 #include <sstream>
 #include <iomanip>
 #include <ctime>
@@ -9,7 +9,7 @@
 #include <curl/curl.h>
 #endif
 
-namespace xlog {
+namespace Zyrnix {
 
 
 CloudWatchSink::CloudWatchSink(const Config& config)
@@ -427,7 +427,7 @@ HttpClient::Response HttpClient::post(
     for (const auto& header : headers) {
         cmd += " -H '" + header.first + ": " + header.second + "'";
     }
-    cmd += " -w '%{http_code}' -s -o /tmp/xlog_http_response 2>/dev/null";
+    cmd += " -w '%{http_code}' -s -o /tmp/Zyrnix_http_response 2>/dev/null";
     
     FILE* pipe = popen(cmd.c_str(), "r");
     if (pipe) {
@@ -451,4 +451,4 @@ bool HttpClient::is_available() {
 #endif
 }
 
-} // namespace xlog
+} // namespace Zyrnix

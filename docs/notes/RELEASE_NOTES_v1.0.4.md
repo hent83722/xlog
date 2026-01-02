@@ -1,10 +1,10 @@
-# XLog v1.0.4 Release Notes
+# Zyrnix v1.0.4 Release Notes
 
 **Release Date:** December 9, 2025
 
 ## Overview
 
-XLog v1.0.4 brings three major features focused on flexibility, safety, and optimization:
+Zyrnix v1.0.4 brings three major features focused on flexibility, safety, and optimization:
 1. **Configuration File Support** - JSON configuration without recompiling
 2. **Signal-Safe Logging** - Crash handler support with async-signal-safe operations
 3. **Conditional Compilation Guards** - Reduce binary size by 50-70KB
@@ -24,13 +24,13 @@ Load logger configurations from JSON files without recompiling your application.
 **Example:**
 
 ```cpp
-#include <xlog/config.hpp>
+#include <Zyrnix/config.hpp>
 
 // Load configuration from file
-xlog::ConfigLoader::load_from_json("config.json");
+Zyrnix::ConfigLoader::load_from_json("config.json");
 
 // Create all configured loggers
-auto loggers = xlog::ConfigLoader::create_loggers();
+auto loggers = Zyrnix::ConfigLoader::create_loggers();
 
 // Use them
 loggers["app"]->info("Configuration loaded!");
@@ -78,15 +78,15 @@ Async-signal-safe logging for crash handlers (SIGSEGV, SIGABRT, etc.).
 **Example:**
 
 ```cpp
-#include <xlog/sinks/signal_safe_sink.hpp>
+#include <Zyrnix/sinks/signal_safe_sink.hpp>
 
 // Set up crash logger
-auto crash_sink = std::make_shared<xlog::SignalSafeSink>("crash.log");
-auto crash_logger = std::make_shared<xlog::Logger>("crash");
+auto crash_sink = std::make_shared<Zyrnix::SignalSafeSink>("crash.log");
+auto crash_logger = std::make_shared<Zyrnix::Logger>("crash");
 crash_logger->add_sink(crash_sink);
 
 void crash_handler(int sig) {
-    crash_logger->log(xlog::LogLevel::Critical, "Application crashed!");
+    crash_logger->log(Zyrnix::LogLevel::Critical, "Application crashed!");
     crash_sink->flush();  // Ensure logs are written
     _exit(1);
 }
@@ -139,17 +139,17 @@ cmake -DXLOG_ENABLE_ASYNC=OFF -DXLOG_ENABLE_JSON=OFF ..
 
 **Compile flags:**
 ```bash
-g++ -DXLOG_NO_ASYNC -DXLOG_NO_JSON main.cpp -lxlog
+g++ -DXLOG_NO_ASYNC -DXLOG_NO_JSON main.cpp -lZyrnix
 ```
 
 **Feature detection:**
 ```cpp
-#include <xlog/xlog_features.hpp>
+#include <Zyrnix/Zyrnix_features.hpp>
 
 #if XLOG_HAS_ASYNC
-    auto logger = xlog::Logger::create_async("app");
+    auto logger = Zyrnix::Logger::create_async("app");
 #else
-    auto logger = xlog::Logger::create_stdout_logger("app");
+    auto logger = Zyrnix::Logger::create_stdout_logger("app");
 #endif
 ```
 
@@ -189,19 +189,19 @@ Flexible filter architecture for dynamic log control:
 
 ##### Level-Based Filtering
 ```cpp
-logger->add_filter(std::make_shared<xlog::LevelFilter>(xlog::LogLevel::Warn));
+logger->add_filter(std::make_shared<Zyrnix::LevelFilter>(Zyrnix::LogLevel::Warn));
 ```
 
 ##### Field-Based Filtering
 ```cpp
-logger->add_filter(std::make_shared<xlog::FieldFilter>("user_type", "premium"));
+logger->add_filter(std::make_shared<Zyrnix::FieldFilter>("user_type", "premium"));
 ```
 
 ##### Lambda Filters
 ```cpp
-logger->add_filter(std::make_shared<xlog::LambdaFilter>(
-    [](const xlog::LogRecord& record) {
-        return record.level >= xlog::LogLevel::Error || 
+logger->add_filter(std::make_shared<Zyrnix::LambdaFilter>(
+    [](const Zyrnix::LogRecord& record) {
+        return record.level >= Zyrnix::LogLevel::Error || 
                record.has_field("urgent");
     }
 ));
@@ -209,8 +209,8 @@ logger->add_filter(std::make_shared<xlog::LambdaFilter>(
 
 ##### Composite Filters
 ```cpp
-auto composite = std::make_shared<xlog::CompositeFilter>(
-    xlog::CompositeFilter::Mode::AND
+auto composite = std::make_shared<Zyrnix::CompositeFilter>(
+    Zyrnix::CompositeFilter::Mode::AND
 );
 composite->add_filter(level_filter);
 composite->add_filter(field_filter);
@@ -220,32 +220,32 @@ logger->add_filter(composite);
 ## 📁 New Files
 
 ### Added in v1.0.4
-- `include/xlog/xlog_features.hpp` - Feature flag definitions
-- `include/xlog/sinks/signal_safe_sink.hpp` - Signal-safe sink header
+- `include/Zyrnix/Zyrnix_features.hpp` - Feature flag definitions
+- `include/Zyrnix/sinks/signal_safe_sink.hpp` - Signal-safe sink header
 - `src/sinks/signal_safe_sink.cpp` - Signal-safe sink implementation
 - `examples/config_file_example.cpp` - Configuration file usage demo
 - `examples/signal_safe_example.cpp` - Crash handler demo
 - `examples/minimal_build_example.cpp` - Feature flag demo
 
 ### Enhanced in v1.0.4
-- `include/xlog/config.hpp` - Added ConfigLoader class
+- `include/Zyrnix/config.hpp` - Added ConfigLoader class
 - `src/config.cpp` - JSON parsing and logger creation
 - `CMakeLists.txt` - Feature flags and conditional compilation
-- `include/xlog/logger.hpp` - Feature guards
-- `include/xlog/xlog.hpp` - Feature guards
+- `include/Zyrnix/logger.hpp` - Feature guards
+- `include/Zyrnix/Zyrnix.hpp` - Feature guards
 - `README.md` - v1.0.4 documentation
 
 ### From previous beta
-- `include/xlog/log_filter.hpp` - Filter interface and implementations
+- `include/Zyrnix/log_filter.hpp` - Filter interface and implementations
 - `src/log_filter.cpp` - Filter implementation logic
-- `include/xlog/log_macros.hpp` - Zero-cost logging macros
+- `include/Zyrnix/log_macros.hpp` - Zero-cost logging macros
 - `examples/conditional_logging.cpp` - Comprehensive usage examples
 
 ## 🔧 API Additions
 
 ### Logger Class
 
-New filtering methods added to `xlog::Logger`:
+New filtering methods added to `Zyrnix::Logger`:
 
 ```cpp
 void add_filter(std::shared_ptr<LogFilter> filter);
@@ -257,7 +257,7 @@ LogLevel get_level() const;
 
 ### LogRecord Enhancements
 
-Extended `xlog::LogRecord` with field inspection:
+Extended `Zyrnix::LogRecord` with field inspection:
 
 ```cpp
 std::unordered_map<std::string, std::string> fields;
@@ -349,8 +349,8 @@ cmake -DCMAKE_CXX_FLAGS="-DXLOG_ACTIVE_LEVEL=2" ..
 ## 📦 Building with v1.0.4
 
 ```bash
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 mkdir build && cd build
 cmake ..
 make
@@ -368,7 +368,7 @@ cd build
 
 ## 🙏 Credits
 
-This release implements Feature #1 from the XLog roadmap: "Conditional Logging with Zero-Cost Abstractions" - designed to provide both performance optimization and enhanced developer experience.
+This release implements Feature #1 from the Zyrnix roadmap: "Conditional Logging with Zero-Cost Abstractions" - designed to provide both performance optimization and enhanced developer experience.
 
 ## 📝 Migration Guide
 
@@ -385,7 +385,7 @@ To adopt conditional logging in existing code:
 
 2. **Add runtime filters** (optional):
    ```cpp
-   logger->add_filter(std::make_shared<xlog::LevelFilter>(xlog::LogLevel::Info));
+   logger->add_filter(std::make_shared<Zyrnix::LevelFilter>(Zyrnix::LogLevel::Info));
    ```
 
 3. **Use conditional logging** (optional):
@@ -411,6 +411,6 @@ Potential improvements for future releases:
 
 ---
 
-**Full Changelog:** [v1.0.3...v1.0.4](https://github.com/hent83722/xlog/compare/v1.0.3...v1.0.4)
+**Full Changelog:** [v1.0.3...v1.0.4](https://github.com/hent83722/Zyrnix/compare/v1.0.3...v1.0.4)
 
-**Questions or Issues?** Please file an issue on [GitHub](https://github.com/hent83722/xlog/issues)
+**Questions or Issues?** Please file an issue on [GitHub](https://github.com/hent83722/Zyrnix/issues)

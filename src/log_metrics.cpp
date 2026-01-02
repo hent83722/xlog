@@ -1,9 +1,9 @@
-#include "xlog/log_metrics.hpp"
+#include "Zyrnix/log_metrics.hpp"
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
 
-namespace xlog {
+namespace Zyrnix {
 
 
 LogMetrics::LogMetrics()
@@ -355,4 +355,4 @@ void MetricsRegistry::reset_all() {
     }
 }
 
-} // namespace xlog
+} // namespace Zyrnix

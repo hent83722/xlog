@@ -1,17 +1,17 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    XLog Installation Script for Windows (PowerShell)
+    Zyrnix Installation Script for Windows (PowerShell)
     
 .DESCRIPTION
-    Builds XLog from source and installs it system-wide.
+    Builds Zyrnix from source and installs it system-wide.
     Run as Administrator for system-wide installation.
     
 .PARAMETER BuildType
     Build configuration: Release or Debug (default: Release)
     
 .PARAMETER InstallPrefix
-    Installation directory (default: C:\Program Files\xlog)
+    Installation directory (default: C:\Program Files\Zyrnix)
     
 .PARAMETER Generator
     CMake generator to use (e.g., "Visual Studio 17 2022")
@@ -23,7 +23,7 @@
     .\install_windows.ps1
     
 .EXAMPLE
-    .\install_windows.ps1 -BuildType Debug -InstallPrefix "C:\dev\xlog"
+    .\install_windows.ps1 -BuildType Debug -InstallPrefix "C:\dev\Zyrnix"
     
 .EXAMPLE
     .\install_windows.ps1 -Generator "Visual Studio 17 2022" -Jobs 8
@@ -33,7 +33,7 @@ param(
     [ValidateSet("Release", "Debug")]
     [string]$BuildType = "Release",
     
-    [string]$InstallPrefix = "C:\Program Files\xlog",
+    [string]$InstallPrefix = "C:\Program Files\Zyrnix",
     
     [string]$Generator = "",
     
@@ -61,7 +61,7 @@ Write-Host " ██╔██╗ ██║     ██║   ██║██║   �
 Write-Host "██╔╝ ██╗███████╗╚██████╔╝╚██████╔╝" -ForegroundColor Blue
 Write-Host "╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝ " -ForegroundColor Blue
 Write-Host ""
-Write-Host "XLog Installation Script for Windows" -ForegroundColor Green
+Write-Host "Zyrnix Installation Script for Windows" -ForegroundColor Green
 Write-Host "==========================================" -ForegroundColor Green
 Write-Host ""
 
@@ -177,7 +177,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # Build
-Write-Host "Building XLog..." -ForegroundColor Yellow
+Write-Host "Building Zyrnix..." -ForegroundColor Yellow
 & cmake --build . --config $BuildType --parallel $Jobs
 if ($LASTEXITCODE -ne 0) {
     Write-Host "ERROR: Build failed." -ForegroundColor Red
@@ -208,7 +208,7 @@ if (-not $isAdmin) {
 }
 
 # Install
-Write-Host "Installing XLog..." -ForegroundColor Yellow
+Write-Host "Installing Zyrnix..." -ForegroundColor Yellow
 & cmake --install . --config $BuildType
 if ($LASTEXITCODE -ne 0) {
     Write-Host "ERROR: Installation failed." -ForegroundColor Red
@@ -218,15 +218,15 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host ""
 Write-Host "==========================================" -ForegroundColor Green
-Write-Host "XLog has been installed successfully!" -ForegroundColor Green
+Write-Host "Zyrnix has been installed successfully!" -ForegroundColor Green
 Write-Host "==========================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "Installation location: $InstallPrefix"
 Write-Host ""
-Write-Host "To use XLog in your CMake project, add:"
+Write-Host "To use Zyrnix in your CMake project, add:"
 Write-Host '  set(CMAKE_PREFIX_PATH "' -NoNewline
 Write-Host $InstallPrefix -NoNewline -ForegroundColor Cyan
 Write-Host '")'
-Write-Host "  find_package(xlog REQUIRED)" -ForegroundColor Cyan
-Write-Host "  target_link_libraries(your_target PRIVATE xlog::xlog)" -ForegroundColor Cyan
+Write-Host "  find_package(Zyrnix REQUIRED)" -ForegroundColor Cyan
+Write-Host "  target_link_libraries(your_target PRIVATE Zyrnix::Zyrnix)" -ForegroundColor Cyan
 Write-Host ""

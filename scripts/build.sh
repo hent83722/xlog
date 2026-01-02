@@ -14,7 +14,7 @@ echo "╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═
 BUILD_TYPE="${1:-Release}"
 
 cd "$PROJECT_DIR"
-echo "Building XLog ($BUILD_TYPE)..."
+echo "Building Zyrnix ($BUILD_TYPE)..."
 mkdir -p build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE="$BUILD_TYPE"

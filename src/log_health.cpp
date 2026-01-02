@@ -1,10 +1,10 @@
-#include "xlog/log_health.hpp"
-#include "xlog/logger.hpp"
+#include "Zyrnix/log_health.hpp"
+#include "Zyrnix/logger.hpp"
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
 
-namespace xlog {
+namespace Zyrnix {
 
 std::string HealthCheckResult::to_json() const {
     std::ostringstream oss;
@@ -541,4 +541,4 @@ std::string AggregateHealthResult::to_string() const {
     return oss.str();
 }
 
-} // namespace xlog
+} // namespace Zyrnix

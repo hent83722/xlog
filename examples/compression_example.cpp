@@ -9,8 +9,8 @@
  * 4. Compression statistics
  */
 
-#include <xlog/logger.hpp>
-#include <xlog/sinks/compressed_file_sink.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/sinks/compressed_file_sink.hpp>
 #include <iostream>
 #include <string>
 
@@ -18,19 +18,19 @@ void example_gzip_compression() {
     std::cout << "\n=== Gzip Compression Example ===\n";
     
     // Create compressed file sink with gzip
-    xlog::CompressionOptions options;
-    options.type = xlog::CompressionType::Gzip;
+    Zyrnix::CompressionOptions options;
+    options.type = Zyrnix::CompressionType::Gzip;
     options.level = 6; // Default compression level (1-9)
     options.compress_on_rotate = true;
     
-    auto sink = std::make_shared<xlog::CompressedFileSink>(
+    auto sink = std::make_shared<Zyrnix::CompressedFileSink>(
         "logs/app.log",
         1024 * 1024, // Rotate at 1 MB
         5,           // Keep 5 rotated files
         options
     );
     
-    auto logger = std::make_shared<xlog::Logger>("app");
+    auto logger = std::make_shared<Zyrnix::Logger>("app");
     logger->add_sink(sink);
     
     std::cout << "Writing logs with gzip compression...\n";
@@ -58,19 +58,19 @@ void example_zstd_compression() {
     std::cout << "\n=== Zstd Compression Example ===\n";
     
     // Zstd typically offers better compression ratios than gzip
-    xlog::CompressionOptions options;
-    options.type = xlog::CompressionType::Zstd;
+    Zyrnix::CompressionOptions options;
+    options.type = Zyrnix::CompressionType::Zstd;
     options.level = 3; // Default zstd level (1-22)
     options.compress_on_rotate = true;
     
-    auto sink = std::make_shared<xlog::CompressedFileSink>(
+    auto sink = std::make_shared<Zyrnix::CompressedFileSink>(
         "logs/app_zstd.log",
         1024 * 1024, // 1 MB
         3,           // Keep 3 files
         options
     );
     
-    auto logger = std::make_shared<xlog::Logger>("zstd_logger");
+    auto logger = std::make_shared<Zyrnix::Logger>("zstd_logger");
     logger->add_sink(sink);
     
     std::cout << "Writing logs with zstd compression...\n";
@@ -103,18 +103,18 @@ void example_compression_levels() {
     
     // Test different compression levels
     for (int level : {1, 3, 6, 9}) {
-        xlog::CompressionOptions options;
-        options.type = xlog::CompressionType::Gzip;
+        Zyrnix::CompressionOptions options;
+        options.type = Zyrnix::CompressionType::Gzip;
         options.level = level;
         
-        auto sink = std::make_shared<xlog::CompressedFileSink>(
+        auto sink = std::make_shared<Zyrnix::CompressedFileSink>(
             "logs/test_level_" + std::to_string(level) + ".log",
             512 * 1024, // 512 KB
             1,
             options
         );
         
-        auto logger = std::make_shared<xlog::Logger>("test");
+        auto logger = std::make_shared<Zyrnix::Logger>("test");
         logger->add_sink(sink);
         
         // Write test data
@@ -146,21 +146,21 @@ void example_compression_levels() {
 void example_production_usage() {
     std::cout << "\n=== Production Usage Example ===\n";
     
-    xlog::CompressionOptions options;
-    options.type = xlog::CompressionType::Gzip;
+    Zyrnix::CompressionOptions options;
+    options.type = Zyrnix::CompressionType::Gzip;
     options.level = 6;
     options.compress_on_rotate = true;
     
     // Production setup: 10 MB per file, keep 30 files
     // With 3:1 compression, this stores ~100 MB of logs in ~33 MB
-    auto sink = std::make_shared<xlog::CompressedFileSink>(
+    auto sink = std::make_shared<Zyrnix::CompressedFileSink>(
         "/var/log/myapp/app.log",
         10 * 1024 * 1024, // 10 MB
         30,               // 30 files
         options
     );
     
-    auto logger = std::make_shared<xlog::Logger>("production");
+    auto logger = std::make_shared<Zyrnix::Logger>("production");
     logger->add_sink(sink);
     
     std::cout << "Production configuration:\n";
@@ -175,17 +175,17 @@ void example_production_usage() {
 }
 
 int main() {
-    std::cout << "XLog Compression Examples\n";
+    std::cout << "Zyrnix Compression Examples\n";
     std::cout << "=========================\n";
     
     // Check availability
     std::cout << "Compression support:\n";
-    std::cout << "  Gzip: " << (xlog::CompressionUtils::is_gzip_available() ? "Available" : "Not available") << "\n";
-    std::cout << "  Zstd: " << (xlog::CompressionUtils::is_zstd_available() ? "Available" : "Not available") << "\n";
+    std::cout << "  Gzip: " << (Zyrnix::CompressionUtils::is_gzip_available() ? "Available" : "Not available") << "\n";
+    std::cout << "  Zstd: " << (Zyrnix::CompressionUtils::is_zstd_available() ? "Available" : "Not available") << "\n";
     
     example_gzip_compression();
     
-    if (xlog::CompressionUtils::is_zstd_available()) {
+    if (Zyrnix::CompressionUtils::is_zstd_available()) {
         example_zstd_compression();
     }
     

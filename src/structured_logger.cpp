@@ -1,6 +1,6 @@
-#include "xlog/structured_logger.hpp"
+#include "Zyrnix/structured_logger.hpp"
 
-namespace xlog {
+namespace Zyrnix {
 
 std::shared_ptr<StructuredLogger> StructuredLogger::create(const std::string& name, const std::string& filename) {
     auto logger = std::make_shared<Logger>(name);

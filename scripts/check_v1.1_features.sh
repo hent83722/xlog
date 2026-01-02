@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# XLog v1.1.0 Feature Verification Script
+# Zyrnix v1.1.0 Feature Verification Script
 # This script checks which new features are available
 
 echo "========================================"
-echo "XLog v1.1.0 Feature Availability Check"
+echo "Zyrnix v1.1.0 Feature Availability Check"
 echo "========================================"
 echo ""
 

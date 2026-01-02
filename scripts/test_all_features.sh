@@ -1,11 +1,11 @@
 #!/bin/bash
-# Comprehensive test script for XLog v1.0.3
+# Comprehensive test script for Zyrnix v1.0.3
 # Tests all features to ensure nothing is broken
 
 set -e  # Exit on any error
 
 echo "========================================"
-echo "XLog v1.0.3 Comprehensive Test Suite"
+echo "Zyrnix v1.0.3 Comprehensive Test Suite"
 echo "========================================"
 echo ""
 
@@ -88,11 +88,11 @@ for example in "${EXAMPLES[@]}"; do
     echo ""
     echo "Testing: $example"
     if [ -f "../examples/${example}.cpp" ]; then
-        if g++ -std=c++17 -I../include -L. -o "test_${example}" "../examples/${example}.cpp" -lxlog -lpthread 2>&1 | tee compile.log; then
+        if g++ -std=c++17 -I../include -L. -o "test_${example}" "../examples/${example}.cpp" -lZyrnix -lpthread 2>&1 | tee compile.log; then
             test_passed "Compiled ${example}"
             
             # Run the example with timeout
-            if timeout 5s "./test_${example}" > "/tmp/xlog_${example}.out" 2>&1; then
+            if timeout 5s "./test_${example}" > "/tmp/Zyrnix_${example}.out" 2>&1; then
                 test_passed "Executed ${example}"
             else
                 EXIT_CODE=$?
@@ -100,7 +100,7 @@ for example in "${EXAMPLES[@]}"; do
                     test_passed "Executed ${example} (timeout - long running)"
                 else
                     test_failed "Executed ${example} (exit code: $EXIT_CODE)"
-                    cat "/tmp/xlog_${example}.out"
+                    cat "/tmp/Zyrnix_${example}.out"
                 fi
             fi
             
@@ -121,35 +121,35 @@ echo "========================================="
 
 # Create a simple test program
 cat > test_context_simple.cpp << 'EOF'
-#include <xlog/structured_logger.hpp>
-#include <xlog/log_context.hpp>
+#include <Zyrnix/structured_logger.hpp>
+#include <Zyrnix/log_context.hpp>
 #include <iostream>
 
 int main() {
-    auto logger = xlog::StructuredLogger::create("test", "test_context.jsonl");
+    auto logger = Zyrnix::StructuredLogger::create("test", "test_context.jsonl");
     
     // Test 1: Basic scoped context
     {
-        xlog::ScopedContext ctx;
+        Zyrnix::ScopedContext ctx;
         ctx.set("test_id", "test-001");
         logger->info("Test 1: Basic context");
     }
     
     // Test 2: Chainable API
     {
-        xlog::ScopedContext ctx;
+        Zyrnix::ScopedContext ctx;
         ctx.set("key1", "value1").set("key2", "value2");
         logger->info("Test 2: Chained context");
     }
     
     // Test 3: Nested contexts
     {
-        xlog::ScopedContext outer;
+        Zyrnix::ScopedContext outer;
         outer.set("outer", "outer_value");
         logger->info("Test 3a: Outer context");
         
         {
-            xlog::ScopedContext inner;
+            Zyrnix::ScopedContext inner;
             inner.set("inner", "inner_value");
             logger->info("Test 3b: Nested context");
         }
@@ -158,9 +158,9 @@ int main() {
     }
     
     // Test 4: Global context
-    xlog::LogContext::set("global", "global_value");
+    Zyrnix::LogContext::set("global", "global_value");
     logger->info("Test 4: Global context");
-    xlog::LogContext::clear();
+    Zyrnix::LogContext::clear();
     
     std::cout << "Context tests completed successfully!" << std::endl;
     return 0;
@@ -168,7 +168,7 @@ int main() {
 EOF
 
 echo "Compiling context test..."
-if g++ -std=c++17 -I../include -L. -o test_context_simple test_context_simple.cpp -lxlog -lpthread; then
+if g++ -std=c++17 -I../include -L. -o test_context_simple test_context_simple.cpp -lZyrnix -lpthread; then
     test_passed "Compiled context test"
     
     if ./test_context_simple; then
@@ -209,46 +209,46 @@ echo "Step 5: Test All Sinks"
 echo "========================================="
 
 cat > test_all_sinks.cpp << 'EOF'
-#include <xlog/logger.hpp>
-#include <xlog/sinks/stdout_sink.hpp>
-#include <xlog/sinks/file_sink.hpp>
-#include <xlog/sinks/rotating_file_sink.hpp>
-#include <xlog/sinks/daily_file_sink.hpp>
-#include <xlog/sinks/null_sink.hpp>
-#include <xlog/sinks/multi_sink.hpp>
-#include <xlog/sinks/structured_json_sink.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/sinks/stdout_sink.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
+#include <Zyrnix/sinks/rotating_file_sink.hpp>
+#include <Zyrnix/sinks/daily_file_sink.hpp>
+#include <Zyrnix/sinks/null_sink.hpp>
+#include <Zyrnix/sinks/multi_sink.hpp>
+#include <Zyrnix/sinks/structured_json_sink.hpp>
 #include <iostream>
 
 int main() {
-    auto logger = std::make_shared<xlog::Logger>("test_sinks");
+    auto logger = std::make_shared<Zyrnix::Logger>("test_sinks");
     
     // Test StdoutSink
-    logger->add_sink(std::make_shared<xlog::StdoutSink>());
+    logger->add_sink(std::make_shared<Zyrnix::StdoutSink>());
     logger->info("Testing StdoutSink");
     logger->clear_sinks();
     
     // Test FileSink
-    logger->add_sink(std::make_shared<xlog::FileSink>("test_file.log"));
+    logger->add_sink(std::make_shared<Zyrnix::FileSink>("test_file.log"));
     logger->info("Testing FileSink");
     logger->clear_sinks();
     
     // Test RotatingFileSink
-    logger->add_sink(std::make_shared<xlog::RotatingFileSink>("test_rotating.log", 1024, 3));
+    logger->add_sink(std::make_shared<Zyrnix::RotatingFileSink>("test_rotating.log", 1024, 3));
     logger->info("Testing RotatingFileSink");
     logger->clear_sinks();
     
     // Test DailyFileSink
-    logger->add_sink(std::make_shared<xlog::DailyFileSink>("test_daily.log"));
+    logger->add_sink(std::make_shared<Zyrnix::DailyFileSink>("test_daily.log"));
     logger->info("Testing DailyFileSink");
     logger->clear_sinks();
     
     // Test NullSink
-    logger->add_sink(std::make_shared<xlog::NullSink>());
+    logger->add_sink(std::make_shared<Zyrnix::NullSink>());
     logger->info("Testing NullSink");
     logger->clear_sinks();
     
     // Test StructuredJsonSink
-    auto json_sink = std::make_shared<xlog::StructuredJsonSink>("test_json.jsonl");
+    auto json_sink = std::make_shared<Zyrnix::StructuredJsonSink>("test_json.jsonl");
     logger->add_sink(json_sink);
     logger->info("Testing StructuredJsonSink");
     logger->clear_sinks();
@@ -259,7 +259,7 @@ int main() {
 EOF
 
 echo "Compiling sinks test..."
-if g++ -std=c++17 -I../include -L. -o test_all_sinks test_all_sinks.cpp -lxlog -lpthread; then
+if g++ -std=c++17 -I../include -L. -o test_all_sinks test_all_sinks.cpp -lZyrnix -lpthread; then
     test_passed "Compiled sinks test"
     
     if ./test_all_sinks > /dev/null 2>&1; then
@@ -282,14 +282,14 @@ echo "Step 6: Test Async Logging"
 echo "========================================="
 
 cat > test_async.cpp << 'EOF'
-#include <xlog/async/async_logger.hpp>
-#include <xlog/sinks/file_sink.hpp>
+#include <Zyrnix/async/async_logger.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
 #include <thread>
 #include <iostream>
 
 int main() {
-    auto logger = std::make_shared<xlog::AsyncLogger>("async_test");
-    logger->add_sink(std::make_shared<xlog::FileSink>("test_async.log"));
+    auto logger = std::make_shared<Zyrnix::AsyncLogger>("async_test");
+    logger->add_sink(std::make_shared<Zyrnix::FileSink>("test_async.log"));
     
     for (int i = 0; i < 100; ++i) {
         logger->info("Async message " + std::to_string(i));
@@ -303,7 +303,7 @@ int main() {
 EOF
 
 echo "Compiling async test..."
-if g++ -std=c++17 -I../include -L. -o test_async test_async.cpp -lxlog -lpthread; then
+if g++ -std=c++17 -I../include -L. -o test_async test_async.cpp -lZyrnix -lpthread; then
     test_passed "Compiled async test"
     
     if ./test_async; then
@@ -332,15 +332,15 @@ echo "Step 7: Test Log Levels"
 echo "========================================="
 
 cat > test_log_levels.cpp << 'EOF'
-#include <xlog/logger.hpp>
-#include <xlog/sinks/file_sink.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
 #include <iostream>
 
 int main() {
-    auto logger = std::make_shared<xlog::Logger>("level_test");
-    logger->add_sink(std::make_shared<xlog::FileSink>("test_levels.log"));
+    auto logger = std::make_shared<Zyrnix::Logger>("level_test");
+    logger->add_sink(std::make_shared<Zyrnix::FileSink>("test_levels.log"));
     
-    logger->set_level(xlog::LogLevel::Trace);
+    logger->set_level(Zyrnix::LogLevel::Trace);
     logger->trace("Trace message");
     logger->debug("Debug message");
     logger->info("Info message");
@@ -349,7 +349,7 @@ int main() {
     logger->critical("Critical message");
     
     // Test level filtering
-    logger->set_level(xlog::LogLevel::Warn);
+    logger->set_level(Zyrnix::LogLevel::Warn);
     logger->info("This should not appear");
     logger->warn("This should appear");
     
@@ -359,7 +359,7 @@ int main() {
 EOF
 
 echo "Compiling log levels test..."
-if g++ -std=c++17 -I../include -L. -o test_log_levels test_log_levels.cpp -lxlog -lpthread; then
+if g++ -std=c++17 -I../include -L. -o test_log_levels test_log_levels.cpp -lZyrnix -lpthread; then
     test_passed "Compiled log levels test"
     
     if ./test_log_levels; then
@@ -390,21 +390,21 @@ echo "Step 8: Test Thread Safety"
 echo "========================================="
 
 cat > test_thread_safety.cpp << 'EOF'
-#include <xlog/logger.hpp>
-#include <xlog/sinks/file_sink.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
 #include <thread>
 #include <vector>
 #include <iostream>
 
-void worker(std::shared_ptr<xlog::Logger> logger, int id) {
+void worker(std::shared_ptr<Zyrnix::Logger> logger, int id) {
     for (int i = 0; i < 100; ++i) {
         logger->info("Thread " + std::to_string(id) + " message " + std::to_string(i));
     }
 }
 
 int main() {
-    auto logger = std::make_shared<xlog::Logger>("thread_test");
-    logger->add_sink(std::make_shared<xlog::FileSink>("test_threads.log"));
+    auto logger = std::make_shared<Zyrnix::Logger>("thread_test");
+    logger->add_sink(std::make_shared<Zyrnix::FileSink>("test_threads.log"));
     
     std::vector<std::thread> threads;
     for (int i = 0; i < 10; ++i) {
@@ -421,7 +421,7 @@ int main() {
 EOF
 
 echo "Compiling thread safety test..."
-if g++ -std=c++17 -I../include -L. -o test_thread_safety test_thread_safety.cpp -lxlog -lpthread; then
+if g++ -std=c++17 -I../include -L. -o test_thread_safety test_thread_safety.cpp -lZyrnix -lpthread; then
     test_passed "Compiled thread safety test"
     
     if ./test_thread_safety; then
@@ -501,6 +501,6 @@ else
     echo ""
     echo -e "${GREEN}=========================================${NC}"
     echo -e "${GREEN}ALL TESTS PASSED! ✓${NC}"
-    echo -e "${GREEN}XLog v1.0.3 is working correctly!${NC}"
+    echo -e "${GREEN}Zyrnix v1.0.3 is working correctly!${NC}"
     echo -e "${GREEN}=========================================${NC}"
 fi

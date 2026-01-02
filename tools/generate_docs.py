@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-generate_docs.py - Generate API documentation for the xlog project.
+generate_docs.py - Generate API documentation for the Zyrnix project.
 
 This script parses header files and generates markdown documentation
 for the public API.
@@ -202,7 +202,7 @@ def generate_header_doc(header: Header, project_root: Path) -> str:
 
 def generate_docs(project_root: Path, output_dir: Path) -> None:
     """Generate documentation for all header files."""
-    include_dir = project_root / 'include' / 'xlog'
+    include_dir = project_root / 'include' / 'Zyrnix'
     
     if not include_dir.exists():
         print(f"Error: Include directory not found: {include_dir}")
@@ -218,9 +218,9 @@ def generate_docs(project_root: Path, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     
     index_lines = [
-        "# XLog API Reference",
+        "# Zyrnix API Reference",
         "",
-        "Auto-generated API documentation for XLog.",
+        "Auto-generated API documentation for Zyrnix.",
         "",
         "## Headers",
         "",
@@ -234,7 +234,7 @@ def generate_docs(project_root: Path, output_dir: Path) -> None:
         doc_content = [
             f"# {name}",
             "",
-            f"Header: `include/xlog/{header.path.name}`",
+            f"Header: `include/Zyrnix/{header.path.name}`",
             "",
         ]
         
@@ -256,7 +256,7 @@ z
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Generate API documentation for xlog'
+        description='Generate API documentation for Zyrnix'
     )
     parser.add_argument('--output', '-o', type=Path, default=Path('docs/api'),
                         help='Output directory for generated docs')

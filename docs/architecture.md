@@ -1,6 +1,6 @@
 # Architecture
 
-XLog is designed to be lightweight, modular, and easy to extend. The main components are:
+Zyrnix is designed to be lightweight, modular, and easy to extend. The main components are:
 
 - **Logger**: the central object representing a named logging instance. A `Logger` owns a list of sinks and provides convenience methods for each log level (`trace`, `debug`, `info`, ...).
 - **LogSink**: abstract base for output backends. Concrete sinks implement `log(name, level, message)` and may maintain internal state (files, sockets, buffers).

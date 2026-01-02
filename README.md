@@ -1,14 +1,14 @@
 <div align="center">
 
 
-# 🚀 XLog
+# 🚀 Zyrnix
   
 ### Modern High-Performance C++ Logging Library
   
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
-[![Version](https://img.shields.io/badge/version-1.1.2-brightgreen.svg)](https://github.com/hent83722/xlog/releases)
-[![CI](https://img.shields.io/badge/CI-passing-success.svg)](https://github.com/hent83722/xlog/actions)
+[![Version](https://img.shields.io/badge/version-1.1.2-brightgreen.svg)](https://github.com/hent83722/Zyrnix/releases)
+[![CI](https://img.shields.io/badge/CI-passing-success.svg)](https://github.com/hent83722/Zyrnix/actions)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)]()
 
 **Production-ready, thread-safe logging with structured output, async support, and zero-overhead abstractions**
@@ -21,9 +21,9 @@
 
 ## 📋 Overview
 
-**XLog** is a modern, lightweight, and blazingly fast logging library for C++17+. Inspired by industry-standard loggers like `spdlog` and `log4j`, XLog combines elegant API design with high performance, making it perfect for everything from hobby projects to enterprise applications.
+**Zyrnix** is a modern, lightweight, and blazingly fast logging library for C++17+. Inspired by industry-standard loggers like `spdlog` and `log4j`, Zyrnix combines elegant API design with high performance, making it perfect for everything from hobby projects to enterprise applications.
 
-### Why XLog?
+### Why Zyrnix?
 
 - ⚡ **Zero-cost abstractions** - Compile-time optimizations eliminate runtime overhead
 - 🔒 **Thread-safe by design** - Production-grade synchronization and async logging
@@ -113,7 +113,7 @@
 
 ### Installation
 
-XLog can be installed using the provided installation scripts (recommended) or manually via CMake.
+Zyrnix can be installed using the provided installation scripts (recommended) or manually via CMake.
 
 <details>
 <summary><b>🔧 Option 1: Installation Scripts (Recommended)</b></summary>
@@ -122,29 +122,29 @@ We provide platform-specific scripts that handle the entire build and install pr
 
 **Linux:**
 ```bash
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 ./scripts/install_linux.sh
 ```
 
 **macOS:**
 ```bash
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 ./scripts/install_mac.sh
 ```
 
 **Windows (PowerShell - Run as Administrator):**
 ```powershell
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 .\scripts\install_windows.ps1
 ```
 
 **Windows (Command Prompt - Run as Administrator):**
 ```cmd
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 scripts\install_windows.bat
 ```
 
@@ -157,8 +157,8 @@ scripts\install_windows.bat
 
 **Linux/macOS:**
 ```bash
-git clone https://github.com/hent83722/xlog.git
-cd xlog && mkdir build && cd build
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix && mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build . --parallel
 sudo cmake --install .
@@ -166,32 +166,32 @@ sudo cmake --install .
 
 **Windows (from Developer PowerShell/Command Prompt):**
 ```powershell
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build . --config Release --parallel
 cmake --install . --config Release
 ```
 
-> 📝 **Note:** On Windows, run as Administrator for system-wide installation, or specify a custom prefix: `cmake .. -DCMAKE_INSTALL_PREFIX="C:\Users\you\xlog"`
+> 📝 **Note:** On Windows, run as Administrator for system-wide installation, or specify a custom prefix: `cmake .. -DCMAKE_INSTALL_PREFIX="C:\Users\you\Zyrnix"`
 
 </details>
 
 ### Your First Logger
 
 ```cpp
-#include <xlog/xlog.hpp>
+#include <Zyrnix/Zyrnix.hpp>
 
 int main() {
     // Create a logger
-    auto logger = xlog::Logger::create_stdout_logger("app");
+    auto logger = Zyrnix::Logger::create_stdout_logger("app");
     
     // Log messages
-    logger->log(xlog::LogLevel::Info, "Application started");
+    logger->log(Zyrnix::LogLevel::Info, "Application started");
     
     // Stream-style logging
-    *logger << xlog::Info << "User logged in: " << "john@example.com" << xlog::endl;
+    *logger << Zyrnix::Info << "User logged in: " << "john@example.com" << Zyrnix::endl;
     
     return 0;
 }
@@ -199,7 +199,7 @@ int main() {
 
 **Compile:**
 ```bash
-g++ -std=c++17 main.cpp -lxlog -o myapp
+g++ -std=c++17 main.cpp -lZyrnix -o myapp
 ```
 
 ---
@@ -265,17 +265,17 @@ scripts\install_windows.bat
 | Option | Description | Default |
 |--------|-------------|--------|
 | `--debug` | Build in Debug mode | Release |
-| `--prefix=PATH` | Custom installation directory | `/usr/local` (Linux/macOS), `C:\Program Files\xlog` (Windows) |
+| `--prefix=PATH` | Custom installation directory | `/usr/local` (Linux/macOS), `C:\Program Files\Zyrnix` (Windows) |
 | `--jobs=N` | Parallel build jobs | Auto-detected |
 | `--help` | Show all available options | - |
 
 **Example with options:**
 ```bash
 # Linux/macOS - Install to custom location
-./scripts/install_linux.sh --prefix=/opt/xlog --jobs=8
+./scripts/install_linux.sh --prefix=/opt/Zyrnix --jobs=8
 
 # Windows PowerShell - Debug build to custom location
-.\scripts\install_windows.ps1 -BuildType Debug -InstallPrefix "C:\dev\xlog"
+.\scripts\install_windows.ps1 -BuildType Debug -InstallPrefix "C:\dev\Zyrnix"
 ```
 
 ---
@@ -287,8 +287,8 @@ For full control over the build process, you can build and install manually usin
 **Linux/macOS:**
 ```bash
 # Clone the repository
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 
 # Create build directory
 mkdir build && cd build
@@ -306,8 +306,8 @@ sudo cmake --install .
 **Windows (Visual Studio):**
 ```powershell
 # Clone the repository
-git clone https://github.com/hent83722/xlog.git
-cd xlog
+git clone https://github.com/hent83722/Zyrnix.git
+cd Zyrnix
 
 # Create build directory
 mkdir build && cd build
@@ -325,10 +325,10 @@ cmake --install . --config Release
 **Custom Install Location:**
 ```bash
 # Linux/macOS
-cmake .. -DCMAKE_INSTALL_PREFIX=/opt/xlog
+cmake .. -DCMAKE_INSTALL_PREFIX=/opt/Zyrnix
 
 # Windows
-cmake .. -DCMAKE_INSTALL_PREFIX="C:\Libraries\xlog"
+cmake .. -DCMAKE_INSTALL_PREFIX="C:\Libraries\Zyrnix"
 ```
 
 ---
@@ -337,21 +337,21 @@ cmake .. -DCMAKE_INSTALL_PREFIX="C:\Libraries\xlog"
 
 **After system installation:**
 ```cmake
-find_package(xlog REQUIRED)
-target_link_libraries(your_project PRIVATE xlog::xlog)
+find_package(Zyrnix REQUIRED)
+target_link_libraries(your_project PRIVATE Zyrnix::Zyrnix)
 ```
 
 **As a subdirectory (no installation needed):**
 ```cmake
-add_subdirectory(external/xlog)
-target_link_libraries(your_project PRIVATE xlog)
+add_subdirectory(external/Zyrnix)
+target_link_libraries(your_project PRIVATE Zyrnix)
 ```
 
 **Windows - specify install location if needed:**
 ```cmake
-set(CMAKE_PREFIX_PATH "C:/Program Files/xlog")
-find_package(xlog REQUIRED)
-target_link_libraries(your_project PRIVATE xlog::xlog)
+set(CMAKE_PREFIX_PATH "C:/Program Files/Zyrnix")
+find_package(Zyrnix REQUIRED)
+target_link_libraries(your_project PRIVATE Zyrnix::Zyrnix)
 ```
 
 ---
@@ -373,18 +373,18 @@ target_link_libraries(your_project PRIVATE xlog::xlog)
 ### Basic Logging
 
 ```cpp
-#include <xlog/xlog.hpp>
+#include <Zyrnix/Zyrnix.hpp>
 
-auto logger = xlog::Logger::create_stdout_logger("app");
+auto logger = Zyrnix::Logger::create_stdout_logger("app");
 
 // Different log levels
-logger->log(xlog::LogLevel::Trace, "Detailed trace information");
-logger->log(xlog::LogLevel::Info, "Application started");
-logger->log(xlog::LogLevel::Warn, "Configuration file not found");
-logger->log(xlog::LogLevel::Error, "Failed to connect to database");
+logger->log(Zyrnix::LogLevel::Trace, "Detailed trace information");
+logger->log(Zyrnix::LogLevel::Info, "Application started");
+logger->log(Zyrnix::LogLevel::Warn, "Configuration file not found");
+logger->log(Zyrnix::LogLevel::Error, "Failed to connect to database");
 
 // Stream-style logging
-*logger << xlog::Info << "User count: " << 42 << xlog::endl;
+*logger << Zyrnix::Info << "User count: " << 42 << Zyrnix::endl;
 ```
 
 ### Multiple Sinks
@@ -392,15 +392,15 @@ logger->log(xlog::LogLevel::Error, "Failed to connect to database");
 Write logs to multiple destinations simultaneously:
 
 ```cpp
-#include <xlog/logger.hpp>
-#include <xlog/sinks/file_sink.hpp>
-#include <xlog/sinks/stdout_sink.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
+#include <Zyrnix/sinks/stdout_sink.hpp>
 
-auto logger = std::make_shared<xlog::Logger>("multi");
-logger->add_sink(std::make_shared<xlog::FileSink>("app.log"));
-logger->add_sink(std::make_shared<xlog::StdoutSink>());
+auto logger = std::make_shared<Zyrnix::Logger>("multi");
+logger->add_sink(std::make_shared<Zyrnix::FileSink>("app.log"));
+logger->add_sink(std::make_shared<Zyrnix::StdoutSink>());
 
-logger->log(xlog::LogLevel::Info, "Logged to both file and console");
+logger->log(Zyrnix::LogLevel::Info, "Logged to both file and console");
 ```
 
 ### Asynchronous Logging
@@ -408,8 +408,8 @@ logger->log(xlog::LogLevel::Info, "Logged to both file and console");
 High-performance async logging for production systems:
 
 ```cpp
-auto async_logger = xlog::Logger::create_async("async");
-async_logger->log(xlog::LogLevel::Info, "Non-blocking log message");
+auto async_logger = Zyrnix::Logger::create_async("async");
+async_logger->log(Zyrnix::LogLevel::Info, "Non-blocking log message");
 ```
 
 ### Rotating File Logs
@@ -417,11 +417,11 @@ async_logger->log(xlog::LogLevel::Info, "Non-blocking log message");
 Automatically rotate logs based on file size:
 
 ```cpp
-#include <xlog/sinks/rotating_file_sink.hpp>
+#include <Zyrnix/sinks/rotating_file_sink.hpp>
 
-auto logger = std::make_shared<xlog::Logger>("rotating");
+auto logger = std::make_shared<Zyrnix::Logger>("rotating");
 // Rotate every 10MB, keep 5 files
-logger->add_sink(std::make_shared<xlog::RotatingFileSink>(
+logger->add_sink(std::make_shared<Zyrnix::RotatingFileSink>(
     "app.log", 10 * 1024 * 1024, 5
 ));
 ```
@@ -434,9 +434,9 @@ logger->add_sink(std::make_shared<xlog::RotatingFileSink>(
 Perfect for cloud-native applications and log aggregators (ELK, Datadog, Splunk, CloudWatch):
 
 ```cpp
-#include <xlog/structured_logger.hpp>
+#include <Zyrnix/structured_logger.hpp>
 
-auto slog = xlog::StructuredLogger::create("api", "app.jsonl");
+auto slog = Zyrnix::StructuredLogger::create("api", "app.jsonl");
 
 // Set global context
 slog->set_context("request_id", "req-12345");
@@ -465,19 +465,19 @@ slog->info("User login successful", {
 
 Track request IDs, user sessions, and transactions across your entire call stack **without passing parameters everywhere**.
 
-XLog provides Mapped Diagnostic Context (MDC) functionality similar to Log4j and SLF4J. Context attributes are stored thread-locally and automatically included in all log messages.
+Zyrnix provides Mapped Diagnostic Context (MDC) functionality similar to Log4j and SLF4J. Context attributes are stored thread-locally and automatically included in all log messages.
 
 **Basic usage:**
 
 ```cpp
-#include <xlog/log_context.hpp>
-#include <xlog/structured_logger.hpp>
+#include <Zyrnix/log_context.hpp>
+#include <Zyrnix/structured_logger.hpp>
 
 void process_order(const std::string& order_id) {
-    auto logger = xlog::StructuredLogger::create("orders", "orders.jsonl");
+    auto logger = Zyrnix::StructuredLogger::create("orders", "orders.jsonl");
     
     // Scoped context - auto cleanup on scope exit
-    xlog::ScopedContext ctx;
+    Zyrnix::ScopedContext ctx;
     ctx.set("order_id", order_id).set("user_id", "user-123");
     
     // All logs automatically include order_id and user_id
@@ -490,7 +490,7 @@ void process_order(const std::string& order_id) {
 **HTTP request tracking:**
 ```cpp
 void handle_request(const HttpRequest& req) {
-    xlog::ScopedContext ctx;
+    Zyrnix::ScopedContext ctx;
     ctx.set("request_id", req.header("X-Request-ID"))
        .set("user_id", req.user_id())
        .set("endpoint", req.path());
@@ -511,11 +511,11 @@ void handle_request(const HttpRequest& req) {
 Load logger configurations from JSON files without recompiling:
 
 ```cpp
-#include <xlog/config.hpp>
+#include <Zyrnix/config.hpp>
 
 // Load from JSON file
-xlog::ConfigLoader::load_from_json("config.json");
-auto loggers = xlog::ConfigLoader::create_loggers();
+Zyrnix::ConfigLoader::load_from_json("config.json");
+auto loggers = Zyrnix::ConfigLoader::create_loggers();
 
 // Use configured loggers
 auto app_logger = loggers["app"];
@@ -536,16 +536,16 @@ app_logger->info("Configuration loaded dynamically!");
 Filter logs using powerful regular expressions:
 
 ```cpp
-#include <xlog/log_filter.hpp>
+#include <Zyrnix/log_filter.hpp>
 
-auto logger = xlog::Logger::create_stdout_logger("app");
+auto logger = Zyrnix::Logger::create_stdout_logger("app");
 
 // Only log messages containing ERROR or CRITICAL
-auto error_filter = std::make_shared<xlog::RegexFilter>("(ERROR|CRITICAL)");
+auto error_filter = std::make_shared<Zyrnix::RegexFilter>("(ERROR|CRITICAL)");
 logger->add_filter(error_filter);
 
 // Exclude sensitive data (inverted match - logs everything EXCEPT matches)
-auto no_secrets = std::make_shared<xlog::RegexFilter>("(password|token|secret)", true);
+auto no_secrets = std::make_shared<Zyrnix::RegexFilter>("(password|token|secret)", true);
 logger->add_filter(no_secrets);
 ```
 
@@ -554,7 +554,7 @@ logger->add_filter(no_secrets);
 Change log levels at runtime without restarting:
 
 ```cpp
-auto logger = xlog::Logger::create_stdout_logger("app");
+auto logger = Zyrnix::Logger::create_stdout_logger("app");
 
 // Register callback for level changes
 logger->register_level_change_callback([](LogLevel old_lvl, LogLevel new_lvl) {
@@ -562,7 +562,7 @@ logger->register_level_change_callback([](LogLevel old_lvl, LogLevel new_lvl) {
 });
 
 // Thread-safe level change (great for config hot-reload)
-logger->set_level_dynamic(xlog::LogLevel::Debug);
+logger->set_level_dynamic(Zyrnix::LogLevel::Debug);
 ```
 
 ### 🏥 Health Check API
@@ -570,15 +570,15 @@ logger->set_level_dynamic(xlog::LogLevel::Debug);
 Monitor your logging infrastructure:
 
 ```cpp
-#include <xlog/log_health.hpp>
+#include <Zyrnix/log_health.hpp>
 
 // Register logger for monitoring
-xlog::HealthRegistry::instance().register_logger("api", logger);
+Zyrnix::HealthRegistry::instance().register_logger("api", logger);
 
 // Check health (perfect for K8s probes)
-auto result = xlog::HealthRegistry::instance().check_logger("api");
+auto result = Zyrnix::HealthRegistry::instance().check_logger("api");
 
-if (xlog::HealthChecker::is_healthy(result)) {
+if (Zyrnix::HealthChecker::is_healthy(result)) {
     // All good!
 } else {
     std::cerr << result.to_json() << std::endl;  // Export for monitoring
@@ -590,13 +590,13 @@ if (xlog::HealthChecker::is_healthy(result)) {
 Automatic compression level optimization:
 
 ```cpp
-#include <xlog/sinks/compressed_file_sink.hpp>
+#include <Zyrnix/sinks/compressed_file_sink.hpp>
 
-xlog::CompressionOptions options;
-options.type = xlog::CompressionType::Gzip;
+Zyrnix::CompressionOptions options;
+options.type = Zyrnix::CompressionType::Gzip;
 options.auto_tune = true;  // Enable auto-tune!
 
-auto sink = std::make_shared<xlog::CompressedFileSink>(
+auto sink = std::make_shared<Zyrnix::CompressedFileSink>(
     "app.log", 10*1024*1024, 5, options
 );
 
@@ -630,16 +630,16 @@ std::cout << "Current level: " << sink->get_current_compression_level() << std::
 Log from signal handlers (SIGSEGV, SIGABRT, etc.) safely:
 
 ```cpp
-#include <xlog/sinks/signal_safe_sink.hpp>
+#include <Zyrnix/sinks/signal_safe_sink.hpp>
 
 // Set up crash logger
-auto crash_sink = std::make_shared<xlog::SignalSafeSink>("crash.log");
-auto crash_logger = std::make_shared<xlog::Logger>("crash");
+auto crash_sink = std::make_shared<Zyrnix::SignalSafeSink>("crash.log");
+auto crash_logger = std::make_shared<Zyrnix::Logger>("crash");
 crash_logger->add_sink(crash_sink);
 
 void crash_handler(int sig) {
     // Safe to call from signal handler!
-    crash_logger->log(xlog::LogLevel::Critical, "Caught SIGSEGV");
+    crash_logger->log(Zyrnix::LogLevel::Critical, "Caught SIGSEGV");
     crash_sink->flush();
     _exit(1);
 }
@@ -665,7 +665,7 @@ cmake -DXLOG_MINIMAL=ON ..
 cmake -DXLOG_ENABLE_ASYNC=OFF -DXLOG_ENABLE_JSON=OFF ..
 
 # Or use compile flags
-g++ -DXLOG_NO_ASYNC -DXLOG_NO_JSON main.cpp -lxlog
+g++ -DXLOG_NO_ASYNC -DXLOG_NO_JSON main.cpp -lZyrnix
 ```
 
 **Feature flags:**
@@ -681,9 +681,9 @@ g++ -DXLOG_NO_ASYNC -DXLOG_NO_JSON main.cpp -lxlog
 **Feature detection in code:**
 ```cpp
 #if XLOG_HAS_ASYNC
-    auto logger = xlog::Logger::create_async("app");
+    auto logger = Zyrnix::Logger::create_async("app");
 #else
-    auto logger = xlog::Logger::create_stdout_logger("app");
+    auto logger = Zyrnix::Logger::create_stdout_logger("app");
 #endif
 ```
 
@@ -691,17 +691,17 @@ g++ -DXLOG_NO_ASYNC -DXLOG_NO_JSON main.cpp -lxlog
 
 ## 🚀 What's New in v1.1.0
 
-XLog v1.1.0 introduces four major enterprise-grade features designed for production environments:
+Zyrnix v1.1.0 introduces four major enterprise-grade features designed for production environments:
 
 ### 1. 🎯 Rate Limiting & Sampling
 
 **Prevent log flooding during incidents:**
 
 ```cpp
-#include <xlog/rate_limiter.hpp>
+#include <Zyrnix/rate_limiter.hpp>
 
 // Token bucket: 100 messages/sec, burst capacity 200
-xlog::RateLimiter limiter(100, 200);
+Zyrnix::RateLimiter limiter(100, 200);
 
 for (int i = 0; i < 10000; ++i) {
     if (limiter.try_log()) {
@@ -723,21 +723,21 @@ std::cout << "Dropped: " << limiter.dropped_count() << " messages\n";
 **Save 70-90% disk space automatically:**
 
 ```cpp
-#include <xlog/sinks/compressed_file_sink.hpp>
+#include <Zyrnix/sinks/compressed_file_sink.hpp>
 
-xlog::CompressionOptions options;
-options.type = xlog::CompressionType::Gzip;
+Zyrnix::CompressionOptions options;
+options.type = Zyrnix::CompressionType::Gzip;
 options.level = 6;
 options.compress_on_rotate = true;
 
-auto sink = std::make_shared<xlog::CompressedFileSink>(
+auto sink = std::make_shared<Zyrnix::CompressedFileSink>(
     "app.log",
     10 * 1024 * 1024,  // 10 MB per file
     30,                // Keep 30 files
     options
 );
 
-auto logger = std::make_shared<xlog::Logger>("app");
+auto logger = std::make_shared<Zyrnix::Logger>("app");
 logger->add_sink(sink);
 
 // Check compression stats
@@ -757,27 +757,27 @@ std::cout << "Space saved: " << (100.0 * (stats.original_bytes - stats.compresse
 **Native cloud logging integration:**
 
 ```cpp
-#include <xlog/sinks/cloud_sinks.hpp>
+#include <Zyrnix/sinks/cloud_sinks.hpp>
 
 // AWS CloudWatch
-xlog::CloudWatchSink::Config aws_config;
+Zyrnix::CloudWatchSink::Config aws_config;
 aws_config.region = "us-east-1";
 aws_config.log_group_name = "/aws/myapp";
 aws_config.log_stream_name = "instance-01";
 aws_config.batch_size = 100;
 aws_config.batch_timeout_ms = 5000;
 
-auto cloudwatch = std::make_shared<xlog::CloudWatchSink>(aws_config);
+auto cloudwatch = std::make_shared<Zyrnix::CloudWatchSink>(aws_config);
 
 // Azure Monitor
-xlog::AzureMonitorSink::Config azure_config;
+Zyrnix::AzureMonitorSink::Config azure_config;
 azure_config.instrumentation_key = "your-key";
 azure_config.cloud_role_name = "my-service";
 azure_config.batch_size = 100;
 
-auto azure = std::make_shared<xlog::AzureMonitorSink>(azure_config);
+auto azure = std::make_shared<Zyrnix::AzureMonitorSink>(azure_config);
 
-auto logger = std::make_shared<xlog::Logger>("app");
+auto logger = std::make_shared<Zyrnix::Logger>("app");
 logger->add_sink(cloudwatch);
 logger->add_sink(azure);
 
@@ -802,10 +802,10 @@ std::cout << "Batches sent: " << stats.batches_sent << "\n";
 **Built-in telemetry for logging infrastructure:**
 
 ```cpp
-#include <xlog/log_metrics.hpp>
+#include <Zyrnix/log_metrics.hpp>
 
 // Get metrics from global registry
-auto& registry = xlog::MetricsRegistry::instance();
+auto& registry = Zyrnix::MetricsRegistry::instance();
 auto metrics = registry.get_logger_metrics("app");
 
 // Metrics are automatically tracked during logging
@@ -834,11 +834,11 @@ std::string json = registry.export_all_json();
 
 **Prometheus Export:**
 ```
-xlog_messages_logged_total 125000
-xlog_messages_dropped_total 0
-xlog_messages_per_second 1234.56
-xlog_log_latency_us_avg 12.34
-xlog_queue_depth 42
+Zyrnix_messages_logged_total 125000
+Zyrnix_messages_dropped_total 0
+Zyrnix_messages_per_second 1234.56
+Zyrnix_log_latency_us_avg 12.34
+Zyrnix_queue_depth 42
 ```
 
 **Perfect for:**
@@ -871,24 +871,24 @@ cd build
 
 ## 🔌 Network Sinks & Production Integration
 
-Integrate XLog into production systems with multiple output destinations:
+Integrate Zyrnix into production systems with multiple output destinations:
 
 ```cpp
-#include <xlog/logger.hpp>
-#include <xlog/sinks/file_sink.hpp>
-#include <xlog/sinks/syslog_sink.hpp>
-#include <xlog/sinks/udp_sink.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
+#include <Zyrnix/sinks/syslog_sink.hpp>
+#include <Zyrnix/sinks/udp_sink.hpp>
 
-auto logger = std::make_shared<xlog::Logger>("production");
+auto logger = std::make_shared<Zyrnix::Logger>("production");
 
 // Local file
-logger->add_sink(std::make_shared<xlog::FileSink>("/var/log/app.log"));
+logger->add_sink(std::make_shared<Zyrnix::FileSink>("/var/log/app.log"));
 
 // System syslog (Linux/macOS)
-logger->add_sink(std::make_shared<xlog::SyslogSink>("myapp", LOG_PID, LOG_USER));
+logger->add_sink(std::make_shared<Zyrnix::SyslogSink>("myapp", LOG_PID, LOG_USER));
 
 // Remote log collector
-logger->add_sink(std::make_shared<xlog::UdpSink>("logs.company.com", 514));
+logger->add_sink(std::make_shared<Zyrnix::UdpSink>("logs.company.com", 514));
 ```
 
 **Integration patterns:**
@@ -901,7 +901,7 @@ logger->add_sink(std::make_shared<xlog::UdpSink>("logs.company.com", 514));
 
 ## 🧪 Testing & Quality Assurance
 
-XLog is battle-tested with comprehensive quality assurance:
+Zyrnix is battle-tested with comprehensive quality assurance:
 
 ### 🔍 Sanitizer Coverage
 
@@ -962,8 +962,8 @@ Explore complete working examples in the `examples/` directory:
 ## 🏗️ Project Structure
 
 ```
-xlog/
-├── include/xlog/          # Public API headers
+Zyrnix/
+├── include/Zyrnix/          # Public API headers
 ├── src/                   # Implementation files
 ├── examples/              # Complete usage examples
 ├── tests/                 # Unit tests
@@ -974,9 +974,9 @@ xlog/
 
 ---
 
-## ❓ Why XLog Over `std::cout`?
+## ❓ Why Zyrnix Over `std::cout`?
 
-| Feature | `std::cout` | XLog |
+| Feature | `std::cout` | Zyrnix |
 |---------|-------------|------|
 | **Log Levels** | ❌ Manual | ✅ Built-in (Trace, Debug, Info, Warn, Error, Critical) |
 | **Multiple Outputs** | ❌ Redirect only | ✅ Multiple sinks simultaneously |
@@ -1010,10 +1010,10 @@ We welcome contributions! Here's how to get started:
 
 ## 📄 License
 
-XLog is released under the [MIT License](LICENSE).
+Zyrnix is released under the [MIT License](LICENSE).
 
 ```
-Copyright (c) 2025 XLog Contributors
+Copyright (c) 2025 Zyrnix Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files...
@@ -1023,7 +1023,7 @@ of this software and associated documentation files...
 
 ## 🙏 Acknowledgments
 
-XLog is inspired by:
+Zyrnix is inspired by:
 - [spdlog](https://github.com/gabime/spdlog) - Fast C++ logging library
 - [log4j](https://logging.apache.org/log4j/) - Java logging framework
 - [serilog](https://serilog.net/) - Structured logging for .NET
@@ -1033,9 +1033,9 @@ XLog is inspired by:
 ## 🔗 Links
 
 - 📖 [Full Documentation](docs/)
-- 🐛 [Report Issues](https://github.com/hent83722/xlog/issues)
-- 💬 [Discussions](https://github.com/hent83722/xlog/discussions)
-- 📦 [Releases](https://github.com/hent83722/xlog/releases)
+- 🐛 [Report Issues](https://github.com/hent83722/Zyrnix/issues)
+- 💬 [Discussions](https://github.com/hent83722/Zyrnix/discussions)
+- 📦 [Releases](https://github.com/hent83722/Zyrnix/releases)
 
 ---
 
@@ -1043,8 +1043,8 @@ XLog is inspired by:
 
 **Built with ❤️ for the C++ community**
 
-If XLog helps your project, consider giving it a ⭐!
+If Zyrnix helps your project, consider giving it a ⭐!
 
-[⬆ Back to Top](#-xlog)
+[⬆ Back to Top](#-Zyrnix)
 
 </div>

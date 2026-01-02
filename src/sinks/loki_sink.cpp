@@ -1,13 +1,13 @@
-#include <xlog/sinks/loki_sink.hpp>
-#include <xlog/formatter.hpp>
-#include <xlog/log_message.hpp>
-#include <xlog/log_metrics.hpp>
+#include <Zyrnix/sinks/loki_sink.hpp>
+#include <Zyrnix/formatter.hpp>
+#include <Zyrnix/log_message.hpp>
+#include <Zyrnix/log_metrics.hpp>
 #include <sstream>
 #include <iostream>
 #include <thread>
 #include <curl/curl.h>
 
-namespace xlog {
+namespace Zyrnix {
 
 LokiSink::LokiSink(const std::string& url, const std::string& labels, const LokiOptions& opts)
     : url_(url), labels_(labels), options_(opts) {
@@ -134,4 +134,4 @@ void LokiSink::send_batch() {
     buffer_.clear();
 }
 
-} // namespace xlog
+} // namespace Zyrnix

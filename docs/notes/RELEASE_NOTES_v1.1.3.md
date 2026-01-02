@@ -1,4 +1,4 @@
-# XLog v1.1.3 Release Notes
+# Zyrnix v1.1.3 Release Notes
 
 **Release Date:** January 1, 2026  
 **Release Type:** Feature Release  
@@ -8,7 +8,7 @@
 
 ## 🎯 Overview
 
-XLog v1.1.3 builds directly on the v1.1.2 hardening work and the recent additions of the Loki sink, PII redaction, and hot‑reloadable configuration. This release focuses on cloud logging ergonomics, privacy controls, and better observability of your logging setup in production.
+Zyrnix v1.1.3 builds directly on the v1.1.2 hardening work and the recent additions of the Loki sink, PII redaction, and hot‑reloadable configuration. This release focuses on cloud logging ergonomics, privacy controls, and better observability of your logging setup in production.
 
 Key themes:
 - Smarter, configurable Loki sink for Grafana Loki
@@ -46,7 +46,7 @@ Building on the v1.1.2 Loki sink addition, v1.1.3 makes it production‑ready.
     {
       "type": "loki",
       "url": "http://localhost:3100/loki/api/v1/push",
-      "labels": "{job=\"xlogtest\"}",
+      "labels": "{job=\"Zyrnixtest\"}",
       "batch_size": 5,
       "flush_interval_ms": 2000,
       "timeout_ms": 5000,
@@ -152,7 +152,7 @@ This makes it easy to:
   "redact_cloud_only": true,
   "sinks": [
     {"type": "stdout"},
-    {"type": "loki", "url": "http://localhost:3100/loki/api/v1/push", "labels": "{job=\"xlogtest\"}"}
+    {"type": "loki", "url": "http://localhost:3100/loki/api/v1/push", "labels": "{job=\"Zyrnixtest\"}"}
   ]
 }
 ```
@@ -230,7 +230,7 @@ Reload successes: <n>, failures: <m>
 You can export metrics via:
 ```cpp
 auto& registry = MetricsRegistry::instance();
-std::string prom = registry.export_all_prometheus("xlog");
+std::string prom = registry.export_all_prometheus("Zyrnix");
 std::string json = registry.export_all_json();
 ```
 

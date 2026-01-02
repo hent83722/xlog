@@ -7,28 +7,28 @@
  * Compile with different flags to see size differences:
  * 
  * Full build:
- *   g++ -std=c++17 minimal_build_example.cpp -lxlog -o full
+ *   g++ -std=c++17 minimal_build_example.cpp -lZyrnix -o full
  *   
  * Minimal build:
- *   g++ -std=c++17 -DXLOG_MINIMAL minimal_build_example.cpp -lxlog -o minimal
+ *   g++ -std=c++17 -DXLOG_MINIMAL minimal_build_example.cpp -lZyrnix -o minimal
  *   
  * Custom build (disable specific features):
- *   g++ -std=c++17 -DXLOG_NO_ASYNC -DXLOG_NO_JSON minimal_build_example.cpp -lxlog -o custom
+ *   g++ -std=c++17 -DXLOG_NO_ASYNC -DXLOG_NO_JSON minimal_build_example.cpp -lZyrnix -o custom
  * 
  * Or use CMake:
  *   cmake -DXLOG_MINIMAL=ON ..
  *   cmake -DXLOG_ENABLE_ASYNC=OFF -DXLOG_ENABLE_JSON=OFF ..
  */
 
-#include <xlog/xlog.hpp>
-#include <xlog/logger.hpp>
-#include <xlog/sinks/stdout_sink.hpp>
-#include <xlog/sinks/file_sink.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/sinks/stdout_sink.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
 #include <iostream>
 
 // Feature detection examples
 void show_features() {
-    std::cout << "=== XLog Feature Configuration ===" << std::endl;
+    std::cout << "=== Zyrnix Feature Configuration ===" << std::endl;
     std::cout << std::endl;
     
 #if XLOG_HAS_ASYNC
@@ -79,14 +79,14 @@ void show_features() {
 }
 
 int main() {
-    std::cout << "=== XLog Minimal Build Example ===" << std::endl;
+    std::cout << "=== Zyrnix Minimal Build Example ===" << std::endl;
     std::cout << std::endl;
     
     show_features();
     
     // Basic logging always works
     std::cout << "=== Basic Logging (Always Available) ===" << std::endl;
-    auto logger = xlog::Logger::create_stdout_logger("minimal");
+    auto logger = Zyrnix::Logger::create_stdout_logger("minimal");
     logger->info("Basic logging works in all builds");
     logger->warn("Warning message");
     logger->error("Error message");
@@ -95,7 +95,7 @@ int main() {
     // Async logging (only if enabled)
 #if XLOG_HAS_ASYNC
     std::cout << "=== Async Logging ===" << std::endl;
-    auto async_logger = xlog::Logger::create_async("async");
+    auto async_logger = Zyrnix::Logger::create_async("async");
     async_logger->info("Async logging is available");
     std::cout << std::endl;
 #else

@@ -1,7 +1,7 @@
-#include "xlog/config_watcher.hpp"
+#include "Zyrnix/config_watcher.hpp"
 #include <sys/stat.h>
 
-namespace xlog {
+namespace Zyrnix {
 
 ConfigWatcher::ConfigWatcher(const std::string& config_path, std::function<void()> on_change, std::chrono::milliseconds poll_interval)
     : config_path_(config_path), on_change_(on_change), poll_interval_(poll_interval) {}
@@ -35,4 +35,4 @@ void ConfigWatcher::watch_loop() {
     }
 }
 
-} // namespace xlog
+} // namespace Zyrnix

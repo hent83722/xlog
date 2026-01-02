@@ -1,0 +1,16 @@
+@PACKAGE_INIT@
+
+# Get installation prefix (parent of lib/cmake/Zyrnix)
+get_filename_component(XLOG_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
+
+# Version info
+set(Zyrnix_VERSION "@PROJECT_VERSION@")
+set(Zyrnix_VERSION_MAJOR "@PROJECT_VERSION_MAJOR@")
+set(Zyrnix_VERSION_MINOR "@PROJECT_VERSION_MINOR@")
+set(Zyrnix_VERSION_PATCH "@PROJECT_VERSION_PATCH@")
+
+add_library(Zyrnix STATIC IMPORTED)
+set_target_properties(Zyrnix PROPERTIES
+    IMPORTED_LOCATION "${XLOG_INSTALL_PREFIX}/lib/libZyrnix.a"
+    INTERFACE_INCLUDE_DIRECTORIES "${XLOG_INSTALL_PREFIX}/include"
+)

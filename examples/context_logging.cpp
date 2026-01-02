@@ -1,14 +1,14 @@
-#include <xlog/xlog.hpp>
-#include <xlog/structured_logger.hpp>
-#include <xlog/log_context.hpp>
+#include <Zyrnix/Zyrnix.hpp>
+#include <Zyrnix/structured_logger.hpp>
+#include <Zyrnix/log_context.hpp>
 #include <thread>
 #include <chrono>
 #include <iostream>
 
 void process_payment(const std::string& payment_id) {
-    auto logger = xlog::StructuredLogger::create("payment_service", "payments.jsonl");
+    auto logger = Zyrnix::StructuredLogger::create("payment_service", "payments.jsonl");
     
-    auto ctx = xlog::ScopedContext();
+    auto ctx = Zyrnix::ScopedContext();
     ctx.set("payment_id", payment_id);
     ctx.set("service", "payment-processor");
     
@@ -30,9 +30,9 @@ void process_payment(const std::string& payment_id) {
 }
 
 void handle_http_request(const std::string& request_id, const std::string& user_id) {
-    auto logger = xlog::StructuredLogger::create("http_server", "requests.jsonl");
+    auto logger = Zyrnix::StructuredLogger::create("http_server", "requests.jsonl");
     
-    xlog::ScopedContext request_ctx;
+    Zyrnix::ScopedContext request_ctx;
     request_ctx.set("request_id", request_id)
                .set("user_id", user_id)
                .set("endpoint", "/api/v1/orders");
@@ -40,7 +40,7 @@ void handle_http_request(const std::string& request_id, const std::string& user_
     logger->info("Received HTTP request");
     
     {
-        xlog::ScopedContext db_ctx;
+        Zyrnix::ScopedContext db_ctx;
         db_ctx.set("operation", "database_query");
         
         logger->debug("Fetching user data from database", {{"table", "users"}});
@@ -53,9 +53,9 @@ void handle_http_request(const std::string& request_id, const std::string& user_
 }
 
 void worker_thread(int thread_id) {
-    auto logger = xlog::StructuredLogger::create("worker", "workers.jsonl");
+    auto logger = Zyrnix::StructuredLogger::create("worker", "workers.jsonl");
     
-    xlog::ScopedContext ctx;
+    Zyrnix::ScopedContext ctx;
     ctx.set("thread_id", std::to_string(thread_id));
     ctx.set("worker_name", "worker-" + std::to_string(thread_id));
     
@@ -69,16 +69,16 @@ void worker_thread(int thread_id) {
 }
 
 void demonstrate_global_context() {
-    xlog::LogContext::set("app_version", "1.0.3");
-    xlog::LogContext::set("environment", "production");
-    xlog::LogContext::set("hostname", "server-01");
+    Zyrnix::LogContext::set("app_version", "1.0.3");
+    Zyrnix::LogContext::set("environment", "production");
+    Zyrnix::LogContext::set("hostname", "server-01");
     
-    auto logger = xlog::StructuredLogger::create("app", "app.jsonl");
+    auto logger = Zyrnix::StructuredLogger::create("app", "app.jsonl");
     
     logger->info("Application started");
     
     {
-        xlog::ScopedContext request_ctx;
+        Zyrnix::ScopedContext request_ctx;
         request_ctx.set("request_id", "req-789");
         
         logger->info("Processing request");
@@ -86,11 +86,11 @@ void demonstrate_global_context() {
     
     logger->info("Application running");
     
-    xlog::LogContext::clear();
+    Zyrnix::LogContext::clear();
 }
 
 int main() {
-    std::cout << "=== XLog Context & Scoped Attributes Demo ===\n\n";
+    std::cout << "=== Zyrnix Context & Scoped Attributes Demo ===\n\n";
     
     // Example 1: Payment processing with context
     std::cout << "1. Processing payment with scoped context...\n";

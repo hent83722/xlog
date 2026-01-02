@@ -1,9 +1,9 @@
-#include <xlog/logger.hpp>
-#include <xlog/log_macros.hpp>
-#include <xlog/log_filter.hpp>
-#include <xlog/log_context.hpp>
-#include <xlog/sinks/file_sink.hpp>
-#include <xlog/sinks/stdout_sink.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/log_macros.hpp>
+#include <Zyrnix/log_filter.hpp>
+#include <Zyrnix/log_context.hpp>
+#include <Zyrnix/sinks/file_sink.hpp>
+#include <Zyrnix/sinks/stdout_sink.hpp>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -11,7 +11,7 @@
 void demo_compile_time_filtering() {
     std::cout << "\n=== Compile-Time Filtering Demo ===\n";
     
-    auto logger = xlog::Logger::create_stdout_logger("compile_time");
+    auto logger = Zyrnix::Logger::create_stdout_logger("compile_time");
     
     std::cout << "Using macros for zero-cost debug logs:\n";
     
@@ -27,7 +27,7 @@ void demo_compile_time_filtering() {
 void demo_conditional_logging() {
     std::cout << "\n=== Conditional Logging Demo ===\n";
     
-    auto logger = xlog::Logger::create_stdout_logger("conditional");
+    auto logger = Zyrnix::Logger::create_stdout_logger("conditional");
     
     int request_count = 0;
     bool is_premium_user = true;
@@ -50,21 +50,21 @@ void demo_conditional_logging() {
 void demo_runtime_filtering() {
     std::cout << "\n=== Runtime Filtering Demo ===\n";
     
-    auto logger = std::make_shared<xlog::Logger>("runtime_filter");
-    logger->add_sink(std::make_shared<xlog::StdoutSink>());
+    auto logger = std::make_shared<Zyrnix::Logger>("runtime_filter");
+    logger->add_sink(std::make_shared<Zyrnix::StdoutSink>());
     
     std::cout << "1. Level-based filtering:\n";
-    logger->set_level(xlog::LogLevel::Warn);
+    logger->set_level(Zyrnix::LogLevel::Warn);
     
     logger->info("This won't appear (below Warn level)");
     logger->warn("This will appear (Warn level)");
     logger->error("This will appear (Error level)");
     
-    logger->set_level(xlog::LogLevel::Trace);
+    logger->set_level(Zyrnix::LogLevel::Trace);
     
     std::cout << "\n2. Custom lambda filter (only log errors):\n";
-    logger->set_filter_func([](const xlog::LogRecord& record) {
-        return record.level >= xlog::LogLevel::Error;
+    logger->set_filter_func([](const Zyrnix::LogRecord& record) {
+        return record.level >= Zyrnix::LogLevel::Error;
     });
     
     logger->info("Filtered out (not an error)");
@@ -76,22 +76,22 @@ void demo_runtime_filtering() {
 void demo_field_based_filtering() {
     std::cout << "\n=== Field-Based Filtering Demo ===\n";
     
-    auto logger = std::make_shared<xlog::Logger>("field_filter");
-    logger->add_sink(std::make_shared<xlog::StdoutSink>());
+    auto logger = std::make_shared<Zyrnix::Logger>("field_filter");
+    logger->add_sink(std::make_shared<Zyrnix::StdoutSink>());
     
     std::cout << "Only log messages with specific context fields:\n";
     
-    auto filter = std::make_shared<xlog::FieldFilter>("user_type", "premium");
+    auto filter = std::make_shared<Zyrnix::FieldFilter>("user_type", "premium");
     logger->add_filter(filter);
     
     {
-        xlog::ScopedContext ctx;
+        Zyrnix::ScopedContext ctx;
         ctx.set("user_type", "premium");
         logger->info("Premium user activity (passes filter)");
     }
     
     {
-        xlog::ScopedContext ctx;
+        Zyrnix::ScopedContext ctx;
         ctx.set("user_type", "free");
         logger->info("Free user activity (filtered out)");
     }
@@ -102,22 +102,22 @@ void demo_field_based_filtering() {
 void demo_composite_filtering() {
     std::cout << "\n=== Composite Filtering Demo ===\n";
     
-    auto logger = std::make_shared<xlog::Logger>("composite");
-    logger->add_sink(std::make_shared<xlog::StdoutSink>());
+    auto logger = std::make_shared<Zyrnix::Logger>("composite");
+    logger->add_sink(std::make_shared<Zyrnix::StdoutSink>());
     
     std::cout << "Combine multiple filters with AND logic:\n";
     
-    auto composite = std::make_shared<xlog::CompositeFilter>(
-        xlog::CompositeFilter::Mode::AND
+    auto composite = std::make_shared<Zyrnix::CompositeFilter>(
+        Zyrnix::CompositeFilter::Mode::AND
     );
     
-    composite->add_filter(std::make_shared<xlog::LevelFilter>(xlog::LogLevel::Info));
-    composite->add_filter(std::make_shared<xlog::FieldFilter>("important", "true"));
+    composite->add_filter(std::make_shared<Zyrnix::LevelFilter>(Zyrnix::LogLevel::Info));
+    composite->add_filter(std::make_shared<Zyrnix::FieldFilter>("important", "true"));
     
     logger->add_filter(composite);
     
     {
-        xlog::ScopedContext ctx;
+        Zyrnix::ScopedContext ctx;
         ctx.set("important", "true");
         
         logger->debug("Debug + important (filtered - level too low)");
@@ -125,7 +125,7 @@ void demo_composite_filtering() {
     }
     
     {
-        xlog::ScopedContext ctx;
+        Zyrnix::ScopedContext ctx;
         ctx.set("important", "false");
         
         logger->info("Info + not important (filtered - wrong field)");
@@ -137,15 +137,15 @@ void demo_composite_filtering() {
 void demo_advanced_lambda_filter() {
     std::cout << "\n=== Advanced Lambda Filtering Demo ===\n";
     
-    auto logger = std::make_shared<xlog::Logger>("advanced");
-    logger->add_sink(std::make_shared<xlog::StdoutSink>());
+    auto logger = std::make_shared<Zyrnix::Logger>("advanced");
+    logger->add_sink(std::make_shared<Zyrnix::StdoutSink>());
     
     std::cout << "Complex filtering logic with lambdas:\n";
     
-    logger->set_filter_func([](const xlog::LogRecord& record) {
-        auto context = xlog::LogContext::get_all();
+    logger->set_filter_func([](const Zyrnix::LogRecord& record) {
+        auto context = Zyrnix::LogContext::get_all();
         
-        if (record.level >= xlog::LogLevel::Error) {
+        if (record.level >= Zyrnix::LogLevel::Error) {
             return true;
         }
         
@@ -161,7 +161,7 @@ void demo_advanced_lambda_filter() {
     logger->error("Error message (always passes)");
     
     {
-        xlog::ScopedContext ctx;
+        Zyrnix::ScopedContext ctx;
         ctx.set("request_id", "urgent-12345");
         logger->info("Urgent request info (passes due to request_id)");
     }
@@ -172,12 +172,12 @@ void demo_advanced_lambda_filter() {
 void demo_performance_comparison() {
     std::cout << "\n=== Performance Comparison Demo ===\n";
     
-    auto logger = std::make_shared<xlog::Logger>("perf");
-    logger->add_sink(std::make_shared<xlog::FileSink>("/dev/null"));
+    auto logger = std::make_shared<Zyrnix::Logger>("perf");
+    logger->add_sink(std::make_shared<Zyrnix::FileSink>("/dev/null"));
     
     const int iterations = 100000;
     
-    logger->set_level(xlog::LogLevel::Error);
+    logger->set_level(Zyrnix::LogLevel::Error);
     
     std::cout << "Running " << iterations << " filtered logs...\n";
     
@@ -205,7 +205,7 @@ void demo_performance_comparison() {
 
 int main() {
     std::cout << "===========================================\n";
-    std::cout << "XLog Conditional Logging & Filtering Demo\n";
+    std::cout << "Zyrnix Conditional Logging & Filtering Demo\n";
     std::cout << "===========================================\n";
     
     demo_compile_time_filtering();

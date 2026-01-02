@@ -1,9 +1,9 @@
-#include "xlog/logger.hpp"
-#include "xlog/log_sink.hpp"
-#include "xlog/log_filter.hpp"
-#include "xlog/sinks/stdout_sink.hpp"
-#include "xlog/async/async_logger.hpp"
-#include "xlog/log_health.hpp"
+#include "Zyrnix/logger.hpp"
+#include "Zyrnix/log_sink.hpp"
+#include "Zyrnix/log_filter.hpp"
+#include "Zyrnix/sinks/stdout_sink.hpp"
+#include "Zyrnix/async/async_logger.hpp"
+#include "Zyrnix/log_health.hpp"
 #include <mutex>
 #include <shared_mutex>
 #include <chrono>
@@ -13,7 +13,7 @@
 #include <thread>
 #include <regex>
 
-namespace xlog {
+namespace Zyrnix {
 
 void Logger::set_redact_patterns(const std::vector<std::string>& patterns) {
     std::lock_guard<std::mutex> lock(mtx_);

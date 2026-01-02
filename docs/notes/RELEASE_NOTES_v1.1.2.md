@@ -1,4 +1,4 @@
-# XLog v1.1.2 Release Notes
+# Zyrnix v1.1.2 Release Notes
 
 **Release Date:** December 13, 2025  
 **Release Type:** Bug Fixes & Hardening  
@@ -8,7 +8,7 @@
 
 ## 🎯 Overview
 
-XLog v1.1.2 is a stability-focused release that addresses critical bug fixes and hardening improvements. This release ensures more reliable shutdown behavior, safer concurrent sink management, proper Windows Unicode path support, and improved signal handler safety.
+Zyrnix v1.1.2 is a stability-focused release that addresses critical bug fixes and hardening improvements. This release ensures more reliable shutdown behavior, safer concurrent sink management, proper Windows Unicode path support, and improved signal handler safety.
 
 ---
 
@@ -67,13 +67,13 @@ size_t sink_count() const;                                     // Get active cou
 **Problem:** File paths containing non-ASCII characters (e.g., `C:\Users\日本語\logs\app.log`) would fail on Windows.
 
 **Solution:**
-- Added `xlog::path` namespace with Unicode-aware file operations
+- Added `Zyrnix::path` namespace with Unicode-aware file operations
 - Proper UTF-8 → UTF-16 conversion for Windows APIs
 - Cross-platform API that's transparent on POSIX systems
 
 **API Additions:**
 ```cpp
-namespace xlog::path {
+namespace Zyrnix::path {
     // Windows: UTF-8 to UTF-16, POSIX: passthrough
     std::wstring to_native(const std::string& utf8_path);  // Windows only
     std::string from_native(const std::wstring& native);   // Windows only
@@ -168,7 +168,7 @@ class SignalSafeSink {
 3. **Use path utilities for cross-platform code:**
    ```cpp
    // Cross-platform Unicode-safe
-   FILE* f = xlog::path::fopen_utf8(user_provided_path, "w");
+   FILE* f = Zyrnix::path::fopen_utf8(user_provided_path, "w");
    ```
 
 ---
@@ -188,10 +188,10 @@ All features have been validated with:
 ## 📁 Files Changed
 
 ### Headers Modified
-- `include/xlog/logger.hpp` - SinkEntry, SinkGuard, new Logger methods
-- `include/xlog/async/async_queue.hpp` - Shutdown API, size tracking
-- `include/xlog/sinks/signal_safe_sink.hpp` - Reentrancy improvements
-- `include/xlog/util.hpp` - Path utilities namespace
+- `include/Zyrnix/logger.hpp` - SinkEntry, SinkGuard, new Logger methods
+- `include/Zyrnix/async/async_queue.hpp` - Shutdown API, size tracking
+- `include/Zyrnix/sinks/signal_safe_sink.hpp` - Reentrancy improvements
+- `include/Zyrnix/util.hpp` - Path utilities namespace
 
 ### Sources Modified
 - `src/logger.cpp` - Reference counting, shared_mutex, sink management
@@ -219,8 +219,8 @@ See [CHANGELOG.md](docs/notes/RELEASE_NOTES_v1.1.2.md) for complete version hist
 
 ---
 
-**Download:** [GitHub Releases](https://github.com/hent83722/xlog/releases/tag/v1.1.2)
+**Download:** [GitHub Releases](https://github.com/hent83722/Zyrnix/releases/tag/v1.1.2)
 
 **Documentation:** [docs/](../../docs/)
 
-**Report Issues:** [GitHub Issues](https://github.com/hent83722/xlog/issues)
+**Report Issues:** [GitHub Issues](https://github.com/hent83722/Zyrnix/issues)

@@ -1,10 +1,10 @@
-#include "xlog/experimental/json_sink.hpp"
-#include "xlog/sinks/file_sink.hpp"
+#include "Zyrnix/experimental/json_sink.hpp"
+#include "Zyrnix/sinks/file_sink.hpp"
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <mutex>
 
-namespace xlog {
+namespace Zyrnix {
 
 JsonSink::JsonSink(const std::string& filename) {
     file.open(filename, std::ios::app);

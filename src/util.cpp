@@ -1,4 +1,4 @@
-#include "xlog/util.hpp"
+#include "Zyrnix/util.hpp"
 #include <cstdio>
 
 #ifdef _WIN32
@@ -11,7 +11,7 @@
 #include <unistd.h>
 #endif
 
-namespace xlog {
+namespace Zyrnix {
 
 std::string trim(const std::string& s) {
     auto b = s.find_first_not_of(" \t\n\r");

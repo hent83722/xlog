@@ -9,9 +9,9 @@
  * 4. Statistics tracking
  */
 
-#include <xlog/logger.hpp>
-#include <xlog/rate_limiter.hpp>
-#include <xlog/sinks/stdout_sink.hpp>
+#include <Zyrnix/logger.hpp>
+#include <Zyrnix/rate_limiter.hpp>
+#include <Zyrnix/sinks/stdout_sink.hpp>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -20,7 +20,7 @@ void example_rate_limiting() {
     std::cout << "\n=== Rate Limiting Example ===\n";
     
     // Create rate limiter: max 10 messages per second, burst capacity of 20
-    xlog::RateLimiter limiter(10, 20);
+    Zyrnix::RateLimiter limiter(10, 20);
     
     std::cout << "Attempting to log 100 messages rapidly...\n";
     
@@ -46,7 +46,7 @@ void example_sampling() {
     std::cout << "\n=== Sampling Example ===\n";
     
     // Create sampling limiter: log every 10th message
-    xlog::SamplingLimiter sampler(10);
+    Zyrnix::SamplingLimiter sampler(10);
     
     std::cout << "Logging 100 messages with 1-in-10 sampling...\n";
     
@@ -65,7 +65,7 @@ void example_combined_limiting() {
     std::cout << "\n=== Combined Rate Limiting + Sampling Example ===\n";
     
     // Combine rate limiting (100 msg/s) and sampling (1 in 5)
-    xlog::CombinedLimiter limiter(100, 150, 5);
+    Zyrnix::CombinedLimiter limiter(100, 150, 5);
     
     std::cout << "Simulating high-throughput logging...\n";
     
@@ -97,11 +97,11 @@ void example_combined_limiting() {
 void example_production_scenario() {
     std::cout << "\n=== Production Scenario: Preventing Log Flooding ===\n";
     
-    auto logger = std::make_shared<xlog::Logger>("app");
-    logger->add_sink(std::make_shared<xlog::StdoutSink>());
+    auto logger = std::make_shared<Zyrnix::Logger>("app");
+    logger->add_sink(std::make_shared<Zyrnix::StdoutSink>());
     
     // Rate limiter to prevent disk exhaustion during incidents
-    xlog::RateLimiter rate_limiter(50, 100); // 50 msg/s, burst 100
+    Zyrnix::RateLimiter rate_limiter(50, 100); // 50 msg/s, burst 100
     
     std::cout << "Simulating an error storm (1000 errors rapidly)...\n";
     
@@ -121,7 +121,7 @@ void example_production_scenario() {
 }
 
 int main() {
-    std::cout << "XLog Rate Limiting & Sampling Examples\n";
+    std::cout << "Zyrnix Rate Limiting & Sampling Examples\n";
     std::cout << "========================================\n";
     
     example_rate_limiting();

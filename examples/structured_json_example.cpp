@@ -1,9 +1,9 @@
-#include <xlog/structured_logger.hpp>
+#include <Zyrnix/structured_logger.hpp>
 #include <map>
 
 int main() {
 
-    auto slog = xlog::StructuredLogger::create("api_server", "api.jsonl");
+    auto slog = Zyrnix::StructuredLogger::create("api_server", "api.jsonl");
     
 
     slog->set_context("service", "user-api");

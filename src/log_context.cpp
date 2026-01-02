@@ -1,7 +1,7 @@
-#include "xlog/log_context.hpp"
+#include "Zyrnix/log_context.hpp"
 #include <algorithm>
 
-namespace xlog {
+namespace Zyrnix {
 
 thread_local LogContext::ContextMap LogContext::context_;
 
@@ -72,4 +72,4 @@ LogContext::ContextMap ScopedContext::get_all() const {
     return LogContext::get_all();
 }
 
-} // namespace xlog
+} // namespace Zyrnix
